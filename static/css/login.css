@@ -1,0 +1,61 @@
+.login-page {
+    text-align: center;
+    padding: 50px;
+}
+
+.login-page h2 {
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+form {
+    display: inline-block;
+    text-align: left;
+}
+
+label {
+    font-size: 1.1em;
+    color: #555;
+    margin: 10px 0;
+}
+
+input {
+    font-size: 1em;
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    margin: 20px 0;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.links {
+    margin-top: 20px;
+}
+
+.links a {
+    font-size: 1em;
+    color: #007BFF;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}

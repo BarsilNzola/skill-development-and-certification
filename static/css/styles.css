@@ -1,24 +1,56 @@
-/* css/styles.css */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #f4f4f4;
 }
+
+.landing-page {
+    text-align: center;
+    padding: 50px;
+}
+
 header {
-    background-color: #333;
-    color: #fff;
-    padding: 1em;
+    margin-bottom: 50px;
 }
-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: space-around;
+
+header h1 {
+    font-size: 2.5em;
+    color: #333;
+}
+
+header p {
+    font-size: 1.2em;
+    color: #777;
+}
+
+.features h2, .cta h2 {
+    font-size: 2em;
+    color: #333;
+}
+
+.features ul {
+    list-style-type: none;
     padding: 0;
 }
-nav ul li {
-    margin: 0 1em;
+
+.features li {
+    font-size: 1.1em;
+    color: #555;
+    margin: 10px 0;
 }
-nav ul li a {
+
+button {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    margin: 20px 10px;
     color: #fff;
-    text-decoration: none;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
 }
