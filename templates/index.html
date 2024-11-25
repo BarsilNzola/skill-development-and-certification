@@ -1,31 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code Gears</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="landing-page">
-        <header>
-            <h1>Welcome to Code Gears</h1>
-            <p>Unlock your potential with Code Gears, the ultimate destination for personalized learning and growth.</p>
-        </header>
-        <section class="features">
-            <h2>Why Choose Us?</h2>
-            <ul>
-                <li><strong>Personalized Learning Paths:</strong> Tailored courses to match your interests and skill level.</li>
-                <li><strong>Expert Instructors:</strong> Learn from industry leaders and seasoned educators.</li>
-                <li><strong>Interactive Quizzes:</strong> Reinforce your knowledge and track your progress.</li>
-                <li><strong>Certificates of Completion:</strong> Showcase your achievements with official certificates.</li>
-            </ul>
-        </section>
-        <section class="cta">
-            <h2>Join Us Today</h2>
-            <button onclick="location.href='login.html'">Login</button>
-            <button onclick="location.href='signup.html'">Sign Up</button>
-        </section>
-    </div>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Welcome to Code Gears{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'core/css/landing_page.css' %}">
+<div class="landing-page">
+    <header>
+        <h2>Welcome to Code Gears</h2>
+        <p>Unlock your potential with Code Gears, the ultimate destination for personalized learning and growth.</p>
+    </header>
+    <section class="features">
+        <h3>Why Choose Us?</h3>
+        <ul>
+            <li><strong>Personalized Learning Paths:</strong> Tailored courses to match your interests and skill level.</li>
+            <li><strong>Expert Instructors:</strong> Learn from industry leaders and seasoned educators.</li>
+            <li><strong>Interactive Quizzes:</strong> Reinforce your knowledge and track your progress.</li>
+            <li><strong>Certificates of Completion:</strong> Showcase your achievements with official certificates.</li>
+        </ul>
+    </section>
+    <section class="cta">
+        <h3>Join Us Today</h3>
+        <button onclick="location.href='{% url 'login_signup' %}'">Get Started</button>
+    </section>
+</div>
+{% endblock %}

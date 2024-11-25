@@ -29,6 +29,7 @@ class Question(models.Model):
     text = models.TextField()
     correct_answer = models.CharField(max_length=200)
     incorrect_answers = models.JSONField()  # A list of incorrect answers
+    
 
 
 # Create your models here.

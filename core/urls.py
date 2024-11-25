@@ -1,5 +1,14 @@
-from django.urls import path
+from django.contrib import admin
+from django.urls import path, include
+from django.views.generic import TemplateView
 from .views import CourseListCreate, CourseDetail, ModuleListCreate, ModuleDetail, LessonListCreate, LessonDetail, ProgressListCreate, ProgressDetail, QuizListCreate, QuizDetail, QuestionListCreate, QuestionDetail, generate_certificate
+
+urlpatterns = [ path('admin/', admin.site.urls), 
+               path('', TemplateView.as_view(template_name='index.html'), name='home'), 
+               path('api/', include('users.urls')), # This includes the URLs from the users app 
+               path('core/', include('core.urls')), # Include URLs from the core app if any 
+               path('login_signup/', TemplateView.as_view(template_name='login_signup.html'), name='login_signup'),
+]
 
 urlpatterns = [
     path('courses/', CourseListCreate.as_view(), name='course-list-create'),
