@@ -8,6 +8,8 @@ from .serializers import UserSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticated
 import json
+from django.contrib.auth.decorators import login_required 
+from .models import UserProgress
 
 class UserCreate(generics.ListCreateAPIView):
     queryset = CustomUser.objects.all()
@@ -57,5 +59,11 @@ def login_view(request):
             return JsonResponse({'message': 'Invalid credentials'}, status=401) 
     return JsonResponse({'message': 'Invalid request method'}, status=400)
 
-
+@login_required 
+def get_user_progress(request): 
+    user = request.user 
+    try: 
+        progress = UserProgress.objects.get(user=user) 
+        return JsonResponse({'progress_percentage': progress.progress_percentage}, status=200) 
+    except UserProgress.DoesNotExist: return JsonResponse({'progress_percentage': 0}, status=200)
 # Create your views here.

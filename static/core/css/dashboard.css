@@ -1,0 +1,44 @@
+.dashboard {
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.dashboard header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #004466;
+}
+
+#progress-bar {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+#progress-bar div {
+    height: 30px;
+    width: 50%; /* Example progress */
+    background-color: #ffa500;
+    border-radius: 5px 0 0 5px;
+}
+
+.lessons, .assignments, .tasks {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.lessons h4, .assignments li, .tasks li {
+    margin: 10px 0;
+}
