@@ -6,6 +6,12 @@ from rest_framework import generics
 from .models import Course, Module, Lesson, Progress, Quiz, Question
 from .serializers import CourseSerializer, ModuleSerializer, LessonSerializer, ProgressSerializer, QuizSerializer, QuestionSerializer
 
+def home(request): 
+    return render(request, 'index.html')
+
+def login_signup(request):
+    return render(request, 'login_signup.html')
+
 class CourseListCreate(generics.ListCreateAPIView): 
     queryset = Course.objects.all() 
     serializer_class = CourseSerializer 

@@ -4,17 +4,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const showLogin = document.getElementById('show-login');
     const showSignup = document.getElementById('show-signup');
 
-    showLogin.addEventListener('click', function(event) {
-        event.preventDefault();
-        loginForm.classList.add('active');
-        signupForm.classList.remove('active');
-    });
+    if (showLogin) {
+        showLogin.addEventListener('click', function(event) {
+            event.preventDefault();
+            loginForm.classList.add('active');
+            signupForm.classList.remove('active');
+        });
+    }
 
-    showSignup.addEventListener('click', function(event) {
-        event.preventDefault();
-        signupForm.classList.add('active');
-        loginForm.classList.remove('active');
-    });
+    if (showSignup) {
+        showSignup.addEventListener('click', function(event) {
+            event.preventDefault();
+            signupForm.classList.add('active');
+            loginForm.classList.remove('active');
+        });
+    }
 
     document.getElementById('loginForm').addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -34,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 const data = await response.json();
                 alert(data.message);
-                // Redirect to dashboard or perform other actions
             } else {
                 const errorData = await response.json();
                 document.getElementById('login-error-message').innerText = errorData.message;
@@ -47,9 +50,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('signupForm').addEventListener('submit', async (event) => {
         event.preventDefault();
         
-        const username = document.getElementById('username').value;
+        const username = document.getElementById('signup-username').value;
         const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        const password = document.getElementById('signup-password').value;
         
         try {
             const response = await fetch('http://localhost:8000/api/signup/', {
@@ -63,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 const data = await response.json();
                 alert(data.message);
-                // Show login form after successful signup
                 signupForm.classList.remove('active');
                 loginForm.classList.add('active');
             } else {

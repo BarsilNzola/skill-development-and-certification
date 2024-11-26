@@ -4,25 +4,26 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}">
-<div class="dashboard">
-    <header>
-        <h2>Welcome, [User's Name]</h2>
-    </header>
-    <section class="progress">
-        <h3>Your Progress</h3>
-        <div id="progress-bar"></div>
-    </section>
-    <section class="lessons">
-        <h3>Weekly Lessons</h3>
-        <div id="lesson-weeks"></div>
-    </section>
-    <section class="assignments">
-        <h3>Weekly Assignments</h3>
-        <ul id="assignment-list"></ul>
-    </section>
-    <section class="tasks">
-        <h3>Optional Tasks</h3>
-        <ul id="task-list"></ul>
-    </section>
+<div class="dashboard"> 
+    <header> 
+        <h2>Welcome, [User's Name]</h2> 
+    </header> 
+    <section class="progress"> 
+        <h3>Your Progress</h3> 
+        <div id="progress-bar"></div> 
+    </section> 
+    <section class="lessons"> 
+        <h3>Weekly Lessons</h3> 
+        <div id="lesson-weeks"></div> <!-- Ensure this element exists --> 
+    </section> 
+    <section class="assignments"> 
+        <h3>Weekly Assignments</h3> 
+        <ul id="assignment-list"></ul> 
+    </section> 
+    <section class="tasks"> 
+        <h3>Optional Tasks</h3> 
+        <ul id="task-list"></ul> 
+    </section> 
 </div>
+<script src="{% static 'core/js/dashboard.js' %}"></script>
 {% endblock %}
