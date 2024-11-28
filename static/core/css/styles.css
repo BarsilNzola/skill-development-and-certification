@@ -53,28 +53,3 @@ footer {
     width: 100%;
     bottom: 0;
 }
-
-.login-signup-container {
-    display: none;
-}
-
-.active {
-    display: block;
-}
-
-button {
-    background-color: #ffa500; /* Orange */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #cc8400; /* Darker orange */
-}
-
-.error-message {
-    color: red;
-}

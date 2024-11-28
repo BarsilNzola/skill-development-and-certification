@@ -21,8 +21,8 @@ from core.views import home
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/users/', include('users.urls')),
-    path('api/', include('core.urls')),
+    path('users/', include('users.urls', namespace='users')),
+    path('api/', include('core.urls', namespace='core')),
     path('', home, name='home'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

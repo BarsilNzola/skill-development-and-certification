@@ -1,9 +1,17 @@
-from django.urls import path
+from django.urls import path, include
+from django.contrib import admin
 from .views import home, login_signup, CourseListCreate, CourseDetail, ModuleListCreate, ModuleDetail, LessonListCreate, LessonDetail, ProgressListCreate, ProgressDetail, QuizListCreate, QuizDetail, QuestionListCreate, QuestionDetail, generate_certificate
+from users.views import login_view, signup_view
+
+app_name = 'core'
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('users/', include('users.urls', namespace='users')),  # Include the namespace here
     path('', home, name='home'),
     path('login_signup/', login_signup, name='login_signup'),
+    path('login/', login_view, name='login'),
+    path('signup/', signup_view, name='signup'),
     path('courses/', CourseListCreate.as_view(), name='course-list-create'),
     path('courses/<int:pk>/', CourseDetail.as_view(), name='course-detail'),
     path('modules/', ModuleListCreate.as_view(), name='module-list-create'),

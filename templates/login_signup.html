@@ -5,34 +5,48 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'core/css/login_signup.css' %}">
+<h1>hello</h1>
 <div class="login-signup-container">
-    <div id="login-form" class="active">
+    <!-- Login Form -->
+    <div id="login-form" class="{% if not signup_form.errors %}active{% else %}inactive{% endif %}">
         <h2>Login</h2>
-        <form id="loginForm">
-            <label for="username">Username/Email:</label>
-            <input type="text" id="username" name="username" required><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br>
+        <form id="loginForm" method="post" action="{% url 'users:login' %}">
+            {% csrf_token %}
+            {{ login_form.as_p }}
             <button type="submit">Login</button>
         </form>
-        <div id="login-error-message"></div> <!-- Ensure ID matches in JS -->
+        <div id="login-error-message">
+            {% if login_form.errors %}
+                <ul>
+                    {% for error in login_form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
         <p>Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
     </div>
     
-    <div id="signup-form" class="inactive">
+    <!-- Sign-Up Form -->
+    <div id="signup-form" class="{% if signup_form.errors %}active{% else %}inactive{% endif %}">
         <h2>Sign Up</h2>
-        <form id="signupForm">
-            <label for="username">Username:</label>
-            <input type="text" id="signup-username" name="username" required><br>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required><br>
-            <label for="password">Password:</label>
-            <input type="password" id="signup-password" name="password" required><br>
+        <form id="signupForm" method="post" action="{% url 'users:signup' %}">
+            {% csrf_token %}
+            {{ signup_form.as_p }}
             <button type="submit">Sign Up</button>
         </form>
-        <div id="signup-error-message"></div> <!-- Ensure ID matches in JS -->
+        <div id="signup-error-message">
+            {% if signup_form.errors %}
+                <ul>
+                    {% for error in signup_form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
         <p>Already have an account? <a href="#" id="show-login">Login</a></p>
     </div>
 </div>
+
 <script src="{% static 'core/js/scripts.js' %}"></script>
 {% endblock %}

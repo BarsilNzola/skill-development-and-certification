@@ -66,8 +66,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 const data = await response.json();
                 alert(data.message);
-                signupForm.classList.remove('active');
                 loginForm.classList.add('active');
+                signupForm.classList.remove('active');
             } else {
                 const errorData = await response.json();
                 document.getElementById('signup-error-message').innerText = errorData.message;

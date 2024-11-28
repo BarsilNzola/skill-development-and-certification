@@ -8,9 +8,9 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.login-signup-container div {
+/* .login-signup-container div {
     display: none;
-}
+} */
 
 .login-signup-container .active {
     display: block;
@@ -57,4 +57,10 @@
 .login-signup-container a {
     color: #004466;
     text-decoration: none;
+}
+
+#login-error-message, #signup-error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
 }
