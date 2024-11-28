@@ -5,7 +5,6 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'core/css/login_signup.css' %}">
-<h1>hello</h1>
 <div class="login-signup-container">
     <!-- Login Form -->
     <div id="login-form" class="{% if not signup_form.errors %}active{% else %}inactive{% endif %}">
@@ -30,7 +29,7 @@
     <!-- Sign-Up Form -->
     <div id="signup-form" class="{% if signup_form.errors %}active{% else %}inactive{% endif %}">
         <h2>Sign Up</h2>
-        <form id="signupForm" method="post" action="{% url 'users:signup' %}">
+        <form id="signupForm" method="post" action="{% url 'users:signup' %}" novalidate>
             {% csrf_token %}
             {{ signup_form.as_p }}
             <button type="submit">Sign Up</button>

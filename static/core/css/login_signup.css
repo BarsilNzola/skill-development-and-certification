@@ -59,6 +59,96 @@
     text-decoration: none;
 }
 
+/* Ensure that both forms are hidden initially */
+#login-form, #signup-form {
+    display: none;  /* Hide both forms by default */
+}
+
+/* Show the active form */
+#login-form.active, #signup-form.active {
+    display: block; /* Only the active form will be displayed */
+}
+
+/* Inactive form will stay hidden */
+#login-form.inactive, #signup-form.inactive {
+    display: none;
+}
+
+/* Container for the whole form */
+#signup-form {
+    width: 100%;
+    max-width: 400px; /* Set a max-width to keep the form from stretching too wide */
+    margin: 0 auto; /* Center the form on the page */
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Form title */
+#signup-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Form input fields */
+#signup-form input[type="text"],
+#signup-form input[type="email"],
+#signup-form input[type="password"],
+#signup-form input[type="number"],
+#signup-form select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* Submit button */
+#signup-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007BFF; /* Blue color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#signup-form button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Link styles */
+#signup-form p {
+    text-align: center;
+}
+
+#signup-form a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+#signup-form a:hover {
+    text-decoration: underline;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+select:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+
 #login-error-message, #signup-error-message {
     color: red;
     font-size: 14px;
