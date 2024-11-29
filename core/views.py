@@ -16,6 +16,7 @@ def login_signup(request):
     if request.method == 'POST':
         if 'signup_form' in request.POST:
             signup_form = SignUpForm(request.POST)
+            print(f"Form data (POST): {request.POST}")
             if signup_form.is_valid():
                 User = get_user_model()
                 User.objects.create_user(
@@ -24,6 +25,8 @@ def login_signup(request):
                     password=signup_form.cleaned_data.get('password')
                 )
                 return redirect('home')
+            else:
+                print(f"Form errors: {signup_form.errors}")
         elif 'login_form' in request.POST:
             login_form = LoginForm(request.POST)
             if login_form.is_valid():

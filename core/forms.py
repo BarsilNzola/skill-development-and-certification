@@ -14,9 +14,17 @@ class SignUpForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
+        if password: 
+            cleaned_data["password"] = password.strip()
+        else: 
+            self.add_error("password", "Password is required.")
+            return cleaned_data
         confirm_password = cleaned_data.get("confirm_password")
         
-        if password != confirm_password:
+        # Debugging line
+        print(f"Password: {password}, Confirm Password: {confirm_password}")
+        
+        if password and confirm_password and password != confirm_password:
             raise ValidationError("Passwords do not match")
         return cleaned_data
 

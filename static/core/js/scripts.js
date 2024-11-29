@@ -33,17 +33,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Handle login form submission
-    document.getElementById('loginForm').addEventListener('submit', async (event) => {
+    document.getElementById('login-form').addEventListener('submit', async (event) => {
         event.preventDefault();
         
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+        const username = document.getElementById('id_username').value;
+        const password = document.getElementById('id_password').value;
         
         try {
             const response = await fetch('http://localhost:8000/api/login/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
                 },
                 body: JSON.stringify({ username, password }),
             });
@@ -61,28 +62,39 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Handle signup form submission
-    document.getElementById('signupForm').addEventListener('submit', async (event) => {
+    document.getElementById('signup-form').addEventListener('submit', async (event) => {
         event.preventDefault();
         
-        const username = document.getElementById('signup-username').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('signup-password').value;
-        
+        const username = document.getElementById('id_username').value;
+        const email = document.getElementById('id_email').value;
+        const password = document.getElementById('id_password').value;
+        const confirm_password = document.getElementById('id_confirm_password').value;
+    
+        console.log(`Username: ${username}, Email: ${email}, Password: ${password}, Confirm Password: ${confirm_password}`);
+    
+        if (password !== confirm_password) {
+            document.getElementById('signup-error-message').innerText = "Passwords do not match.";
+            return;
+        }
+    
         try {
             const response = await fetch('http://localhost:8000/api/signup/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
                 },
-                body: JSON.stringify({ username, email, password }),
+                body: JSON.stringify({ username, email, password, confirm_password }),
             });
-
+    
             if (response.ok) {
                 const data = await response.json();
-                alert(data.message);
-                signupForm.classList.add('inactive');  // Hide signup form
+                alert('Registration successful! Redirecting to login...');
+    
+                // Redirect to login form
+                signupForm.classList.add('inactive');
                 signupForm.classList.remove('active');
-                loginForm.classList.add('active');    // Show login form
+                loginForm.classList.add('active');
                 loginForm.classList.remove('inactive');
             } else {
                 const errorData = await response.json();
@@ -92,4 +104,5 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('signup-error-message').innerText = 'An error occurred. Please try again later.';
         }
     });
+    
 });
