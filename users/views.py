@@ -69,7 +69,14 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
 
             if user:
-                return JsonResponse({'message': 'Login successful!'}, status=200)
+                # Log the user in
+                login(request, user)
+
+                # Optionally set a session cookie
+                request.session['user_id'] = user.id
+
+                # Redirect to the dashboard
+                return JsonResponse({'message': 'Login successful!', 'redirect_url': '/dashboard/'}, status=200)
             else:
                 return JsonResponse({'message': 'Invalid username or password.'}, status=401)
         except Exception as e:
@@ -77,6 +84,11 @@ def login_view(request):
 
     # Return a 405 Method Not Allowed for non-POST requests
     return JsonResponse({'message': 'Method not allowed'}, status=405)
+
+@login_required
+def dashboard_view(request):
+    return render(request, 'dashboard.html')
+
 
 @login_required
 def get_user_progress(request):

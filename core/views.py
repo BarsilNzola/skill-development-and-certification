@@ -45,6 +45,9 @@ def login_signup(request):
 def home(request): 
     return render(request, 'index.html')
 
+def dashboard_view(request):
+    return render(request, 'dashboard.html')
+
 class CourseListCreate(generics.ListCreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer

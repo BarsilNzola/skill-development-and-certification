@@ -52,6 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 const data = await response.json();
                 alert(data.message);
+
+                // Redirect to the dashboard
+                window.location.href = 'http://localhost:8000/dashboard/';
             } else {
                 const errorData = await response.json();
                 document.getElementById('login-error-message').innerText = errorData.message;

@@ -1,7 +1,7 @@
 from django.urls import path, include
 from django.contrib import admin
 from .views import home, login_signup, CourseListCreate, CourseDetail, ModuleListCreate, ModuleDetail, LessonListCreate, LessonDetail, ProgressListCreate, ProgressDetail, QuizListCreate, QuizDetail, QuestionListCreate, QuestionDetail, generate_certificate
-from users.views import login_view, signup_view
+from users.views import login_view, signup_view, dashboard_view
 
 app_name = 'core'
 
@@ -12,6 +12,7 @@ urlpatterns = [
     path('login_signup/', login_signup, name='login_signup'),
     path('login/', login_view, name='login'),
     path('signup/', signup_view, name='signup'),
+    path('dashboard/', dashboard_view, name='dashboard'),
     path('courses/', CourseListCreate.as_view(), name='course-list-create'),
     path('courses/<int:pk>/', CourseDetail.as_view(), name='course-detail'),
     path('modules/', ModuleListCreate.as_view(), name='module-list-create'),
