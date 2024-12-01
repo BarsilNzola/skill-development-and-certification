@@ -1,0 +1,15 @@
+<!-- module_lessons.html -->
+{% extends 'base.html' %}
+{% block title %}{{ module.name }} Lessons{% endblock %}
+
+{% block content %}
+    <h2>{{ module.name }}</h2>
+    <div class="lessons">
+        {% for lesson in lessons %}
+            <div class="lesson">
+                <h3>{{ lesson.title }}</h3>
+                <p>{{ lesson.content }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

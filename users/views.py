@@ -1,14 +1,17 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, get_user_model
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from .models import CustomUser, UserProgress
+from core.models import Module, LearningResource
 from .serializers import UserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from core.forms import LoginForm, SignUpForm  # Import forms
+from core.forms import LoginForm, SignUpForm, ProfileEditForm
+from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 import json
 
 class UserCreate(generics.ListCreateAPIView):
@@ -28,11 +31,7 @@ class UserProfile(generics.RetrieveUpdateAPIView):
 def signup_view(request):
     if request.method == 'POST':
         try:
-            # Parse JSON data from request body
             data = json.loads(request.body)
-            print("Parsed JSON data:", data)  # Debugging line
-
-            # Pass the parsed JSON data to the form
             signup_form = SignUpForm(data)
 
             if signup_form.is_valid():
@@ -44,51 +43,43 @@ def signup_view(request):
                 )
                 return JsonResponse({'message': 'Signup successful!'}, status=201)
             
-            # If form is invalid, return errors
-            print("Form errors:", signup_form.errors)  # Debugging line
             return JsonResponse({'message': 'Invalid data', 'errors': signup_form.errors}, status=400)
 
         except json.JSONDecodeError as e:
-            print("JSON parsing error:", str(e))  # Debugging line
             return JsonResponse({'message': 'Invalid JSON data', 'error': str(e)}, status=400)
 
     return JsonResponse({'message': 'Invalid request method'}, status=405)
 
-
 @csrf_exempt
 def login_view(request):
     if request.method == 'POST':
-        import json
         try:
-            # Parse JSON body
             data = json.loads(request.body)
             username = data.get('username')
             password = data.get('password')
 
-            # Authenticate user
             user = authenticate(request, username=username, password=password)
-
             if user:
-                # Log the user in
                 login(request, user)
-
-                # Optionally set a session cookie
                 request.session['user_id'] = user.id
-
-                # Redirect to the dashboard
-                return JsonResponse({'message': 'Login successful!', 'redirect_url': '/dashboard/'}, status=200)
+                return JsonResponse({'message': 'Login successful!', 'redirect_url': '/users/dashboard/'}, status=200)
             else:
                 return JsonResponse({'message': 'Invalid username or password.'}, status=401)
         except Exception as e:
             return JsonResponse({'message': f'Error: {str(e)}'}, status=500)
 
-    # Return a 405 Method Not Allowed for non-POST requests
     return JsonResponse({'message': 'Method not allowed'}, status=405)
 
 @login_required
 def dashboard_view(request):
-    return render(request, 'dashboard.html')
-
+    modules = Module.objects.all()  # Fetch all available modules
+    learning_resources = LearningResource.objects.all()
+    
+    return render(request, 'dashboard.html', {
+        'username': request.user.username,
+        'modules': modules,
+        'learning_resources': learning_resources
+    })
 
 @login_required
 def get_user_progress(request):
@@ -98,3 +89,33 @@ def get_user_progress(request):
         return JsonResponse({'progress_percentage': progress.progress_percentage}, status=200)
     except UserProgress.DoesNotExist:
         return JsonResponse({'progress_percentage': 0}, status=200)
+    
+@login_required
+def update_profile_picture(request):
+    """ View to update the user's profile picture """
+    try:
+        profile = request.user.userprofile
+    except ObjectDoesNotExist:
+        profile = UserProfile.objects.create(user=request.user)
+
+    if request.method == 'POST':
+        form = ProfileEditForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile picture updated successfully!")
+            return redirect('dashboard')  # Redirect to your desired page after success
+    else:
+        form = ProfileEditForm(instance=profile)
+
+    return render(request, 'profile_edit.html', {'form': form})
+
+@login_required
+def module_lessons_view(request, module_id):
+    module = get_object_or_404(Module, id=module_id)
+    lessons = module.lessons.all()
+    return render(request, 'module_lessons.html', {'module': module, 'lessons': lessons})
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('login')  # Redirect to login page

@@ -1,46 +1,42 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const lessonWeeks = document.getElementById('lesson-weeks');
     
     // Proceed only if lessonWeeks exists
     if (lessonWeeks) {
-        const lessons = {
-            week1: {
-                day1: 'Introduction to HTML',
-                day2: 'HTML Elements',
-                day3: 'Forms and Inputs',
-                day4: 'HTML5 Semantic Elements',
-                day5: 'Project: Basic Webpage',
-            },
-            week2: {
-                day1: 'Introduction to CSS',
-                day2: 'Selectors and Properties',
-                day3: 'Box Model and Flexbox',
-                day4: 'CSS Grid',
-                day5: 'Project: Styling a Webpage',
-            },
-            week3: {
-                day1: 'Introduction to JavaScript',
-                day2: 'Variables and Data Types',
-                day3: 'Functions and Control Flow',
-                day4: 'DOM Manipulation',
-                day5: 'Project: Interactive Webpage',
+        async function fetchLessons() {
+            try {
+                const response = await fetch('http://localhost:8000/api/lessons/', { 
+                    method: 'GET', 
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include' // Include cookies to send the sessionid 
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    data.forEach(lesson => {
+                        const weekDiv = document.createElement('div');
+                        weekDiv.classList.add('week');
+                        weekDiv.innerHTML = `<h4>Week ${lesson.week}</h4>`;
+                        
+                        lesson.days.forEach(day => {
+                            const lessonItem = document.createElement('div');
+                            lessonItem.classList.add('day');
+                            lessonItem.innerText = `${day}: ${lesson.name}`;
+                            weekDiv.appendChild(lessonItem);
+                        });
+
+                        lessonWeeks.appendChild(weekDiv);
+                    });
+                } else {
+                    console.error('Failed to fetch lessons');
+                }
+            } catch (error) {
+                console.error('Error:', error);
             }
-        };
-
-        for (const [week, days] of Object.entries(lessonWeeks)) {
-            const weekDiv = document.createElement('div');
-            weekDiv.classList.add('week');
-            weekDiv.innerHTML = `<h4>${week}</h4>`;
-
-            for (const [day, lesson] of Object.entries(days)) {
-                const lessonItem = document.createElement('div');
-                lessonItem.classList.add('day');
-                lessonItem.innerText = `${day}: ${lesson}`;
-                weekDiv.appendChild(lessonItem);
-            }
-
-            lessonWeeks.appendChild(weekDiv);
         }
+
+        fetchLessons();
     } else {
         console.error('Element with id "lesson-weeks" not found in the DOM.');
     }

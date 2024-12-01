@@ -1,0 +1,37 @@
+.profile-edit {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.profile-edit h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-edit form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.profile-edit form button {
+    align-self: center;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.profile-edit .alert {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}

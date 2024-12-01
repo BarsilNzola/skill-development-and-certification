@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Default session engine
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -153,3 +156,10 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': False, 
     'BLACKLIST_AFTER_ROTATION': True,
 }
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'dashboard'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+

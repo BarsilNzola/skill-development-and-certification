@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course, Module, Lesson, Progress, Question, Quiz
+from .models import Course, Module, Lesson, Progress, Question, Quiz, Assignment
 
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,4 +32,9 @@ class QuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quiz
         fields = '__all__'
+        
+class AssignmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Assignment
+        fields = ['id', 'title', 'description', 'due_date', 'course', 'module']
 

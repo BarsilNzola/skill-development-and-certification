@@ -1,30 +1,52 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Dashboard - Code Gears{% endblock %}
+{% block title %}Dashboard - Skill Development Platform{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}">
-<div class="dashboard"> 
-    <header> 
-        <h2>Welcome, [User's Name]</h2> 
+<div class="dashboard">
+    <header>
+        <div class="header-left">
+            <h2>Welcome, {{ username }}!</h2>
+        </div>
+        <div class="header-right">
+            <!-- Clickable Profile Picture -->
+            <a href="{% url 'users:profile_edit' %}" class"profile-img">
+                {% if user.profile.profile_picture %}
+                    <img src="{{ user.profile.profile_picture.url }}" alt="Profile Picture" class="profile-avatar">
+                {% else %}
+                    <img src="{% static 'core/images/default-avatar.jpg' %}" alt="Profile Picture" class="profile-avatar">
+                {% endif %}            
+            </a>
+            <!-- Logout Button -->
+            <a href="{% url 'logout' %}" class="btn logout-btn">Logout</a>
+        </div>
     </header> 
-    <section class="progress"> 
-        <h3>Your Progress</h3> 
-        <div id="progress-bar"></div> 
-    </section> 
-    <section class="lessons"> 
-        <h3>Weekly Lessons</h3> 
-        <div id="lesson-weeks"></div> <!-- Ensure this element exists --> 
-    </section> 
-    <section class="assignments"> 
-        <h3>Weekly Assignments</h3> 
-        <ul id="assignment-list"></ul> 
-    </section> 
-    <section class="tasks"> 
-        <h3>Optional Tasks</h3> 
-        <ul id="task-list"></ul> 
-    </section> 
+
+    <!-- Modules section -->
+    <section class="modules">
+        <h3>Your Modules</h3>
+        <div class="module-cards">
+            {% for module in modules %}
+                <div class="module-card">
+                    <h4>{{ module.title }}</h4>
+                    <p>{{ module.course.description }}</p>
+                    <a href="{% url 'core:module_lessons' module.id %}" class="btn">View Lessons</a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    
+    <!-- Free Learning Resources -->
+    <section class="learning-resources">
+        <h3>Free Learning Resources</h3>
+        <ul>
+            {% for resource in learning_resources %}
+                <li><a href="{{ resource.url }}" target="_blank">{{ resource.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </section>
 </div>
 <script src="{% static 'core/js/dashboard.js' %}"></script>
 {% endblock %}

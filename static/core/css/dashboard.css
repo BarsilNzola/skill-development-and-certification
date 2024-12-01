@@ -1,44 +1,198 @@
+/* General Dashboard Styles */
 .dashboard {
     padding: 20px;
     max-width: 1200px;
     margin: auto;
+    font-family: Arial, sans-serif;
 }
 
+/* Header Styling */
 .dashboard header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.dashboard header .header-left h2 {
+    font-size: 2rem;
+    color: #f6f7f8;
+    margin: 0;
+}
+
+.dashboard header .header-right {
+    display: flex;
+    align-items: right;
+}
+
+.dashboard header .profile-img {
+    margin-right: 20px;
+    width: 50px;
+    height: 50px;
+}
+
+.dashboard header .profile-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.dashboard header .logout-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.dashboard header .logout-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Modules Section Styling */
+.modules {
+    margin-top: 40px;
+    padding: 20px;
+}
+
+.modules h3 {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #004466;
+}
+
+/* Container for all module cards */
+.module-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Individual module card styling */
+.module-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 280px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect for the card */
+.module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Styling for the module title */
+.module-card h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Styling for the module description */
+.module-card p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* Styling for the "View Lessons" button */
+.module-card .btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.module-card .btn:hover {
+    background-color: #0056b3;
+}
+
+/* Free Learning Resources Section */
+.learning-resources {
+    margin-top: 30px;
+}
+
+.learning-resources h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #004466;
+}
+
+.learning-resources ul {
+    list-style: none;
+    padding: 0;
+}
+
+.learning-resources li {
+    margin: 10px 0;
+}
+
+.learning-resources a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.learning-resources a:hover {
+    text-decoration: underline;
+}
+
+/* Profile Section Styling */
+.profile {
     text-align: center;
     margin-bottom: 30px;
 }
 
-section {
-    margin-bottom: 20px;
+.profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 3px solid #ffa500;
 }
 
-h3 {
-    color: #004466;
+.profile a {
+    text-decoration: none;
+    color: #fcfdfd;
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
 }
 
-#progress-bar {
-    width: 100%;
-    background-color: #e0e0e0;
-    border-radius: 5px;
-    overflow: hidden;
-    margin: 10px 0;
+.profile-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
-#progress-bar div {
-    height: 30px;
-    width: 50%; /* Example progress */
-    background-color: #ffa500;
-    border-radius: 5px 0 0 5px;
+/* Responsive Design */
+@media (max-width: 768px) {
+    .module-card {
+        width: calc(50% - 20px); /* Two cards per row */
+    }
+
+    .profile img {
+        width: 100px;
+        height: 100px;
+    }
 }
 
-.lessons, .assignments, .tasks {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.lessons h4, .assignments li, .tasks li {
-    margin: 10px 0;
+@media (max-width: 480px) {
+    .module-card {
+        width: 100%; /* One card per row */
+    }
 }

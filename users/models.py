@@ -15,6 +15,13 @@ class CustomUser(AbstractUser):
         'auth.Permission',
         related_name='custom_user_permissions'
     )
+    profile = models.OneToOneField(
+        'core.UserProfile',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='custom_user_profile'
+    )
 
 class UserProgress(models.Model): 
     user = models.OneToOneField(User, on_delete=models.CASCADE) 

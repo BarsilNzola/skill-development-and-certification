@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from .models import UserProfile
 
 # Sign-up form
 class SignUpForm(forms.ModelForm):
@@ -33,3 +34,13 @@ class SignUpForm(forms.ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=100)
     password = forms.CharField(widget=forms.PasswordInput)
+    
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['profile_picture']
+
+def clean_profile_picture(self):
+        picture = self.cleaned_data.get('profile_picture')
+        # Add validation if needed (e.g., file size or type validation)
+        return picture
