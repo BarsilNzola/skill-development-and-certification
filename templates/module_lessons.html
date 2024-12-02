@@ -1,15 +1,31 @@
 <!-- module_lessons.html -->
 {% extends 'base.html' %}
-{% block title %}{{ module.name }} Lessons{% endblock %}
+{% load static %}
 
 {% block content %}
-    <h2>{{ module.name }}</h2>
-    <div class="lessons">
-        {% for lesson in lessons %}
-            <div class="lesson">
-                <h3>{{ lesson.title }}</h3>
-                <p>{{ lesson.content }}</p>
+<link rel="stylesheet" href="{% static 'core/css/module_lessons.css' %}">
+  <h1>{{ module.title }} - Lessons</h1>
+  
+  <a href="{% url 'core:dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+
+  <div class="weeks-container">
+    {% for week, days in lessons_by_week.items %}
+      <div class="week-card">
+        <h2>Week {{ week }}</h2>
+        <div class="days-container">
+          {% for day, lessons in days.items %}
+            <div class="day">
+              <h3>Day {{ day }}</h3>
+              <ul>
+                {% for lesson in lessons %}
+                  <li><a href="{% url 'core:lesson_detail' lesson.id %}">{{ lesson.title }}</a></li>
+                {% endfor %}
+              </ul>
             </div>
-        {% endfor %}
-    </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+</div>
+  
 {% endblock %}

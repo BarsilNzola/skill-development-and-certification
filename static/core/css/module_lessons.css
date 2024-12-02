@@ -1,0 +1,76 @@
+
+/* Styling for weeks container */
+.weeks-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-around;
+    margin-top: 30px;
+  }
+  
+  .week-card {
+    background-color: #f8f9fa;   /* Light background for cards */
+    border: 1px solid #ddd;      /* Border to distinguish each card */
+    border-radius: 10px;
+    padding: 15px;
+    width: 300px;                 /* Fixed width for each week card */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Shadow for a lifted effect */
+    transition: transform 0.3s ease;
+    margin-bottom: 30px;
+  }
+  
+  .week-card h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  
+  .days-container {
+    padding-left: 10px;          /* Slight padding for nested items */
+  }
+  
+  .day {
+    margin-top: 15px;           /* Space between days */
+  }
+  
+  .day h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .day ul {
+    padding-left: 20px;         /* Indent list items */
+    list-style-type: none;      /* Remove bullet points */
+  }
+  
+  .day li {
+    margin: 8px 0;              /* Space between lessons */
+  }
+  
+  .day a {
+    text-decoration: none;
+    color: #007bff;             /* Blue color for links */
+  }
+  
+  .day a:hover {
+    text-decoration: underline; /* Underline effect on hover */
+  }
+  
+  .week-card:hover {
+    transform: translateY(-5px);  /* Lift effect on hover */
+  }
+  
+  /* Make sure the layout is responsive */
+  @media (max-width: 768px) {
+    .week-card {
+      width: 100%;  /* Full width on smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .week-card {
+      width: 100%;
+      padding: 10px;  /* Adjust padding on very small screens */
+    }
+  }
+
+  

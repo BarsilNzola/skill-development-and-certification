@@ -73,9 +73,49 @@ def module_lessons_view(request, module_id):
     try:
         module = Module.objects.get(id=module_id)
         lessons = module.lessons.all()
-        return render(request, 'module_lessons.html', {'module': module, 'lessons': lessons})
+        
+         # Group lessons by week
+        lessons_by_week = {}
+        for lesson in lessons:
+        # Assuming you have a way to associate lessons with weeks
+            week = lesson.week 
+            day = lesson.day
+            
+            if week not in lessons_by_week:
+                lessons_by_week[week] = {}
+                
+            # Add lesson to the correct day
+            if day not in lessons_by_week[week]:
+                lessons_by_week[week][day] = []
+                
+            lessons_by_week[week][day].append(lesson)
+        
+        return render(request, 'module_lessons.html', {'module': module, 'lessons_by_week': lessons_by_week})
     except Module.DoesNotExist:
         return HttpResponseNotFound("Module not found")
+    
+def lesson_detail_view(request, lesson_id):
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+    # Get the next lesson in the same module (by week/day order)
+    next_lesson = Lesson.objects.filter(
+        module=lesson.module,
+        week=lesson.week,
+        day=lesson.day + 1
+    ).first()
+
+    # If no lesson for the next day exists, try to get the first day of the next week
+    if not next_lesson:
+        next_lesson = Lesson.objects.filter(
+            module=lesson.module,
+            week=lesson.week + 1,
+            day=1
+        ).first()
+
+    context = {
+        'lesson': lesson,
+        'next_lesson': next_lesson,
+    }
+    return render(request, 'lesson_detail.html', {'lesson': lesson})
 
 class CourseListCreate(generics.ListCreateAPIView):
     queryset = Course.objects.all()

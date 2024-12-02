@@ -27,7 +27,9 @@ class Lesson(models.Model):
     module = models.ForeignKey(Module, related_name='lessons', on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     content = models.TextField()
-
+    week = models.IntegerField(default=1)  # Week number
+    day = models.IntegerField(default=1)   # Day of the week
+    
     def __str__(self):
         return f"{self.module.title} - {self.title}"
 

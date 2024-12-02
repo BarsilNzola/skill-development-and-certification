@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from .models import CustomUser, UserProgress
-from core.models import Module, LearningResource
+from core.models import Module, LearningResource, Lesson
 from .serializers import UserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.decorators import login_required
@@ -123,3 +123,26 @@ def module_lessons_view(request, module_id):
 def logout_view(request):
     logout(request)
     return redirect('login')  # Redirect to login page
+
+def lesson_detail_view(request, lesson_id):
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+    # Get the next lesson in the same module (by week/day order)
+    next_lesson = Lesson.objects.filter(
+        module=lesson.module,
+        week=lesson.week,
+        day=lesson.day + 1
+    ).first()
+
+    # If no lesson for the next day exists, try to get the first day of the next week
+    if not next_lesson:
+        next_lesson = Lesson.objects.filter(
+            module=lesson.module,
+            week=lesson.week + 1,
+            day=1
+        ).first()
+
+    context = {
+        'lesson': lesson,
+        'next_lesson': next_lesson,
+    }
+    return render(request, 'lesson_detail.html', {'lesson': lesson})
