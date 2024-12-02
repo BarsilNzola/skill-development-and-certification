@@ -10,6 +10,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from core.forms import LoginForm, SignUpForm, ProfileEditForm
+from django.http import HttpResponseNotFound
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 import json
@@ -111,9 +112,12 @@ def update_profile_picture(request):
 
 @login_required
 def module_lessons_view(request, module_id):
-    module = get_object_or_404(Module, id=module_id)
-    lessons = module.lessons.all()
-    return render(request, 'module_lessons.html', {'module': module, 'lessons': lessons})
+    try:
+        module = Module.objects.get(id=module_id)
+        lessons = module.lessons.all()
+        return render(request, 'module_lessons.html', {'module': module, 'lessons': lessons})
+    except Module.DoesNotExist:
+        return HttpResponseNotFound("Module not found")
 
 @login_required
 def logout_view(request):

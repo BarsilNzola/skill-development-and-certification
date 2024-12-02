@@ -105,5 +105,22 @@ document.addEventListener('DOMContentLoaded', function () {
         } 
     } 
 
-    fetchUserProgress();     
+    fetchUserProgress();    
+    
+    const carouselItems = document.querySelectorAll(".carousel-item");
+    let currentIndex = 0;
+
+    function showNextSlide() {
+        // Hide the current slide
+        carouselItems[currentIndex].classList.remove("active");
+
+        // Update the index
+        currentIndex = (currentIndex + 1) % carouselItems.length;
+
+        // Show the next slide
+        carouselItems[currentIndex].classList.add("active");
+    }
+
+    // Set interval for auto-rotation (10 seconds)
+    setInterval(showNextSlide, 10000);
 });

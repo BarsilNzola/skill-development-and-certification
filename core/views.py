@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
+from django.http import HttpResponseNotFound
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from rest_framework import generics
@@ -69,9 +70,12 @@ def update_profile_picture(request):
 
 @login_required
 def module_lessons_view(request, module_id):
-    module = Module.objects.get(id=module_id)
-    lessons = module.lessons_set.all()
-    return render(request, 'module_lessons.html', {'module': module, 'lessons': lessons})
+    try:
+        module = Module.objects.get(id=module_id)
+        lessons = module.lessons.all()
+        return render(request, 'module_lessons.html', {'module': module, 'lessons': lessons})
+    except Module.DoesNotExist:
+        return HttpResponseNotFound("Module not found")
 
 class CourseListCreate(generics.ListCreateAPIView):
     queryset = Course.objects.all()

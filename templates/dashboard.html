@@ -30,6 +30,7 @@
         <div class="module-cards">
             {% for module in modules %}
                 <div class="module-card">
+                    <img src="{{ module.image.url }}" alt="{{ module.title }}" class="module-img">
                     <h4>{{ module.title }}</h4>
                     <p>{{ module.course.description }}</p>
                     <a href="{% url 'core:module_lessons' module.id %}" class="btn">View Lessons</a>
@@ -41,11 +42,18 @@
     <!-- Free Learning Resources -->
     <section class="learning-resources">
         <h3>Free Learning Resources</h3>
-        <ul>
+        <div class="carousel">
             {% for resource in learning_resources %}
-                <li><a href="{{ resource.url }}" target="_blank">{{ resource.title }}</a></li>
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ resource.image.url }}" alt="{{ resource.title }}">
+                <div class="carousel-caption">
+                    <h4>{{ resource.title }}</h4>
+                    <p>{{ resource.description }}</p>
+                    <a href="{{ resource.url }}" target="_blank" class="btn">Visit Resource</a>
+                </div>
+            </div>
             {% endfor %}
-        </ul>
+        </div>       
     </section>
 </div>
 <script src="{% static 'core/js/dashboard.js' %}"></script>
