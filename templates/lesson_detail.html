@@ -29,6 +29,16 @@
         {% endif %}
     </div>
 
+    <!-- Certificate Section -->
+    <div class="certificate-section">
+        <h3>Certificate</h3>
+        {% if certificate_eligible %}
+            <a href="{% url 'generate_certificate' course_id=lesson.module.course.id user_id=request.user.id %}" class="btn">Download Certificate</a>
+        {% else %}
+            <p>You need to complete all lessons to generate your certificate.</p>
+        {% endif %}
+    </div>
+
     <div class="navigation-links">
         {% if next_lesson %}
             <a href="{% url 'core:lesson_detail' next_lesson.id %}" class="next-link">Next Day →</a>

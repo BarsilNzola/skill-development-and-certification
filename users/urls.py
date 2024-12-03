@@ -10,7 +10,8 @@ from .views import (
     update_profile_picture,
     module_lessons_view,
     lesson_detail_view,
-    mark_lesson_complete
+    mark_lesson_complete,
+    generate_certificate
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
@@ -26,7 +27,8 @@ urlpatterns = [
     path('update-profile-picture/', update_profile_picture, name='update-profile-picture'),
     path('module/<int:module_id>/lessons/', module_lessons_view, name='module_lessons'),
     path('lesson/<int:lesson_id>/', lesson_detail_view, name='lesson_detail'),
-    path('lesson/<int:lesson_id>/complete/', mark_lesson_complete, name='mark_lesson_complete'),    
+    path('lesson/<int:lesson_id>/complete/', mark_lesson_complete, name='mark_lesson_complete'),
+    path('certificate/<int:course_id>/<int:user_id>/', generate_certificate, name='generate_certificate'),    
     path('logout/', logout_view, name='logout'),  # New logout route
     path('api/progress/', get_user_progress, name='get_user_progress'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

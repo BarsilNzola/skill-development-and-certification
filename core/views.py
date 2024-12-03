@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from rest_framework import generics
-from .models import UserProfile, Course, Module, Lesson, Progress, ModuleProgress, Quiz, Question, Assignment, LearningResource
+from .models import UserProfile, Course, Module, Lesson, Progress, ModuleProgress, Certificate, Quiz, Question, Assignment, LearningResource
 from .serializers import (
     CourseSerializer, ModuleSerializer, LessonSerializer, ProgressSerializer,
     QuizSerializer, QuestionSerializer, AssignmentSerializer
@@ -120,6 +120,9 @@ def lesson_detail_view(request, lesson_id):
     
     # Check if the current lesson is completed by the user
     lesson_completed = Progress.objects.filter(user=request.user, lesson=lesson, completed=True).exists()
+    
+    # Certificate eligibility
+    certificate_eligible = progress_percentage == 100
 
     # Get the next lesson in the same module (by week/day order)
     next_lesson = Lesson.objects.filter(
@@ -141,6 +144,7 @@ def lesson_detail_view(request, lesson_id):
         'next_lesson': next_lesson,
         'progress_percentage': progress_percentage,
         'lesson_completed': lesson_completed,  # Pass completion status to the template
+        'certificate_eligible': certificate_eligible,
     }
     return render(request, 'lesson_detail.html', context)
 
@@ -235,13 +239,31 @@ class QuestionDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = QuestionSerializer
 
 def generate_certificate(request, course_id, user_id):
+    # Fetch the course and user
+    course = get_object_or_404(Course, id=course_id)
+    user = get_object_or_404(User, id=user_id)
+
+    # Check if all lessons in the course are completed
+    total_lessons = Lesson.objects.filter(module__course=course).count()
+    completed_lessons = Progress.objects.filter(user=user, lesson__module__course=course, completed=True).count()
+
+    if total_lessons == 0 or completed_lessons < total_lessons:
+        return JsonResponse({"status": "error", "message": "You need to complete all lessons to generate the certificate."}, status=400)
+
+    # Check if a certificate already exists
+    certificate, created = Certificate.objects.get_or_create(user=user, course=course)
+
+    # Generate the certificate PDF
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="certificate.pdf"'
 
     p = canvas.Canvas(response, pagesize=letter)
-    p.drawString(100, 750, "Certificate of Completion")
-    p.drawString(100, 725, f"Course ID: {course_id}")
-    p.drawString(100, 700, f"User ID: {user_id}")
+    p.setFont("Helvetica-Bold", 24)
+    p.drawString(200, 750, "Certificate of Completion")
+    p.setFont("Helvetica", 14)
+    p.drawString(100, 700, f"This certifies that {user.first_name} {user.last_name}")
+    p.drawString(100, 675, f"has successfully completed the course '{course.title}'")
+    p.drawString(100, 650, f"on {certificate.date_generated.strftime('%B %d, %Y')}")
     p.showPage()
     p.save()
 

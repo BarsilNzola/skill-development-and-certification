@@ -2,15 +2,19 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 from rest_framework import generics
 from .models import CustomUser, UserProgress
-from core.models import Module, LearningResource, Lesson, Progress, ModuleProgress
+from core.models import Module, LearningResource, Course, Lesson, Progress, ModuleProgress, Certificate
 from .serializers import UserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils.html import mark_safe
+from django.contrib.auth.models import User
 from core.forms import LoginForm, SignUpForm, ProfileEditForm
+from django.http import HttpResponse
 from django.http import HttpResponseNotFound
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
@@ -144,6 +148,9 @@ def lesson_detail_view(request, lesson_id):
     # Check if the current lesson is completed by the user
     lesson_completed = Progress.objects.filter(user=request.user, lesson=lesson, completed=True).exists()
 
+    # Certificate eligibility
+    certificate_eligible = progress_percentage == 100
+    
     # Get the next lesson in the same module (by week/day order)
     next_lesson = Lesson.objects.filter(
         module=lesson.module,
@@ -164,6 +171,7 @@ def lesson_detail_view(request, lesson_id):
         'next_lesson': next_lesson,
         'progress_percentage': progress_percentage,
         'lesson_completed': lesson_completed,  # Pass completion status to the template
+        'certificate_eligible': certificate_eligible,
     }
     return render(request, 'lesson_detail.html', context)
 
@@ -201,3 +209,33 @@ def mark_lesson_complete(request, lesson_id):
 
     return JsonResponse({"status": "error", "message": "Invalid request method."}, status=400)
 
+def generate_certificate(request, course_id, user_id):
+    # Fetch the course and user
+    course = get_object_or_404(Course, id=course_id)
+    user = get_object_or_404(User, id=user_id)
+
+    # Check if all lessons in the course are completed
+    total_lessons = Lesson.objects.filter(module__course=course).count()
+    completed_lessons = Progress.objects.filter(user=user, lesson__module__course=course, completed=True).count()
+
+    if total_lessons == 0 or completed_lessons < total_lessons:
+        return JsonResponse({"status": "error", "message": "You need to complete all lessons to generate the certificate."}, status=400)
+
+    # Check if a certificate already exists
+    certificate, created = Certificate.objects.get_or_create(user=user, course=course)
+
+    # Generate the certificate PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="certificate.pdf"'
+
+    p = canvas.Canvas(response, pagesize=letter)
+    p.setFont("Helvetica-Bold", 24)
+    p.drawString(200, 750, "Certificate of Completion")
+    p.setFont("Helvetica", 14)
+    p.drawString(100, 700, f"This certifies that {user.first_name} {user.last_name}")
+    p.drawString(100, 675, f"has successfully completed the course '{course.title}'")
+    p.drawString(100, 650, f"on {certificate.date_generated.strftime('%B %d, %Y')}")
+    p.showPage()
+    p.save()
+
+    return response

@@ -53,6 +53,30 @@
     background-color: #218838;
 }
 
+.certificate-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.certificate-section h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.certificate-section .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.certificate-section p {
+    font-size: 1em;
+    color: #666;
+}
+
 
 .navigation-links {
     display: flex;

@@ -139,3 +139,12 @@ class Assignment(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class Certificate(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    course = models.ForeignKey("Course", on_delete=models.CASCADE)
+    date_generated = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Certificate for {self.user.username} - {self.course.title}"
