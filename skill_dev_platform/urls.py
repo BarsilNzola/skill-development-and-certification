@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from core.views import home, dashboard_view
+from core.views import home, dashboard_view, logout_view, mark_lesson_complete
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,7 +29,9 @@ urlpatterns = [
     path('api/', include('core.urls', namespace='core')),
     path('', home, name='home'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='login_signup.html'), name='login'),
+    path('logout/', logout_view, name='logout'),
     path('dashboard/', dashboard_view, name='dashboard'),
+    path('lesson/<int:lesson_id>/complete/', mark_lesson_complete, name='mark_lesson_complete'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

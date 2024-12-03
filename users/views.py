@@ -4,11 +4,12 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from .models import CustomUser, UserProgress
-from core.models import Module, LearningResource, Lesson
+from core.models import Module, LearningResource, Lesson, Progress, ModuleProgress
 from .serializers import UserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils.html import mark_safe
 from core.forms import LoginForm, SignUpForm, ProfileEditForm
 from django.http import HttpResponseNotFound
 from django.contrib import messages
@@ -95,7 +96,7 @@ def get_user_progress(request):
 def update_profile_picture(request):
     """ View to update the user's profile picture """
     try:
-        profile = request.user.userprofile
+        profile = request.user.user_profile
     except ObjectDoesNotExist:
         profile = UserProfile.objects.create(user=request.user)
 
@@ -122,10 +123,27 @@ def module_lessons_view(request, module_id):
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect('login')  # Redirect to login page
+    return render(request, 'index.html')  # Redirect to login page
 
 def lesson_detail_view(request, lesson_id):
     lesson = get_object_or_404(Lesson, id=lesson_id)
+    lesson.content = mark_safe(lesson.content)  # Mark content as safe in the view
+    
+    # Calculate the total number of lessons in the same module
+    total_lessons = Lesson.objects.filter(module=lesson.module).count()
+    
+    # Calculate the number of completed lessons for the current user
+    completed_lessons = Progress.objects.filter(user=request.user, lesson__module=lesson.module, completed=True).count()
+    
+    # Calculate the progress percentage
+    if total_lessons > 0:
+        progress_percentage = (completed_lessons / total_lessons) * 100
+    else:
+        progress_percentage = 0
+    
+    # Check if the current lesson is completed by the user
+    lesson_completed = Progress.objects.filter(user=request.user, lesson=lesson, completed=True).exists()
+
     # Get the next lesson in the same module (by week/day order)
     next_lesson = Lesson.objects.filter(
         module=lesson.module,
@@ -144,5 +162,42 @@ def lesson_detail_view(request, lesson_id):
     context = {
         'lesson': lesson,
         'next_lesson': next_lesson,
+        'progress_percentage': progress_percentage,
+        'lesson_completed': lesson_completed,  # Pass completion status to the template
     }
-    return render(request, 'lesson_detail.html', {'lesson': lesson})
+    return render(request, 'lesson_detail.html', context)
+
+
+@login_required
+def mark_lesson_complete(request, lesson_id):
+    if request.method == "POST":
+        user = request.user
+        lesson = get_object_or_404(Lesson, id=lesson_id)
+
+        # Get or create progress record for the lesson
+        progress, created = Progress.objects.get_or_create(user=user, lesson=lesson)
+        print(f"Progress created: {created}")
+        progress.completed = True
+        progress.save()
+        
+        print(f"Progress created: {created}, Progress status: {progress.completed}")  # Debugging
+
+        # Optionally update module progress
+        module_progress, created = ModuleProgress.objects.get_or_create(
+            user=user,
+            module=lesson.module,
+            defaults={'total_lessons': lesson.module.lessons.count()}  # Set total lessons if not already set
+        )
+
+        print(f"Before Update: {module_progress.completed_lessons}/{module_progress.total_lessons}")  # Debugging
+
+        # Update the module progress
+        module_progress.update_progress()  # This will update completed_lessons and progress_percentage
+
+        print(f"After Update: {module_progress.completed_lessons}/{module_progress.total_lessons}")  # Debugging
+
+        # Return success message to the frontend
+        return JsonResponse({"status": "success", "message": "Lesson marked as completed!"})
+
+    return JsonResponse({"status": "error", "message": "Invalid request method."}, status=400)
+

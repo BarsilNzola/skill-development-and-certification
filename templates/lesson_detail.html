@@ -5,21 +5,36 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'core/css/lesson_detail.css' %}">
+<div class="progress-container">
+    <p>Progress: {{ progress_percentage|floatformat:2 }}%</p>
+    <div class="progress-bar">
+        <div class="progress" style="width: {{ progress_percentage }}%"></div>
+    </div>
+</div>
+
 <div class="lesson-detail-container">
     <h1>{{ lesson.title }}</h1>
     <h2>Week {{ lesson.week }}, Day {{ lesson.day }}</h2>
 
     <div class="lesson-content">
-        {% autoescape off %}
         {{ lesson.content }}
-        {% endautoescape %}
+    </div>
+    
+    <!-- Completion Button -->
+    <div class="completion-section">
+        {% if lesson_completed %}
+            <p>This lesson is completed ✅</p>
+        {% else %}
+            <button class="complete-button" id="mark-complete-btn" data-lesson-id="{{ lesson.id }}">Mark as Completed</button>
+        {% endif %}
     </div>
 
     <div class="navigation-links">
         {% if next_lesson %}
-            <a href="{% url 'lesson_detail' next_lesson.id %}" class="next-link">Next Day →</a>
+            <a href="{% url 'core:lesson_detail' next_lesson.id %}" class="next-link">Next Day →</a>
         {% endif %}
         <a href="{% url 'core:module_lessons' lesson.module.id %}" class="back-link">← Back to Lessons</a>
     </div>
 </div>
+<script src="{% static 'core/js/lesson_detail.js' %}"></script>
 {% endblock %}

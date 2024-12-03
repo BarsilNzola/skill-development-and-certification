@@ -12,4 +12,4 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=CustomUser)
 def save_user_profile(sender, instance, **kwargs):
     print(f"Saving UserProfile for user: {instance.username}")
-    instance.profile.save()
+    instance.user_profile.save()

@@ -34,7 +34,6 @@ class Lesson(models.Model):
         return f"{self.module.title} - {self.title}"
 
 
-# Progress Model
 class Progress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
@@ -43,6 +42,42 @@ class Progress(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.lesson.title} - {'Completed' if self.completed else 'Not Completed'}"
+
+class ModuleProgress(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    completed_lessons = models.IntegerField(default=0)
+    total_lessons = models.IntegerField(default=0)  # You can set this when the module is created.
+    progress_percentage = models.FloatField(default=0.0)
+
+    def save(self, *args, **kwargs):
+        # Dynamically set total_lessons to the number of lessons in the associated module
+        if not self.total_lessons:
+            self.total_lessons = self.module.lessons.count()  # Assuming `lessons` is a related field on `Module`
+        
+        # Call the original save method
+        super().save(*args, **kwargs)
+
+    def update_progress(self):
+        # Update the number of completed lessons
+        self.completed_lessons = Progress.objects.filter(
+            user=self.user, lesson__module=self.module, completed=True
+        ).count()
+        print(f"Completed Lessons: {self.completed_lessons}")  # Debugging
+        
+        # Prevent division by zero
+        if self.total_lessons > 0:
+            self.progress_percentage = (self.completed_lessons / self.total_lessons) * 100
+        else:
+            self.progress_percentage = 0.0
+        
+        # Save the progress
+        self.save()
+
+    def __str__(self):
+        return f"{self.user.username} - {self.module.title} - {self.progress_percentage:.2f}%"
+
+
 
 
 # Quiz Model
