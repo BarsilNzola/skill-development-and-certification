@@ -35,6 +35,20 @@
     font-family: monospace;
 }
 
+pre {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-left: 4px solid #2196f3;
+    overflow-x: auto;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap; /* Ensures long lines wrap */
+}
+
+code {
+    color: #d14;
+}
+
+
 .lesson-content a {
     color: #007bff;
     text-decoration: underline;

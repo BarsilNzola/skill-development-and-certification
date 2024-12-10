@@ -16,9 +16,11 @@
     <h1>{{ lesson.title }}</h1>
     <h2>Week {{ lesson.week }}, Day {{ lesson.day }}</h2>
 
+    {% load custom_filters %}
     <div class="lesson-content">
-        {{ lesson.content }}
+        {{ lesson.content|render_codeblocks|linebreaks|safe }}
     </div>
+
     
     <!-- Completion Button -->
     <div class="completion-section">
