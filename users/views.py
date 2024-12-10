@@ -6,16 +6,17 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from rest_framework import generics
 from .models import CustomUser, UserProgress
-from core.models import Module, LearningResource, Course, Lesson, Progress, ModuleProgress, Certificate
+from core.models import Module, LearningResource, Course, Lesson, Progress, ModuleProgress, Certificate, Assignment
 from .serializers import UserSerializer
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils.html import mark_safe
+from django.utils import timezone
 from django.contrib.auth.models import User
 from core.forms import LoginForm, SignUpForm, ProfileEditForm
 from django.http import HttpResponse
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 import json
@@ -135,7 +136,7 @@ def lesson_detail_view(request, lesson_id):
     
     # Calculate the total number of lessons in the same module
     total_lessons = Lesson.objects.filter(module=lesson.module).count()
-    
+
     # Calculate the number of completed lessons for the current user
     completed_lessons = Progress.objects.filter(user=request.user, lesson__module=lesson.module, completed=True).count()
     
@@ -147,10 +148,10 @@ def lesson_detail_view(request, lesson_id):
     
     # Check if the current lesson is completed by the user
     lesson_completed = Progress.objects.filter(user=request.user, lesson=lesson, completed=True).exists()
-
+    
     # Certificate eligibility
     certificate_eligible = progress_percentage == 100
-    
+
     # Get the next lesson in the same module (by week/day order)
     next_lesson = Lesson.objects.filter(
         module=lesson.module,
@@ -166,14 +167,51 @@ def lesson_detail_view(request, lesson_id):
             day=1
         ).first()
 
+    # Check if there's an existing assignment submission for the user
+    assignment_submitted = None
+    try:
+        assignment_submitted = Assignment.objects.get(lesson=lesson, user=request.user)
+    except Assignment.DoesNotExist:
+        assignment_submitted = None
+
+    # Check if the current lesson is Day 5
+    is_day_5 = lesson.day == 5
+
     context = {
         'lesson': lesson,
         'next_lesson': next_lesson,
         'progress_percentage': progress_percentage,
-        'lesson_completed': lesson_completed,  # Pass completion status to the template
+        'lesson_completed': lesson_completed,
         'certificate_eligible': certificate_eligible,
+        'assignment_submitted': assignment_submitted,
+        'is_day_5': is_day_5,  # Pass the Day 5 check to the template
     }
+    
     return render(request, 'lesson_detail.html', context)
+
+@login_required
+def submit_assignment(request, lesson_id):
+    lesson = get_object_or_404(Lesson, id=lesson_id)
+
+    # Only allow submission if it's Day 5
+    if lesson.day == 5:
+        if request.method == 'POST':
+            github_link = request.POST['github_link']
+            # Ensure the user hasn't already submitted for this lesson
+            if Assignment.objects.filter(lesson=lesson, submitted_by=request.user).exists():
+                return redirect('core:lesson_detail', lesson_id=lesson.id)  # Redirect if already submitted
+
+            # Create the new assignment submission
+            assignment = Assignment.objects.create(
+                lesson=lesson,  # Properly set the lesson field
+                submitted_by=request.user,
+                github_link=github_link,
+                submitted_at=timezone.now(),  # Automatically set the submission time
+            )
+            return redirect('core:lesson_detail', lesson_id=lesson.id)  # Redirect after submission
+
+    # Redirect if it's not Day 5
+    return redirect('core:lesson_detail', lesson_id=lesson.id)  # Redirect to lesson detail if not Day 5
 
 
 @login_required

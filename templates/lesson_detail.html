@@ -21,7 +21,28 @@
         {{ lesson.content|render_codeblocks|linebreaks|safe }}
     </div>
 
-    
+    <!-- Assignment Section (Only Show on Day 5) -->
+    <div class="assignment-section">
+        <h3>Weekly Assignment</h3>
+        <p>Submit your GitHub repository link for this week's assignment.</p>
+
+        {% if lesson.day == 5 %}
+            <!-- Show the submission form only on Day 5 -->
+            <form method="POST" action="{% url 'core:submit_assignment' lesson.id %}">
+                {% csrf_token %}
+                <input type="url" name="github_link" placeholder="GitHub Repository Link" required>
+                <button type="submit" class="btn">Submit</button>
+            </form>
+        {% else %}
+            <!-- Show message for other lesson days -->
+            <p>Assignment submissions are only available on Day 5 of this lesson.</p>
+        {% endif %}
+
+        {% if assignment_submitted %}
+            <p>Your submission: <a href="{{ assignment_submitted.github_link }}" target="_blank">{{ assignment_submitted.github_link }}</a></p>
+        {% endif %}
+    </div>
+
     <!-- Completion Button -->
     <div class="completion-section">
         {% if lesson_completed %}

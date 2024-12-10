@@ -10,6 +10,7 @@ from .views import (
     update_profile_picture,
     module_lessons_view,
     lesson_detail_view,
+    submit_assignment,
     mark_lesson_complete,
     generate_certificate
 )
@@ -27,6 +28,7 @@ urlpatterns = [
     path('update-profile-picture/', update_profile_picture, name='update-profile-picture'),
     path('module/<int:module_id>/lessons/', module_lessons_view, name='module_lessons'),
     path('lesson/<int:lesson_id>/', lesson_detail_view, name='lesson_detail'),
+    path('lesson/<int:lesson_id>/submit_assignment/', submit_assignment, name='submit_assignment'),
     path('lesson/<int:lesson_id>/complete/', mark_lesson_complete, name='mark_lesson_complete'),
     path('certificate/<int:course_id>/<int:user_id>/', generate_certificate, name='generate_certificate'),    
     path('logout/', logout_view, name='logout'),  # New logout route
