@@ -99,22 +99,32 @@ def get_user_progress(request):
     
 @login_required
 def update_profile_picture(request):
-    """ View to update the user's profile picture """
-    try:
-        profile = request.user.user_profile
-    except ObjectDoesNotExist:
-        profile = UserProfile.objects.create(user=request.user)
-
+    form = None
+    
     if request.method == 'POST':
-        form = ProfileEditForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Profile picture updated successfully!")
-            return redirect('dashboard')  # Redirect to your desired page after success
-    else:
-        form = ProfileEditForm(instance=profile)
+        # Check if user has a related UserProfile
+        if hasattr(request.user, 'user_profile'):  
+            user_profile = request.user.user_profile  # Access the related UserProfile
 
-    return render(request, 'profile_edit.html', {'form': form})
+            # Use the form to handle profile picture update
+            form = ProfileEditForm(request.POST, request.FILES, instance=user_profile)
+
+            if form.is_valid():
+                form.save()  # Save the form (i.e., update the profile picture)
+                messages.success(request, "Profile picture updated successfully!")
+                return redirect('dashboard')  # Redirect to the profile page (adjust URL as needed)
+            else:
+                messages.error(request, "Please upload a valid profile picture.")
+        else:
+            messages.error(request, "User profile does not exist.")
+    else:
+        # If it's a GET request, instantiate the form with the user's current profile
+        if hasattr(request.user, 'user_profile'):
+            form = ProfileEditForm(instance=request.user.user_profile)
+        else:
+            messages.error(request, "User Profile does not exist.")
+
+    return render(request, 'profile_edit.html', {'form': form}) # Render the correct template
 
 @login_required
 def module_lessons_view(request, module_id):

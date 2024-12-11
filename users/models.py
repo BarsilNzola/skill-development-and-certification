@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import User
+from django.conf import settings
+
 
 class CustomUser(AbstractUser):
     location = models.CharField(max_length=100)
@@ -23,6 +24,7 @@ class CustomUser(AbstractUser):
         related_name='custom_user_profile'
     )
 
+
 class UserProgress(models.Model): 
-    user = models.OneToOneField(User, on_delete=models.CASCADE) 
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) 
     progress_percentage = models.IntegerField(default=0)

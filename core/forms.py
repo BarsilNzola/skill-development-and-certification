@@ -32,8 +32,13 @@ class SignUpForm(forms.ModelForm):
 
 # Login form
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=100)
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={'id': 'login_username'})
+        )
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'id': 'login_password'})
+        )
     
 class ProfileEditForm(forms.ModelForm):
     class Meta:

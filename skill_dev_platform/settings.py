@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
-    'core',
-    'users',
+    'core.apps.CoreConfig',
     'corsheaders',
+    'users',
 ]
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Default session engine
@@ -163,4 +163,3 @@ LOGOUT_REDIRECT_URL = 'home'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-

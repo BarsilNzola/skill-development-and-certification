@@ -136,7 +136,7 @@ class Assignment(models.Model):
     due_date = models.DateTimeField()
     course = models.ForeignKey('Course', on_delete=models.CASCADE)
     module = models.ForeignKey('Module', on_delete=models.CASCADE)
-    lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE, null=False)
+    lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE, null=True)
     
     # Add fields for submission tracking
     submitted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)  # Track the user who submitted
