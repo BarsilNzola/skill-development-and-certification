@@ -8,7 +8,7 @@
 <div class="profile-edit">
     <h2>Edit Profile Picture</h2>
 
-    <!-- Display Success Message -->
+    <!-- Display Success or Error Messages -->
     {% if messages %}
         <div class="alert">
             {% for message in messages %}
@@ -17,10 +17,18 @@
         </div>
     {% endif %}
 
+    <!-- Profile Picture Form -->
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
+
+        <!-- Preview of Uploaded Image -->
+        <div class="image-preview" id="image-preview">
+            <p>No image selected</p>
+        </div>
+
         <button type="submit" class="btn">Update Profile Picture</button>
     </form>
 </div>
+<script src="{% static 'core/js/profile_edit.js' %}"></script>
 {% endblock %}

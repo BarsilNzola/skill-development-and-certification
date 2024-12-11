@@ -1,76 +1,113 @@
-
 /* Styling for weeks container */
 .weeks-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-around;
-    margin-top: 30px;
-  }
-  
-  .week-card {
-    background-color: #f8f9fa;   /* Light background for cards */
-    border: 1px solid #ddd;      /* Border to distinguish each card */
-    border-radius: 10px;
-    padding: 15px;
-    width: 300px;                 /* Fixed width for each week card */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Shadow for a lifted effect */
-    transition: transform 0.3s ease;
-    margin-bottom: 30px;
-  }
-  
-  .week-card h2 {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-  
-  .days-container {
-    padding-left: 10px;          /* Slight padding for nested items */
-  }
-  
-  .day {
-    margin-top: 15px;           /* Space between days */
-  }
-  
-  .day h3 {
-    font-size: 18px;
-    margin-bottom: 8px;
-  }
-  
-  .day ul {
-    padding-left: 20px;         /* Indent list items */
-    list-style-type: none;      /* Remove bullet points */
-  }
-  
-  .day li {
-    margin: 8px 0;              /* Space between lessons */
-  }
-  
-  .day a {
-    text-decoration: none;
-    color: #007bff;             /* Blue color for links */
-  }
-  
-  .day a:hover {
-    text-decoration: underline; /* Underline effect on hover */
-  }
-  
-  .week-card:hover {
-    transform: translateY(-5px);  /* Lift effect on hover */
-  }
-  
-  /* Make sure the layout is responsive */
-  @media (max-width: 768px) {
-    .week-card {
-      width: 100%;  /* Full width on smaller screens */
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .week-card {
-      width: 100%;
-      padding: 10px;  /* Adjust padding on very small screens */
-    }
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+
+.week-card {
+  background-color: #f8f9fa;   /* Light background for cards */
+  border: 1px solid #ddd;      /* Border to distinguish each card */
+  border-radius: 10px;
+  padding: 15px;
+  width: 300px;                 /* Fixed width for each week card */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Shadow for a lifted effect */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;  /* Smooth transition */
+  margin-bottom: 30px;
+}
+
+.week-card h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.days-container {
+  padding-left: 10px;          /* Slight padding for nested items */
+}
+
+.day {
+  margin-top: 15px;           /* Space between days */
+}
+
+.day h3 {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.day ul {
+  padding-left: 20px;         /* Indent list items */
+  list-style-type: none;      /* Remove bullet points */
+}
+
+.day li {
+  margin: 8px 0;              /* Space between lessons */
+}
+
+.day a {
+  text-decoration: none;
+  color: #007bff;             /* Blue color for links */
+  transition: color 0.2s ease; /* Smooth transition for color change */
+}
+
+.day a:hover {
+  text-decoration: underline; /* Underline effect on hover */
+  color: #0056b3;             /* Darker blue on hover for better contrast */
+}
+
+.week-card:hover {
+  transform: translateY(-5px);  /* Lift effect on hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Slightly more pronounced shadow */
+}
+
+/* Button styles (same as in your landing page) */
+.btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1.1em;
+  cursor: pointer;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary {
+  background-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+/* Make sure the layout is responsive */
+@media (max-width: 768px) {
+  .weeks-container {
+      gap: 15px;  /* Reduce gap for smaller screens */
   }
 
-  
+  .week-card {
+      width: 100%;  /* Full width on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .week-card {
+      width: 100%;
+      padding: 10px;  /* Adjust padding on very small screens */
+  }
+
+  .weeks-container {
+      gap: 10px;  /* Further reduce the gap for very small screens */
+  }
+
+  .day h3 {
+      font-size: 16px;  /* Slightly smaller heading on very small screens */
+  }
+
+  .day a {
+      font-size: 1em;  /* Adjust font size for links */
+  }
+}

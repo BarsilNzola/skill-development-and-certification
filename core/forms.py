@@ -12,6 +12,8 @@ class SignUpForm(forms.ModelForm):
         model = User
         fields = ['username', 'email', 'password']
 
+    username = forms.CharField(help_text="")
+    
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")

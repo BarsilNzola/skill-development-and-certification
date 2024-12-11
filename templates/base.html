@@ -4,6 +4,8 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Code Gears - Skill Development and Certification Platform">
+    <meta name="author" content="The ForeverKnights">
     <title>{% block title %}Code Gears{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'core/images/logo.png' %}">
     <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
@@ -17,14 +19,14 @@
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'core:login_signup' %}">Login / Sign Up</a></li>
             </ul>
-        </nav>        
+        </nav>
     </header>
     <main>
         {% block content %}
         {% endblock %}
     </main>
     <footer>
-        <p>&copy; 2024 Code Gears. All rights reserved.</p>
-    </footer>
+        <p>&copy; 2024 Code Gears. All rights reserved. | Powered by TheForeverKnights</p>
+    </footer>    
 </body>
 </html>

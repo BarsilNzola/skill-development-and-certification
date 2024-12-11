@@ -12,7 +12,7 @@
         </div>
         <div class="header-right">
             <!-- Clickable Profile Picture -->
-            <a href="{% url 'users:profile_edit' %}" class"profile-img">
+            <a href="{% url 'users:profile_edit' %}" class="profile-img">
                 {% if user.user_profile.profile_picture %}
                     <img src="{{ user.user_profile.profile_picture.url }}" alt="Profile Picture" class="profile-avatar">
                 {% else %}

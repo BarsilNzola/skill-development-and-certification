@@ -1,6 +1,7 @@
+/* Lesson Detail Container */
 .lesson-detail-container {
     max-width: 800px;
-    margin: 40px auto; /* Add top margin for better spacing */
+    margin: 40px auto;
     padding: 20px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
@@ -29,32 +30,18 @@
 .lesson-content pre {
     background-color: #f4f4f4;
     padding: 10px;
-    border-left: 3px solid #007bff;
-    overflow-x: auto;
-    margin: 10px 0;
-    font-family: monospace;
-}
-
-pre {
-    background-color: #f4f4f4;
-    padding: 10px;
     border-left: 4px solid #2196f3;
     overflow-x: auto;
     font-family: 'Courier New', Courier, monospace;
-    white-space: pre-wrap; /* Ensures long lines wrap */
+    white-space: pre-wrap;
 }
-
-code {
-    color: #d14;
-}
-
 
 .lesson-content a {
     color: #007bff;
     text-decoration: underline;
 }
 
-/* Style the assignment section */
+/* Assignment Section */
 .assignment-section {
     background-color: #f9f9f9;
     padding: 30px;
@@ -90,7 +77,6 @@ code {
     border: 1px solid #ddd;
     border-radius: 5px;
     width: 100%;
-    box-sizing: border-box;
 }
 
 .assignment-section button {
@@ -102,54 +88,13 @@ code {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 100%;
-    box-sizing: border-box;
 }
 
 .assignment-section button:hover {
     background-color: #0056b3;
 }
 
-.assignment-section a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-.assignment-section a:hover {
-    text-decoration: underline;
-}
-
-.assignment-section p {
-    font-size: 16px;
-    color: #555;
-    margin-top: 15px;
-}
-
-/* Message when not on Day 5 */
-.assignment-section p {
-    font-size: 16px;
-    color: #d34f4f; /* Red color for alert */
-    font-weight: bold;
-}
-
-/* Style for the submission status message */
-.assignment-section .submission-status {
-    margin-top: 20px;
-    padding: 10px;
-    background-color: #f0f8ff;
-    border-radius: 8px;
-    border: 1px solid #cce7ff;
-    color: #007bff;
-}
-
-.assignment-section .no-submission {
-    background-color: #ffd9d9; /* Light red background for not submitted */
-    padding: 15px;
-    border-radius: 8px;
-    color: #d34f4f;
-    font-size: 16px;
-}
-
+/* Completion Section */
 .complete-button {
     padding: 10px 15px;
     background-color: #28a745;
@@ -163,6 +108,7 @@ code {
     background-color: #218838;
 }
 
+/* Certificate Section */
 .certificate-section {
     margin-top: 20px;
     text-align: center;
@@ -187,7 +133,7 @@ code {
     color: #666;
 }
 
-
+/* Navigation Links */
 .navigation-links {
     display: flex;
     justify-content: space-between;
@@ -198,32 +144,17 @@ code {
     color: #007bff;
     text-decoration: none;
     font-size: 0.9em;
-    padding: 8px 12px; /* Add padding for better usability */
-    border-radius: 4px; /* Slight rounding for buttons */
-    transition: background-color 0.3s ease; /* Smooth transition for background */
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
 .next-link:hover, .back-link:hover {
     text-decoration: underline;
-    background-color: #f0f0f0; /* Subtle background change on hover */
-}
-
-.back-link {
-    display: inline-block;
-    margin-top: 20px;
-    color: #007bff;
-    text-decoration: none;
-    font-size: 0.9em;
-    padding: 8px 12px;
-    border-radius: 4px;
-}
-
-.back-link:hover {
-    text-decoration: underline;
     background-color: #f0f0f0;
 }
 
-/* Make sure the layout is responsive */
+/* Responsive Design */
 @media (max-width: 768px) {
     .lesson-detail-container {
         padding: 15px;

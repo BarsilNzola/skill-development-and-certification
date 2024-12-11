@@ -22,18 +22,18 @@
 
 .dashboard header .header-right {
     display: flex;
-    align-items: right;
+    align-items: center;
 }
 
 .dashboard header .profile-img {
     margin-right: 20px;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
 }
 
 .dashboard header .profile-avatar {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -92,7 +92,6 @@
     margin-bottom: 10px;
 }
 
-
 /* Hover effect for the card */
 .module-card:hover {
     transform: translateY(-5px);
@@ -127,8 +126,6 @@
 .module-card .btn:hover {
     background-color: #0056b3;
 }
-
-
 
 /* Free Learning Resources Section */
 .learning-resources {
@@ -202,7 +199,6 @@
     }
 }
 
-
 .carousel-item a:hover {
     text-decoration: underline;
 }
@@ -240,13 +236,6 @@
     margin-top: 10px;
 }
 
-.profile-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
     .module-card {
@@ -254,13 +243,18 @@
     }
 
     .profile img {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
     }
 }
 
 @media (max-width: 480px) {
     .module-card {
         width: 100%; /* One card per row */
+    }
+
+    .profile img {
+        width: 100px;
+        height: 100px;
     }
 }

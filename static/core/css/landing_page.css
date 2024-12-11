@@ -1,3 +1,4 @@
+/* General Styling */
 .landing-page header {
     text-align: center;
     margin: 50px 0;
@@ -6,6 +7,7 @@
 .landing-page header h2 {
     font-size: 2.5em;
     color: #333;
+    margin-bottom: 20px;
 }
 
 .landing-page header p {
@@ -13,6 +15,7 @@
     color: #777;
 }
 
+/* Features Section */
 .features {
     text-align: left;
     margin: 50px;
@@ -21,6 +24,7 @@
 .features h3 {
     font-size: 2em;
     color: #333;
+    margin-bottom: 20px;
 }
 
 .features ul {
@@ -34,6 +38,7 @@
     margin: 10px 0;
 }
 
+/* Call-to-Action Section */
 .cta {
     text-align: center;
     margin: 50px 0;
@@ -42,6 +47,7 @@
 .cta h3 {
     font-size: 2em;
     color: #333;
+    margin-bottom: 20px;
 }
 
 .cta button {
@@ -52,8 +58,56 @@
     font-size: 1.2em;
     cursor: pointer;
     border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .cta button:hover {
     background-color: #cc8400;
+    transform: scale(1.05); /* Slightly increase size on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .landing-page header h2 {
+        font-size: 2em;
+    }
+
+    .landing-page header p {
+        font-size: 1em;
+    }
+
+    .features {
+        margin: 30px;
+    }
+
+    .features h3 {
+        font-size: 1.8em;
+    }
+
+    .features li {
+        font-size: 1em;
+    }
+
+    .cta button {
+        font-size: 1em;
+        padding: 12px 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .landing-page header h2 {
+        font-size: 1.5em;
+    }
+
+    .landing-page header p {
+        font-size: 0.9em;
+    }
+
+    .features h3 {
+        font-size: 1.5em;
+    }
+
+    .cta button {
+        width: 100%;
+    }
 }

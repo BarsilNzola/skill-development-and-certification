@@ -8,13 +8,13 @@
 <div class="login-signup-container">
     <!-- Login Form -->
     <div id="login-form" class="{% if not signup_form.errors %}active{% else %}inactive{% endif %}">
-        <h2>Login</h2>
+        <h2 class="form-title">Login</h2>
         <form id="loginForm" method="post" action="{% url 'users:login' %}">
             {% csrf_token %}
             {{ login_form.as_p }}
-            <button type="submit">Login</button>
+            <button type="submit" class="submit-btn">Login</button>
         </form>
-        <div id="login-error-message">
+        <div id="login-error-message" class="error-message">
             {% if login_form.errors %}
                 <ul>
                     {% for error in login_form.non_field_errors %}
@@ -23,18 +23,18 @@
                 </ul>
             {% endif %}
         </div>
-        <p>Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
+        <p class="switch-form">Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
     </div>
     
     <!-- Sign-Up Form -->
     <div id="signup-form" class="{% if signup_form.errors %}active{% else %}inactive{% endif %}">
-        <h2>Sign Up</h2>
+        <h2 class="form-title">Sign Up</h2>
         <form id="signupForm" method="post" action="{% url 'users:signup' %}" novalidate>
             {% csrf_token %}
             {{ signup_form.as_p }}
-            <button type="submit">Sign Up</button>
+            <button type="submit" class="submit-btn">Sign Up</button>
         </form>
-        <div id="signup-error-message">
+        <div id="signup-error-message" class="error-message">
             {% if signup_form.errors %}
                 <ul>
                     {% for error in signup_form.non_field_errors %}
@@ -43,7 +43,7 @@
                 </ul>
             {% endif %}
         </div>
-        <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+        <p class="switch-form">Already have an account? <a href="#" id="show-login">Login</a></p>
     </div>
 </div>
 
