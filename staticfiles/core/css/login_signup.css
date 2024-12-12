@@ -1,0 +1,135 @@
+/* Login/Sign Up Container */
+.login-signup-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Form titles */
+.form-title {
+    text-align: center;
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.login-signup-container .active {
+    display: block;
+}
+
+.login-signup-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Forms Layout */
+.login-signup-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.login-signup-container form label {
+    font-weight: bold;
+}
+
+/* Form Inputs */
+.login-signup-container form input[type="text"],
+.login-signup-container form input[type="email"],
+.login-signup-container form input[type="password"],
+.login-signup-container form input[type="number"],
+.login-signup-container form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border 0.3s ease;
+}
+
+/* Input focus effect */
+.login-signup-container form input:focus,
+.login-signup-container form select:focus {
+    border-color: #004466;
+    outline: none;
+}
+
+/* Submit buttons */
+.submit-btn {
+    padding: 12px;
+    background-color: #004466;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #003355;
+}
+
+/* Error Messages */
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* Link styles */
+.switch-form {
+    text-align: center;
+    font-size: 1em;
+}
+
+.switch-form a {
+    color: #004466;
+    text-decoration: none;
+}
+
+.switch-form a:hover {
+    text-decoration: underline;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    .login-signup-container {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .form-title {
+        font-size: 1.6em;
+    }
+
+    .submit-btn {
+        font-size: 1.1em;
+    }
+}
+
+/* Ensure that both forms are hidden initially */
+#login-form, #signup-form {
+    display: none;  /* Hide both forms by default */
+}
+
+/* Show the active form */
+#login-form.active, #signup-form.active {
+    display: block; /* Only the active form will be displayed */
+}
+
+/* Inactive form will stay hidden */
+#login-form.inactive, #signup-form.inactive {
+    display: none;
+}
+
+
+#login-error-message, #signup-error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
