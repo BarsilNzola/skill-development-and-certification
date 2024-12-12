@@ -161,11 +161,11 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'https://skill-development-and-certification.onrender.com'
+    'https://skill-development-and-certification.onrender.com',
     'http://localhost:8000',  # Add any other domains that will use this backend
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True # This is for development purposes only. Configure it properly for production.
+CORS_ALLOW_ALL_ORIGINS = False # This is for development purposes only. Configure it properly for production.
 
 REST_FRAMEWORK = { 
     'DEFAULT_AUTHENTICATION_CLASSES': ( 
