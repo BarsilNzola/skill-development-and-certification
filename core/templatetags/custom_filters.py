@@ -13,11 +13,13 @@ def render_codeblocks(value):
     """
     def replace_codeblock(match):
         code_content = match.group(1)  # Get the content inside the triple backticks
-        # Escape HTML tags to show them as text
-        escaped_content = escape(code_content)
+        
         # Replace newlines with <br> for rendering line breaks
-        formatted_content = escaped_content.replace("\n", "<br>")
+        formatted_content = code_content.replace("\n", "<br>")
         return f'<pre><code>{formatted_content}</code></pre>'
+    
+    # Escape HTML tags outside the code blocks first
+    value = escape(value)
 
     # Use regex to find and replace triple backticks with <pre><code> blocks
     formatted_value = re.sub(
@@ -26,6 +28,7 @@ def render_codeblocks(value):
         value,
         flags=re.DOTALL  # Match across multiple lines
     )
+    
 
     # Mark the final string as safe to render HTML in the template
     return mark_safe(formatted_value)

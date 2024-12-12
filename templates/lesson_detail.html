@@ -18,7 +18,7 @@
 
     {% load custom_filters %}
     <div class="lesson-content">
-        {{ lesson.content|render_codeblocks|linebreaks|safe }}
+        {{ lesson.content|render_codeblocks|linebreaks }}
     </div>
 
     <!-- Assignment Section (Only Show on Day 5) -->
