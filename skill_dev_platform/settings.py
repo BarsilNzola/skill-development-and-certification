@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from urllib.parse import urlparse
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -90,14 +91,17 @@ WSGI_APPLICATION = 'skill_dev_platform.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 if os.getenv('RENDER'):
+    DATABASE_URL = os.getenv('postgresql://skill_dev_user:kQ8JBrtp0nv0b9JpJ0X47xRD0UHASPma@dpg-ctddln9opnds73ak4360-a/skill_dev')
+    parsed_db_url = urlparse(DATABASE_URL)
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('Database'),
-            'USER': os.getenv('Username'),
-            'PASSWORD': os.getenv('Password'),
-            'HOST': os.getenv('Hostname'),
-            'PORT': os.getenv('Port', '5432'),
+            'NAME': parsed_db_url.path[1:],  # Remove the leading '/'
+            'USER': parsed_db_url.username,
+            'PASSWORD': parsed_db_url.password,
+            'HOST': parsed_db_url.hostname,
+            'PORT': parsed_db_url.port or 5432,
         }
     }
 else:
