@@ -88,11 +88,11 @@ if os.getenv('RENDER'):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME'),
-            'USER': os.getenv('DB_USER'),
-            'PASSWORD': os.getenv('DB_PASSWORD'),
-            'HOST': os.getenv('DB_HOST'),
-            'PORT': os.getenv('DB_PORT', '5432'),
+            'NAME': os.getenv('Database'),
+            'USER': os.getenv('Username'),
+            'PASSWORD': os.getenv('Password'),
+            'HOST': os.getenv('Hostname'),
+            'PORT': os.getenv('Port', '5432'),
         }
     }
 else:
