@@ -27,7 +27,9 @@ SECRET_KEY = 'django-insecure-jy$*z0%q!zty@i9i$5l-!d*fnq!9-)$1i^xi9+sb6(z194e+zq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'skill-development-and-certification.onrender.com'
+]
 
 
 # Application definition
@@ -87,7 +89,7 @@ WSGI_APPLICATION = 'skill_dev_platform.wsgi.application'
 if os.getenv('RENDER'):
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
+            'ENGINE': 'django.db.backends.postgresql_psycopg',
             'NAME': os.getenv('Database'),
             'USER': os.getenv('Username'),
             'PASSWORD': os.getenv('Password'),
