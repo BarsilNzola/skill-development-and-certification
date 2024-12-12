@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'skill_dev_platform.wsgi.application'
 if os.getenv('RENDER'):
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg',
+            'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.getenv('Database'),
             'USER': os.getenv('Username'),
             'PASSWORD': os.getenv('Password'),
