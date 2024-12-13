@@ -90,20 +90,15 @@ WSGI_APPLICATION = 'skill_dev_platform.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if os.getenv('RENDER'):  # Check if running on Render
-    DATABASE_URL = os.getenv('DATABASE_URL')
-    if not DATABASE_URL:
-        raise ValueError("DATABASE_URL environment variable is not set.")
-
-    parsed_db_url = urlparse(DATABASE_URL)
+if os.getenv('RENDER'):  # Render environment
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': parsed_db_url.path[1:],  # Remove leading '/'
-            'USER': parsed_db_url.username,
-            'PASSWORD': parsed_db_url.password,
-            'HOST': parsed_db_url.hostname,
-            'PORT': parsed_db_url.port or '5432',
+            'NAME': 'skill_dev',
+            'USER': 'skill_dev_user',
+            'PASSWORD': 'kQ8JBrtp0nv0b9JpJ0X47xRD0UHASPma',
+            'HOST': 'dpg-ctddln9opnds73ak4360-a',
+            'PORT': '5432',  # Default PostgreSQL port
         }
     }
 else:
