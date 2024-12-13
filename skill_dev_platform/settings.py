@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'skill_dev_platform.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 if os.getenv('RENDER'):
-    DATABASE_URL = os.getenv('postgresql://skill_dev_user:kQ8JBrtp0nv0b9JpJ0X47xRD0UHASPma@dpg-ctddln9opnds73ak4360-a/skill_dev')
+    DATABASE_URL = os.getenv('DATABASE_URL')
     parsed_db_url = urlparse(DATABASE_URL)
 
     DATABASES = {
