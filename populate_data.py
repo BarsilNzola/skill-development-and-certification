@@ -1,5 +1,3 @@
-from django.core.files.storage import default_storage
-from django.core.files import File
 from core.models import Course, Module, LearningResource, Lesson
 
 # Create a new course
@@ -16,26 +14,19 @@ module = Module.objects.create(
     course=course  # Linking the course to the module
 )
 
-# Open and assign the image files to the model
-with default_storage.open('learning_resources/alison.png', 'rb') as alison_image:
-    alison_file = File(alison_image)
-    
-with default_storage.open('learning_resources/power-learn.jpg', 'rb') as power_learn_image:
-    power_learn_file = File(power_learn_image)
-
 # Create learning resources
 LearningResource.objects.bulk_create([
     LearningResource(
         title='Free Online Courses with Certificates & Diplomas',
         url='https://alison.com',
-        description="Expand Your Knowledge In Other Fields with Alison's Free Courses.",
-        image=alison_file
+        description='Expand Your Knowledge In Other Fields with Alison\'s Free Courses.',
+        image='learning_resources/alison.png'
     ),
     LearningResource(
         title='Free Mobile Development Courses for Power Learn Community',
         url='https://bit.ly/mobile-devt-courses',
         description='Are You Enthusiastic About Mobile Development? This is Your Chance.',
-        image=power_learn_file
+        image='learning_resources/power-learn.jpg'
     )
 ])
 
