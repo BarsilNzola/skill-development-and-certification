@@ -1,13 +1,20 @@
 from core.models import Course, Module, LearningResource, Lesson
-from django.db import models  # Import models to access the Count function
+from django.db.models import Count
 
-# Check if the course already exists, and create if not
+# Step 1: Find and remove duplicate courses
+duplicates = Course.objects.values('title').annotate(count=Count('id')).filter(count__gt=1)
+
+for duplicate in duplicates:
+    courses_to_delete = Course.objects.filter(title=duplicate['title'])[1:]  # Keep the first instance
+    courses_to_delete.delete()
+
+# Step 2: Check if the course already exists, and create if not
 course, created = Course.objects.get_or_create(
     title="Web Development Basics",
     defaults={"description": "Learn the fundamentals of web development, including HTML, CSS, and JavaScript."}
 )
 
-# Check if the module already exists for the course, and create if not
+# Step 3: Check if the module already exists for the course, and create if not
 module, created = Module.objects.get_or_create(
     title='Web Development',
     course=course,  # Link to the existing course
@@ -17,11 +24,10 @@ module, created = Module.objects.get_or_create(
     }
 )
 
-# Find duplicate modules
-duplicates = Module.objects.values('title', 'course').annotate(count=models.Count('title')).filter(count__gt=1)
+# Step 4: Find duplicate modules
+module_duplicates = Module.objects.values('title', 'course').annotate(count=Count('title')).filter(count__gt=1)
 
-# Remove duplicates
-for duplicate in duplicates:
+for duplicate in module_duplicates:
     modules_to_delete = Module.objects.filter(title=duplicate['title'], course=duplicate['course'])[1:]
     modules_to_delete.delete()
 
