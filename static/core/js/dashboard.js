@@ -1,11 +1,17 @@
 document.addEventListener('DOMContentLoaded', function () {
+
+    // Dynamically set the base URL depending on the environment
+    const baseUrl = window.location.hostname === 'localhost' 
+                    ? 'http://localhost:8000' 
+                    : 'https://skill-development-and-certification.onrender.com';
+
     const lessonWeeks = document.getElementById('lesson-weeks');
-    
+
     // Proceed only if lessonWeeks exists
     if (lessonWeeks) {
         async function fetchLessons() {
             try {
-                const response = await fetch('http://localhost:8000/api/lessons/', { 
+                const response = await fetch(`${baseUrl}lessons/`, { 
                     method: 'GET', 
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include' // Include cookies to send the sessionid 
@@ -80,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fetch and display user progress 
     async function fetchUserProgress() { 
         try { 
-            const response = await fetch('http://localhost:8000/api/progress/', { 
+            const response = await fetch(`${baseUrl}progress/`, { 
                 method: 'GET', 
                 headers: { 
                     'Content-Type': 'application/json',
