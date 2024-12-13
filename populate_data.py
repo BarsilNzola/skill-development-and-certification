@@ -56,31 +56,41 @@ LearningResource.objects.bulk_create([
     )
 ])
 
-# Create lessons for Web Development (HTML, CSS, and JavaScript)
-lessons = [
+# Step 2: Create lessons for Web Development (HTML, CSS, and JavaScript)
+lesson_data = [
     # Week 1 - HTML
-    Lesson(module=module, title="Introduction to HTML", content="HTML is the structure of the web...", week=1, day=1),
-    Lesson(module=module, title="HTML Elements", content="Learn about different HTML elements...", week=1, day=2),
-    Lesson(module=module, title="Forms and Inputs", content="Learn how to create forms in HTML...", week=1, day=3),
-    Lesson(module=module, title="HTML5 Semantic Elements", content="Understand the new semantic tags in HTML5...", week=1, day=4),
-    Lesson(module=module, title="Project: Basic Webpage", content="Create a basic webpage using HTML...", week=1, day=5),
+    {"module": module, "title": "Introduction to HTML", "content": "HTML is the structure of the web...", "week": 1, "day": 1},
+    {"module": module, "title": "HTML Elements", "content": "Learn about different HTML elements...", "week": 1, "day": 2},
+    {"module": module, "title": "Forms and Inputs", "content": "Learn how to create forms in HTML...", "week": 1, "day": 3},
+    {"module": module, "title": "HTML5 Semantic Elements", "content": "Understand the new semantic tags in HTML5...", "week": 1, "day": 4},
+    {"module": module, "title": "Project: Basic Webpage", "content": "Create a basic webpage using HTML...", "week": 1, "day": 5},
 
     # Week 2 - CSS
-    Lesson(module=module, title="Introduction to CSS", content="CSS is used for styling the web pages...", week=2, day=1),
-    Lesson(module=module, title="Selectors and Properties", content="Learn how to select HTML elements and style them...", week=2, day=2),
-    Lesson(module=module, title="Box Model and Flexbox", content="Understanding the box model and using Flexbox...", week=2, day=3),
-    Lesson(module=module, title="CSS Grid", content="Learn how to create layouts with CSS Grid...", week=2, day=4),
-    Lesson(module=module, title="Project: Styling a Webpage", content="Create a styled webpage using CSS...", week=2, day=5),
+    {"module": module, "title": "Introduction to CSS", "content": "CSS is used for styling the web pages...", "week": 2, "day": 1},
+    {"module": module, "title": "Selectors and Properties", "content": "Learn how to select HTML elements and style them...", "week": 2, "day": 2},
+    {"module": module, "title": "Box Model and Flexbox", "content": "Understanding the box model and using Flexbox...", "week": 2, "day": 3},
+    {"module": module, "title": "CSS Grid", "content": "Learn how to create layouts with CSS Grid...", "week": 2, "day": 4},
+    {"module": module, "title": "Project: Styling a Webpage", "content": "Create a styled webpage using CSS...", "week": 2, "day": 5},
 
     # Week 3 - JavaScript
-    Lesson(module=module, title="Introduction to JavaScript", content="JavaScript is used to make webpages interactive...", week=3, day=1),
-    Lesson(module=module, title="Variables and Data Types", content="Learn about variables, and different data types in JS...", week=3, day=2),
-    Lesson(module=module, title="Functions and Control Flow", content="Learn how to define functions and use control flow...", week=3, day=3),
-    Lesson(module=module, title="DOM Manipulation", content="Learn how to manipulate the DOM using JavaScript...", week=3, day=4),
-    Lesson(module=module, title="Project: Interactive Webpage", content="Create an interactive webpage with JavaScript...", week=3, day=5),
+    {"module": module, "title": "Introduction to JavaScript", "content": "JavaScript is used to make webpages interactive...", "week": 3, "day": 1},
+    {"module": module, "title": "Variables and Data Types", "content": "Learn about variables, and different data types in JS...", "week": 3, "day": 2},
+    {"module": module, "title": "Functions and Control Flow", "content": "Learn how to define functions and use control flow...", "week": 3, "day": 3},
+    {"module": module, "title": "DOM Manipulation", "content": "Learn how to manipulate the DOM using JavaScript...", "week": 3, "day": 4},
+    {"module": module, "title": "Project: Interactive Webpage", "content": "Create an interactive webpage with JavaScript...", "week": 3, "day": 5},
 ]
 
-Lesson.objects.bulk_create(lessons)
+# Step 3: Use get_or_create to add lessons
+for lesson in lesson_data:
+    Lesson.objects.get_or_create(
+        module=lesson["module"],
+        title=lesson["title"],
+        defaults={
+            "content": lesson["content"],
+            "week": lesson["week"],
+            "day": lesson["day"],
+        }
+    )
 
 # Update content for lessons
 Lesson.objects.filter(title="Introduction to HTML").update(
