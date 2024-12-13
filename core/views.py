@@ -91,7 +91,7 @@ def update_profile_picture(request):
 def module_lessons_view(request, module_id):
     try:
         module = Module.objects.get(id=module_id)
-        lessons = module.lessons.all()
+        lessons = module.lessons.order_by('week', 'day')
         
          # Group lessons by week
         lessons_by_week = {}

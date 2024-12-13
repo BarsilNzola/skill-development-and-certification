@@ -33,6 +33,13 @@ for duplicate in module_duplicates:
     for module in modules_to_delete:
         module.delete()
         
+# Remove duplicate lessons
+lesson_duplicates = Lesson.objects.values('title', 'module').annotate(count=Count('id')).filter(count__gt=1)
+for duplicate in lesson_duplicates:
+    lessons_to_delete = Lesson.objects.filter(title=duplicate['title'], module=duplicate['module'])[1:]
+    for lesson in lessons_to_delete:
+        lesson.delete()        
+        
 # Create learning resources
 LearningResource.objects.bulk_create([
     LearningResource(

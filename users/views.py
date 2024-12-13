@@ -130,8 +130,25 @@ def update_profile_picture(request):
 def module_lessons_view(request, module_id):
     try:
         module = Module.objects.get(id=module_id)
-        lessons = module.lessons.all()
-        return render(request, 'module_lessons.html', {'module': module, 'lessons': lessons})
+        lessons = module.lessons.order_by('week', 'day')
+        
+         # Group lessons by week
+        lessons_by_week = {}
+        for lesson in lessons:
+        # Assuming you have a way to associate lessons with weeks
+            week = lesson.week 
+            day = lesson.day
+            
+            if week not in lessons_by_week:
+                lessons_by_week[week] = {}
+                
+            # Add lesson to the correct day
+            if day not in lessons_by_week[week]:
+                lessons_by_week[week][day] = []
+                
+            lessons_by_week[week][day].append(lesson)
+        
+        return render(request, 'module_lessons.html', {'module': module, 'lessons_by_week': lessons_by_week})
     except Module.DoesNotExist:
         return HttpResponseNotFound("Module not found")
 
