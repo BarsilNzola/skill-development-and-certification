@@ -6,7 +6,8 @@ duplicates = Course.objects.values('title').annotate(count=Count('id')).filter(c
 
 for duplicate in duplicates:
     courses_to_delete = Course.objects.filter(title=duplicate['title'])[1:]  # Keep the first instance
-    courses_to_delete.delete()
+    for course in courses_to_delete:
+        course.delete()
 
 # Step 2: Check if the course already exists, and create if not
 course, created = Course.objects.get_or_create(
@@ -29,8 +30,9 @@ module_duplicates = Module.objects.values('title', 'course').annotate(count=Coun
 
 for duplicate in module_duplicates:
     modules_to_delete = Module.objects.filter(title=duplicate['title'], course=duplicate['course'])[1:]
-    modules_to_delete.delete()
-
+    for module in modules_to_delete:
+        module.delete()
+        
 # Create learning resources
 LearningResource.objects.bulk_create([
     LearningResource(
