@@ -19,12 +19,15 @@ LearningResource.objects.bulk_create([
     LearningResource(
         title='Free Online Courses with Certificates & Diplomas',
         url='https://alison.com',
-        description='Expand Your Knowledge In Other Fields with Alison\'s Free Courses.'
+        description='Expand Your Knowledge In Other Fields with Alison\'s Free Courses.',
+        image='learning_resources/alison.png'
     ),
     LearningResource(
         title='Free Mobile Development Courses for Power Learn Community',
         url='https://bit.ly/mobile-devt-courses',
-        description='Are You Enthusiastic About Mobile Development? This is Your Chance.'
+        description='Are You Enthusiastic About Mobile Development? This is Your Chance.',
+                image='learning_resources/power-learn.jpg'
+
     )
 ])
 
