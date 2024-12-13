@@ -26,8 +26,7 @@ LearningResource.objects.bulk_create([
         title='Free Mobile Development Courses for Power Learn Community',
         url='https://bit.ly/mobile-devt-courses',
         description='Are You Enthusiastic About Mobile Development? This is Your Chance.',
-                image='learning_resources/power-learn.jpg'
-
+        image='learning_resources/power-learn.jpg'
     )
 ])
 
