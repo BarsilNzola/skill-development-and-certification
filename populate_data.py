@@ -1,18 +1,29 @@
 from core.models import Course, Module, LearningResource, Lesson
+from django.db import models  # Import models to access the Count function
 
-# Create a new course
-course = Course.objects.create(
+# Check if the course already exists, and create if not
+course, created = Course.objects.get_or_create(
     title="Web Development Basics",
-    description="Learn the fundamentals of web development, including HTML, CSS, and JavaScript."
+    defaults={"description": "Learn the fundamentals of web development, including HTML, CSS, and JavaScript."}
 )
 
-# Create a new module and associate it with the course
-module = Module.objects.create(
+# Check if the module already exists for the course, and create if not
+module, created = Module.objects.get_or_create(
     title='Web Development',
-    description='Learn how to build websites and web applications.',
-    image='modules/html-css-js.png',
-    course=course  # Linking the course to the module
+    course=course,  # Link to the existing course
+    defaults={
+        'description': 'Learn how to build websites and web applications.',
+        'image': 'modules/html-css-js.png'
+    }
 )
+
+# Find duplicate modules
+duplicates = Module.objects.values('title', 'course').annotate(count=models.Count('title')).filter(count__gt=1)
+
+# Remove duplicates
+for duplicate in duplicates:
+    modules_to_delete = Module.objects.filter(title=duplicate['title'], course=duplicate['course'])[1:]
+    modules_to_delete.delete()
 
 # Create learning resources
 LearningResource.objects.bulk_create([
