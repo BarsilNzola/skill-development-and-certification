@@ -45,7 +45,7 @@
         <div class="carousel">
             {% for resource in learning_resources %}
             <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                <img src="{{ resource.image.url }}" alt="{{ resource.title }}">
+                <img src="{{ resource.image.url if resource.image else 'core/images/logo.png' }}" alt="{{ resource.title }}">
                 <div class="carousel-caption">
                     <h4>{{ resource.title }}</h4>
                     <p>{{ resource.description }}</p>
