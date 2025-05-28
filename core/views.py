@@ -18,6 +18,8 @@ from django.contrib import messages
 from django.utils.html import mark_safe
 from django.utils import timezone
 from .forms import LoginForm, SignUpForm, ProfileEditForm  # Import forms
+import os
+from django.conf import settings
 
 def login_signup(request):
     login_form = LoginForm()
