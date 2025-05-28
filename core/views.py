@@ -307,7 +307,7 @@ def generate_certificate(request, course_id, user_id):
 
     # Load paths
     logo_path = os.path.join(settings.BASE_DIR, 'static', 'core', 'images', 'logo.png')
-    bg_path = os.path.join(settings.BASE_DIR, 'static', 'core', 'images', 'certificate_bg.jpg')
+    bg_path = os.path.join(settings.BASE_DIR, 'static', 'core', 'images', 'certificate_bg.png')
 
     # Draw background image
     if os.path.exists(bg_path):
@@ -323,7 +323,7 @@ def generate_certificate(request, course_id, user_id):
 
     # Recipient info
     p.setFont("Helvetica", 16)
-    p.drawCentredString(width / 2, 600, f"This certifies that {user.first_name} {user.last_name}")
+    p.drawCentredString(width / 2, 600, f"This certifies that {user.username}")
     p.drawCentredString(width / 2, 575, f"has successfully completed the course:")
     p.setFont("Helvetica-Bold", 18)
     p.drawCentredString(width / 2, 550, f"'{course.title}'")
