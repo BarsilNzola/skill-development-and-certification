@@ -4,40 +4,74 @@ document.addEventListener('DOMContentLoaded', function() {
     const showLogin = document.getElementById('show-login');
     const showSignup = document.getElementById('show-signup');
 
-    // Dynamically set the base URL depending on the environment
+    // Dynamic base URL depending on environment
     const baseUrl = window.location.hostname === 'localhost' 
                     ? 'http://localhost:8000' 
                     : 'https://skill-development-and-certification.onrender.com';
 
-    // Initially show the signup form and hide the login form
-    signupForm.classList.add('active');
-    signupForm.classList.remove('inactive');
-    loginForm.classList.add('inactive');
-    loginForm.classList.remove('active');
+    // Initialize forms based on server-side errors
+    if (loginForm && signupForm) {
+        const hasLoginErrors = document.querySelector('#login-form .error-message li');
+        const hasSignupErrors = document.querySelector('#signup-form .error-message li');
+        
+        if (hasSignupErrors) {
+            signupForm.classList.add('active');
+            loginForm.classList.remove('active');
+        } else {
+            loginForm.classList.add('active');
+            signupForm.classList.remove('active');
+        }
+    }
 
+    // Toggle between forms
     if (showLogin) {
         showLogin.addEventListener('click', function(event) {
             event.preventDefault();
-            // Switch to login form
-            signupForm.classList.add('inactive');
-            signupForm.classList.remove('active');
-            loginForm.classList.add('active');
-            loginForm.classList.remove('inactive');
+            toggleForms();
         });
     }
 
     if (showSignup) {
         showSignup.addEventListener('click', function(event) {
             event.preventDefault();
-            // Switch to signup form
-            loginForm.classList.add('inactive');
-            loginForm.classList.remove('active');
-            signupForm.classList.add('active');
-            signupForm.classList.remove('inactive');
+            toggleForms();
         });
     }
 
-    // Handle login form submission
+    function toggleForms() {
+        loginForm.classList.toggle('active');
+        signupForm.classList.toggle('active');
+        window.scrollTo({
+            top: document.querySelector('.login-signup-container').offsetTop - 20,
+            behavior: 'smooth'
+        });
+    }
+
+    // Add real-time password validation
+    const passwordField = document.querySelector('#id_password');
+    const confirmPasswordField = document.querySelector('[name="confirm_password"]');
+    
+    if (passwordField && confirmPasswordField) {
+        [passwordField, confirmPasswordField].forEach(field => {
+            field.addEventListener('input', function() {
+                validatePasswords();
+            });
+        });
+    }
+
+    function validatePasswords() {
+        const password = passwordField.value;
+        const confirmPassword = confirmPasswordField.value;
+        const errorElement = document.getElementById('signup-error-message');
+        
+        if (password && confirmPassword && password !== confirmPassword) {
+            errorElement.textContent = "Passwords do not match";
+        } else {
+            errorElement.textContent = "";
+        }
+    }
+
+    // login form submission handler
     document.getElementById('login-form').addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -57,8 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 const data = await response.json();
                 alert(data.message);
-
-                // Redirect to the dashboard
                 window.location.href = `${baseUrl}/dashboard/`;
             } else {
                 const errorData = await response.json();
@@ -69,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle signup form submission
+    // signup form submission handler
     document.getElementById('signup-form').addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -78,12 +110,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const password = document.querySelector('#id_password')?.value.trim() || '';
         const confirm_password = document.querySelector('[name="confirm_password"]').value.trim();
 
-        console.log(`Username: ${username}, Email: ${email}, Password: ${password}, Confirm Password: ${confirm_password}`);
-
-        // Handle missing data
         if (!username || !password) {
-            console.error('One or more fields are missing.');
-            document.getElementById('login-error-message').innerText = 'Please fill in all fields.';
+            document.getElementById('signup-error-message').innerText = 'Please fill in all fields.';
             return;
         }
 
@@ -105,12 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 const data = await response.json();
                 alert('Registration successful! Redirecting to login...');
-
-                // Redirect to login form
-                signupForm.classList.add('inactive');
-                signupForm.classList.remove('active');
-                loginForm.classList.add('active');
-                loginForm.classList.remove('inactive');
+                toggleForms(); // Switch to login form
             } else {
                 const errorData = await response.json();
                 document.getElementById('signup-error-message').innerText = errorData.message;
@@ -120,4 +143,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Add focus styles for better accessibility
+    const inputs = document.querySelectorAll('input, button, a');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            this.style.outline = '2px solid #004466';
+            this.style.outlineOffset = '2px';
+        });
+        
+        input.addEventListener('blur', function() {
+            this.style.outline = 'none';
+        });
+    });
 });

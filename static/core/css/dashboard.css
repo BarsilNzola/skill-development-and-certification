@@ -1,260 +1,269 @@
-/* General Dashboard Styles */
+/* Base Styles (Mobile First) */
 .dashboard {
-    padding: 20px;
-    max-width: 1200px;
-    margin: auto;
+    padding: 15px;
+    width: 100%;
+    margin: 0 auto;
     font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    min-height: 100vh;
 }
 
 /* Header Styling */
 .dashboard header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #004466;
+    border-radius: 8px;
+    color: white;
 }
 
 .dashboard header .header-left h2 {
-    font-size: 2rem;
-    color: white;
+    font-size: clamp(1.5rem, 5vw, 2rem);
     margin: 0;
 }
 
 .dashboard header .header-right {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    gap: 15px;
 }
 
-.dashboard header .profile-img {
-    margin-right: 20px;
-    width: 40px;
-    height: 40px;
-}
-
-.dashboard header .profile-avatar {
+.profile-img {
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.profile-img:hover {
+    transform: scale(1.1);
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
 }
 
-.dashboard header .logout-btn {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
+.btn {
+    padding: 8px 16px;
     border-radius: 5px;
     text-decoration: none;
     font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-align: center;
 }
 
-.dashboard header .logout-btn:hover {
-    background-color: #0056b3;
+.logout-btn {
+    background-color: #ff6b6b;
+    color: white;
 }
 
-/* Modules Section Styling */
+.logout-btn:hover {
+    background-color: #ff5252;
+}
+
+/* Modules Section */
 .modules {
-    margin-top: 40px;
-    padding: 20px;
+    margin: 30px 0;
 }
 
 .modules h3 {
-    font-size: 1.6rem;
+    font-size: clamp(1.3rem, 4vw, 1.6rem);
     margin-bottom: 20px;
-    text-align: center;
     color: #004466;
+    text-align: center;
 }
 
-/* Container for all module cards */
 .module-cards {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 20px;
     justify-content: center;
 }
 
-/* Individual module card styling */
 .module-card {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    width: 280px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.module-card .module-img {
-    width: 100%;
-    height: 150px; /* Adjust as needed */
-    object-fit: cover;
-    border-radius: 8px 8px 0 0; /* Matches card border radius */
-    margin-bottom: 10px;
-}
-
-/* Hover effect for the card */
 .module-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* Styling for the module title */
+.module-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.module-card-content {
+    padding: 15px;
+}
+
 .module-card h4 {
     font-size: 1.2rem;
-    margin-bottom: 10px;
-    font-weight: bold;
-}
-
-/* Styling for the module description */
-.module-card p {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 15px;
-}
-
-/* Styling for the "View Lessons" button */
-.module-card .btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-
-.module-card .btn:hover {
-    background-color: #0056b3;
-}
-
-/* Free Learning Resources Section */
-.learning-resources {
-    margin-top: 30px;
-}
-
-.learning-resources h3 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
+    margin: 10px 0;
     color: #004466;
 }
 
-/* Carousel container */
+.module-card p {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.module-card .btn {
+    background-color: #004466;
+    color: white;
+    width: 100%;
+}
+
+.module-card .btn:hover {
+    background-color: #003355;
+}
+
+/* Learning Resources */
+.learning-resources {
+    margin: 40px 0;
+}
+
+.learning-resources h3 {
+    font-size: clamp(1.3rem, 4vw, 1.6rem);
+    margin-bottom: 20px;
+    color: #004466;
+    text-align: center;
+}
+
 .carousel {
     position: relative;
     width: 100%;
     max-width: 800px;
-    margin: auto;
+    margin: 0 auto;
+    border-radius: 10px;
     overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Carousel items */
 .carousel-item {
     display: none;
-    position: absolute;
     width: 100%;
+}
+
+.carousel-item.active {
+    display: block;
     animation: fade 1s ease-in-out;
 }
 
-/* Active item is visible */
-.carousel-item.active {
-    display: block;
-    position: relative;
-}
-
-/* Image styling */
 .carousel img {
     width: 100%;
-    border-radius: 10px;
+    height: 300px;
+    object-fit: cover;
 }
 
-/* Caption styling */
 .carousel-caption {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
-    color: #004466; /* Navy blue text */
-    padding: 10px 15px;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.6); /* Transparent white background */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 68, 102, 0.8);
+    color: white;
+    padding: 15px;
 }
 
-/* Optional: Adjust the padding for better text spacing */
 .carousel-caption h4 {
-    margin: 0;
-    font-size: 1.2rem; /* Adjust size as needed */
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
 }
 
 .carousel-caption p {
-    font-size: 1rem;
-    margin-top: 5px;
+    margin: 0 0 12px 0;
+    font-size: 0.95rem;
 }
 
-/* Fade animation */
-@keyframes fade {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-.carousel-item a:hover {
-    text-decoration: underline;
-}
-
-.learning-resources a {
-    color: #007bff;
-    text-decoration: none;
-    font-size: 1rem;
-}
-
-.learning-resources a:hover {
-    text-decoration: underline;
-}
-
-/* Profile Section Styling */
-.profile {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.profile img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-    border: 3px solid #ffa500;
-}
-
-.profile a {
-    text-decoration: none;
-    color: #fcfdfd;
+.carousel-caption .btn {
+    background-color: #ffa500;
+    color: #004466;
     font-weight: bold;
-    display: block;
-    margin-top: 10px;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .module-card {
-        width: calc(50% - 20px); /* Two cards per row */
+.carousel-caption .btn:hover {
+    background-color: #e69500;
+}
+
+@keyframes fade {
+    from { opacity: 0.7; }
+    to { opacity: 1; }
+}
+
+/* Carousel Navigation */
+.carousel-nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.carousel-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-dot.active {
+    background-color: #004466;
+}
+
+/* Tablet View (768px and up) */
+@media (min-width: 768px) {
+    .dashboard header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .profile img {
-        width: 80px;
-        height: 80px;
+    .module-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .carousel img {
+        height: 350px;
     }
 }
 
-@media (max-width: 480px) {
-    .module-card {
-        width: 100%; /* One card per row */
+/* Desktop View (992px and up) */
+@media (min-width: 992px) {
+    .dashboard {
+        padding: 25px;
+        max-width: 1200px;
     }
 
-    .profile img {
-        width: 100px;
-        height: 100px;
+    .module-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .carousel-caption {
+        padding: 20px;
+    }
+}
+
+/* Large Desktop View (1200px and up) */
+@media (min-width: 1200px) {
+    .module-cards {
+        grid-template-columns: repeat(4, 1fr);
     }
 }

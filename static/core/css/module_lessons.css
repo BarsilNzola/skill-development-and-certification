@@ -1,113 +1,137 @@
-/* Styling for weeks container */
-.weeks-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: space-around;
-  margin-top: 30px;
+/* Base Styles (Mobile First) */
+.module-lessons-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
 }
 
+.module-lessons-container h1 {
+  font-size: clamp(1.8rem, 5vw, 2.2rem);
+  color: #004466;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Back Button */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #004466;
+  color: white;
+  padding: 0.7rem 1.3rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  margin-bottom: 1.5rem;
+}
+
+.back-btn:hover {
+  background-color: #003355;
+  transform: translateY(-2px);
+}
+
+.back-btn::before {
+  content: "←";
+}
+
+/* Weeks Container */
+.weeks-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
+}
+
+/* Week Card */
 .week-card {
-  background-color: #f8f9fa;   /* Light background for cards */
-  border: 1px solid #ddd;      /* Border to distinguish each card */
+  background: white;
   border-radius: 10px;
-  padding: 15px;
-  width: 300px;                 /* Fixed width for each week card */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Shadow for a lifted effect */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;  /* Smooth transition */
-  margin-bottom: 30px;
+  padding: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1px solid #eaeaea;
 }
 
 .week-card h2 {
-  font-size: 22px;
-  margin-bottom: 10px;
+  font-size: 1.3rem;
+  color: #004466;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f0f0f0;
 }
 
+/* Days Container */
 .days-container {
-  padding-left: 10px;          /* Slight padding for nested items */
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
 }
 
 .day {
-  margin-top: 15px;           /* Space between days */
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 0.8rem;
 }
 
 .day h3 {
-  font-size: 18px;
-  margin-bottom: 8px;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 0.6rem;
 }
 
 .day ul {
-  padding-left: 20px;         /* Indent list items */
-  list-style-type: none;      /* Remove bullet points */
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
 
 .day li {
-  margin: 8px 0;              /* Space between lessons */
+  list-style: none;
 }
 
-.day a {
+/* Lesson Links */
+.lesson-link {
+  display: block;
+  padding: 0.6rem;
+  background: white;
+  border-radius: 4px;
   text-decoration: none;
-  color: #007bff;             /* Blue color for links */
-  transition: color 0.2s ease; /* Smooth transition for color change */
+  color: #0066cc;
+  transition: all 0.15s ease;
+  border: 1px solid #e0e0e0;
 }
 
-.day a:hover {
-  text-decoration: underline; /* Underline effect on hover */
-  color: #0056b3;             /* Darker blue on hover for better contrast */
+.lesson-link:hover {
+  background-color: #f5f9ff;
+  border-color: #0066cc;
 }
 
-.week-card:hover {
-  transform: translateY(-5px);  /* Lift effect on hover */
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Slightly more pronounced shadow */
-}
-
-/* Button styles (same as in your landing page) */
-.btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1.1em;
-  cursor: pointer;
-  border-radius: 5px;
-  text-decoration: none;
-  display: inline-block;
-}
-
-.btn-primary {
-  background-color: #007bff;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-/* Make sure the layout is responsive */
-@media (max-width: 768px) {
+/* Responsive Layout */
+@media (min-width: 768px) {
   .weeks-container {
-      gap: 15px;  /* Reduce gap for smaller screens */
+      grid-template-columns: repeat(2, 1fr);
   }
-
-  .week-card {
-      width: 100%;  /* Full width on smaller screens */
+  
+  .module-lessons-container {
+      padding: 1.5rem;
   }
 }
 
-@media (max-width: 480px) {
-  .week-card {
-      width: 100%;
-      padding: 10px;  /* Adjust padding on very small screens */
-  }
-
+@media (min-width: 1024px) {
   .weeks-container {
-      gap: 10px;  /* Further reduce the gap for very small screens */
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
   }
+  
+  .week-card {
+      padding: 1.5rem;
+  }
+}
 
-  .day h3 {
-      font-size: 16px;  /* Slightly smaller heading on very small screens */
-  }
-
-  .day a {
-      font-size: 1em;  /* Adjust font size for links */
-  }
+/* Focus Styles for Accessibility */
+a:focus {
+  outline: 2px solid #004466;
+  outline-offset: 2px;
 }

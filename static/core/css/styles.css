@@ -1,47 +1,56 @@
+/* Base Styles (Mobile First) */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 120px; /* Add padding for footer */
 }
 
 header {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     background-color: #004466;
     color: white;
     padding: 10px 20px;
     justify-content: space-between;
+    gap: 15px;
 }
 
 header .logo {
     height: 50px;
-    margin-right: 20px;
+    margin-right: 15px;
 }
 
 header h1 {
-    font-size: 2em;
+    font-size: clamp(1.5rem, 4vw, 2rem); /* Responsive font size */
     margin: 0;
+    flex-grow: 1;
 }
 
 nav ul {
     list-style: none;
     display: flex;
-    margin-left: auto;
+    margin: 0;
     padding: 0;
+    gap: 10px;
 }
 
 nav ul li {
-    margin: 0 10px;
+    margin: 0;
 }
 
 nav ul li a {
     color: white;
     text-decoration: none;
-    font-size: 1.2em;
+    font-size: 1.1em;
     padding: 5px 10px;
     border-radius: 5px;
     transition: background-color 0.3s;
+    white-space: nowrap;
 }
 
 nav ul li a:hover {
@@ -50,16 +59,19 @@ nav ul li a:hover {
 
 main {
     padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 footer {
     background-color: #004466;
     color: white;
     text-align: center;
-    padding: 10px;
-    position: fixed;
-    width: 100%;
+    padding: 15px 10px;
+    position: absolute;
     bottom: 0;
+    width: 100%;
     font-size: 0.9em;
 }
 
@@ -68,7 +80,7 @@ footer p {
 }
 
 footer p a {
-    color: #FFD700; /* Gold color for "The ForeverKnights" */
+    color: #FFD700;
     text-decoration: none;
 }
 
@@ -76,51 +88,116 @@ footer p a:hover {
     text-decoration: underline;
 }
 
-footer .donate span {
+.donate {
+    margin-top: 10px;
+}
+
+.donate p {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.donate span {
     display: inline-block;
-    margin: 0 5px;
+    margin: 0;
 }
 
 footer code {
     background: #003355;
     padding: 2px 6px;
     border-radius: 4px;
-    color: #FFD700; /* gold text for wallet addresses */
+    color: #FFD700;
     font-family: monospace;
     font-size: 0.85em;
+    word-break: break-all;
 }
 
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5em;
+    padding: 5px 10px;
+}
 
-
-/* Mobile-first Responsive Design */
+/* Tablet View (768px and up) */
 @media screen and (max-width: 768px) {
     header {
-        flex-direction: column;
-        align-items: flex-start;
+        padding: 10px 15px;
     }
+    
     nav ul {
         display: none;
-        flex-direction: column;
         width: 100%;
+        flex-direction: column;
+        gap: 0;
     }
+    
     nav ul li {
-        text-align: center;
-        padding: 10px 0;
+        text-align: left;
+        padding: 8px 0;
+        border-top: 1px solid #006688;
     }
+    
     .menu-toggle {
         display: block;
-        cursor: pointer;
-        padding: 10px;
-        background-color: #004466;
-        color: white;
-        border: none;
-        font-size: 1.5em;
+        order: 1;
     }
+    
+    header h1 {
+        order: 2;
+        flex-basis: calc(100% - 70px);
+        text-align: center;
+    }
+    
+    .logo {
+        order: 3;
+        margin-right: 0;
+    }
+    
+    nav {
+        order: 4;
+        width: 100%;
+    }
+    
     nav.active ul {
         display: flex;
     }
 }
 
-.menu-toggle {
-    display: none; /* Default is hidden on desktop */
+/* Small Mobile View (480px and below) */
+@media screen and (max-width: 480px) {
+    header {
+        padding: 8px 10px;
+    }
+    
+    footer {
+        padding: 10px 5px;
+        font-size: 0.8em;
+    }
+    
+    footer code {
+        font-size: 0.75em;
+    }
+    
+    .donate p {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .donate span {
+        display: block;
+        margin: 3px 0;
+    }
+}
+
+/* Large Desktop View (1200px and up) */
+@media screen and (min-width: 1200px) {
+    main {
+        padding: 30px;
+    }
 }

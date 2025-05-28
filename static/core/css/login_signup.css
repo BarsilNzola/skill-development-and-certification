@@ -1,135 +1,176 @@
-/* Login/Sign Up Container */
+/* Base Styles (Mobile First) */
 .login-signup-container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 30px;
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
     background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Form titles */
-.form-title {
-    text-align: center;
-    font-size: 1.8em;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.login-signup-container .active {
-    display: block;
-}
-
-.login-signup-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
+    box-sizing: border-box;
 }
 
 /* Forms Layout */
+#login-form, #signup-form {
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+}
+
+#login-form.active, #signup-form.active {
+    display: block;
+}
+
+.form-title {
+    text-align: center;
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    color: #004466;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
 .login-signup-container form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-}
-
-.login-signup-container form label {
-    font-weight: bold;
+    gap: 20px;
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 /* Form Inputs */
+.login-signup-container form p {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.login-signup-container form label {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+}
+
 .login-signup-container form input[type="text"],
 .login-signup-container form input[type="email"],
 .login-signup-container form input[type="password"],
 .login-signup-container form input[type="number"],
 .login-signup-container form select {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
+    padding: 14px;
+    border: 2px solid #e0e0e0;
     border-radius: 8px;
-    box-sizing: border-box;
-    font-size: 16px;
-    transition: border 0.3s ease;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
-/* Input focus effect */
 .login-signup-container form input:focus,
 .login-signup-container form select:focus {
     border-color: #004466;
+    box-shadow: 0 0 0 3px rgba(0, 68, 102, 0.1);
     outline: none;
 }
 
-/* Submit buttons */
+/* Submit Buttons */
 .submit-btn {
-    padding: 12px;
+    padding: 14px;
     background-color: #004466;
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-size: 1.2em;
-    transition: background-color 0.3s ease;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 10px;
 }
 
 .submit-btn:hover {
     background-color: #003355;
+    transform: translateY(-2px);
 }
 
 /* Error Messages */
 .error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: 10px;
+    color: #d32f2f;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    padding: 8px 12px;
+    background-color: #fde8e8;
+    border-radius: 6px;
+    border-left: 4px solid #d32f2f;
 }
 
-/* Link styles */
+.error-message ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+/* Switch Form Links */
 .switch-form {
     text-align: center;
-    font-size: 1em;
+    margin-top: 25px;
+    font-size: 0.95rem;
+    color: #555;
 }
 
 .switch-form a {
-    color: #004466;
+    color: #0066cc;
     text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
 }
 
 .switch-form a:hover {
+    color: #004466;
     text-decoration: underline;
 }
 
-/* Responsiveness */
-@media (max-width: 768px) {
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tablet View (768px and up) */
+@media (min-width: 768px) {
     .login-signup-container {
-        padding: 20px;
-        width: 90%;
+        max-width: 600px;
+        padding: 40px;
+        margin: 40px auto;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
-
-    .form-title {
-        font-size: 1.6em;
+    
+    .login-signup-container form {
+        gap: 25px;
     }
-
+    
     .submit-btn {
-        font-size: 1.1em;
+        padding: 16px;
     }
 }
 
-/* Ensure that both forms are hidden initially */
-#login-form, #signup-form {
-    display: none;  /* Hide both forms by default */
+/* Desktop View (992px and up) */
+@media (min-width: 992px) {
+    .login-signup-container {
+        margin: 60px auto;
+    }
+    
+    .form-title {
+        margin-bottom: 30px;
+    }
 }
 
-/* Show the active form */
-#login-form.active, #signup-form.active {
-    display: block; /* Only the active form will be displayed */
+/* Form Field Errors */
+.errorlist {
+    color: #d32f2f;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    padding-left: 15px;
 }
 
-/* Inactive form will stay hidden */
-#login-form.inactive, #signup-form.inactive {
-    display: none;
-}
-
-
-#login-error-message, #signup-error-message {
-    color: red;
-    font-size: 14px;
-    margin-top: 10px;
+/* Password Requirements */
+.password-requirements {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 5px;
+    padding-left: 15px;
 }
