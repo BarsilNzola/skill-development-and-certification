@@ -64,7 +64,7 @@ footer {
 }
 
 footer p {
-    margin: 0;
+    margin: 5px 0;
 }
 
 footer p a {
@@ -75,6 +75,21 @@ footer p a {
 footer p a:hover {
     text-decoration: underline;
 }
+
+footer .donate span {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+footer code {
+    background: #003355;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #FFD700; /* gold text for wallet addresses */
+    font-family: monospace;
+    font-size: 0.85em;
+}
+
 
 
 /* Mobile-first Responsive Design */
