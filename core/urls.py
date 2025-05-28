@@ -46,8 +46,6 @@ urlpatterns = [
     path('questions/', QuestionListCreate.as_view(), name='question-list-create'),
     path('questions/<int:pk>/', QuestionDetail.as_view(), name='question-detail'),
     
-    # Certificates
-    path('certificates/<int:course_id>/<int:user_id>/', generate_certificate, name='generate-certificate'),
 
     # Future Modules (Example for "Assignments")
     path('assignments/', AssignmentListCreate.as_view(), name='assignment-list-create'),  # New assignments view
