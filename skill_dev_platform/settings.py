@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from urllib.parse import urlparse
 from datetime import timedelta
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -92,14 +93,7 @@ WSGI_APPLICATION = 'skill_dev_platform.wsgi.application'
 
 if os.getenv('RENDER'):  # Render environment
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'skill_dev',
-            'USER': 'skill_dev_user',
-            'PASSWORD': 'kQ8JBrtp0nv0b9JpJ0X47xRD0UHASPma',
-            'HOST': 'dpg-ctddln9opnds73ak4360-a',
-            'PORT': '5432',  # Default PostgreSQL port
-        }
+        'default': dj_database_url.config(conn_max_age=600)
     }
 else:
     # Local database settings
