@@ -145,8 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const username = document.querySelector('#id_username')?.value.trim() || '';
         const email = document.querySelector('[name="email"]').value.trim();
         const password = document.querySelector('#id_password')?.value.trim() || '';
-        const confirm_password = document.querySelector('[name="confirm_password"]').value.trim();
-        const first_name = document.querySelector('[name="first_name"]').value.trim();
+        const confirm_password = document.querySelector('[name="password2"]').value.trim();        const first_name = document.querySelector('[name="first_name"]').value.trim();
         const last_name = document.querySelector('[name="last_name"]').value.trim();
 
         console.log(`Username: ${username}, Email: ${email}, Password: ${password}, Confirm Password: ${confirm_password}, First Name: ${first_name}, Last Name: ${last_name}`);
