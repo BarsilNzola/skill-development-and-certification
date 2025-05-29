@@ -1,53 +1,109 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from .models import UserProfile
 
-# Sign-up form
-class SignUpForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-    confirm_password = forms.CharField(widget=forms.PasswordInput)
+class SignUpForm(UserCreationForm):
+    first_name = forms.CharField(
+        max_length=30,
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
+    last_name = forms.CharField(
+        max_length=30,
+        required=True,
+        widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
+    username = forms.CharField(
+        help_text="",
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Username',
+            'pattern': '[A-Za-z0-9]+',  # No spaces allowed
+            'title': 'Username should contain only letters and numbers (no spaces)'
+        }))
+    password1 = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Password',
+            'class': 'password-toggle'
+        }))
+    password2 = forms.CharField(
+        label="Confirm Password",
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Confirm Password',
+            'class': 'password-toggle'
+        }))
+    show_password = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={
+            'class': 'show-password-checkbox',
+            'onclick': "togglePasswordVisibility()"
+        }),
+        label="Show passwords")
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password']
+        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2']
 
-    username = forms.CharField(help_text="")
-    
-    def clean(self):
-        cleaned_data = super().clean()
-        password = cleaned_data.get("password")
-        if password: 
-            cleaned_data["password"] = password.strip()
-        else: 
-            self.add_error("password", "Password is required.")
-            return cleaned_data
-        confirm_password = cleaned_data.get("confirm_password")
-        
-        # Debugging line
-        print(f"Password: {password}, Confirm Password: {confirm_password}")
-        
-        if password and confirm_password and password != confirm_password:
-            raise ValidationError("Passwords do not match")
-        return cleaned_data
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if ' ' in username:
+            raise ValidationError("Username cannot contain spaces")
+        return username
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("This email is already in use")
+        return email
 
-# Login form
 class LoginForm(forms.Form):
     username = forms.CharField(
-        max_length=100,
-        widget=forms.TextInput(attrs={'id': 'login_username'})
-        )
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Username',
+            'id': 'login_username'
+        }))
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'id': 'login_password'})
-        )
-    
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Password',
+            'id': 'login_password',
+            'class': 'password-toggle'
+        }))
+    show_password = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={
+            'class': 'show-password-checkbox',
+            'onclick': "toggleLoginPasswordVisibility()"
+        }),
+        label="Show password")
+
 class ProfileEditForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=30, required=True)
+    last_name = forms.CharField(max_length=30, required=True)
+    
     class Meta:
         model = UserProfile
-        fields = ['profile_picture']
+        fields = ['profile_picture', 'bio']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.user:
+            self.fields['first_name'].initial = self.instance.user.first_name
+            self.fields['last_name'].initial = self.instance.user.last_name
+    
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        profile.user.first_name = self.cleaned_data['first_name']
+        profile.user.last_name = self.cleaned_data['last_name']
+        if commit:
+            profile.user.save()
+            profile.save()
+        return profile
 
-def clean_profile_picture(self):
+    def clean_profile_picture(self):
         picture = self.cleaned_data.get('profile_picture')
-        # Add validation if needed (e.g., file size or type validation)
+        if picture and picture.size > 2*1024*1024:  # 2MB limit
+            raise ValidationError("Image file too large (max 2MB)")
         return picture

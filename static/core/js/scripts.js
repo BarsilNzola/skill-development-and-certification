@@ -47,6 +47,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Initialize password fields
+    const loginCheckbox = document.querySelector('#loginForm .show-password-checkbox');
+    if (loginCheckbox) {
+        loginCheckbox.addEventListener('change', toggleLoginPassword);
+    }
+    
+    const signupCheckbox = document.querySelector('#signupForm .show-password-checkbox');
+    if (signupCheckbox) {
+        signupCheckbox.addEventListener('change', toggleSignupPasswords);
+    }
+
     // Add real-time password validation
     const passwordField = document.querySelector('#id_password');
     const confirmPasswordField = document.querySelector('[name="confirm_password"]');
@@ -70,6 +81,35 @@ document.addEventListener('DOMContentLoaded', function() {
             errorElement.textContent = "";
         }
     }
+
+    // Password visibility toggles
+    function toggleLoginPassword() {
+        const passwordField = document.querySelector('#loginForm input[type="password"]');
+        if (passwordField) {
+            passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
+        }
+    }
+
+    function toggleSignupPasswords() {
+        const passwordFields = document.querySelectorAll('#signupForm input[type="password"]');
+        const showPassword = document.querySelector('#signupForm .show-password-checkbox').checked;
+        
+        passwordFields.forEach(field => {
+            field.type = showPassword ? 'text' : 'password';
+        });
+    }
+
+    // Real-time username validation
+    document.getElementById('id_username')?.addEventListener('input', function() {
+        const errorElement = this.nextElementSibling?.nextElementSibling; // Skip help text
+        if (/\s/.test(this.value)) {
+            if (errorElement) errorElement.textContent = "Username cannot contain spaces";
+            this.setCustomValidity("Username cannot contain spaces");
+        } else {
+            if (errorElement) errorElement.textContent = "";
+            this.setCustomValidity("");
+        }
+    });
 
     // login form submission handler
     document.getElementById('login-form').addEventListener('submit', async (event) => {

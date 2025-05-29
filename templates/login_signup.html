@@ -11,19 +11,38 @@
         <h2 class="form-title">Login</h2>
         <form id="loginForm" method="post" action="{% url 'users:login' %}">
             {% csrf_token %}
-            {{ login_form.as_p }}
+            <div class="form-field">
+                {{ login_form.username.label_tag }}
+                {{ login_form.username }}
+                {% if login_form.username.errors %}
+                    <div class="error-message">{{ login_form.username.errors.0 }}</div>
+                {% endif %}
+            </div>
+            <div class="form-field">
+                {{ login_form.password.label_tag }}
+                <div class="password-wrapper">
+                    {{ login_form.password }}
+                    <label class="show-password-label">
+                        <input type="checkbox" class="show-password-checkbox" onclick="toggleLoginPassword()">
+                        Show
+                    </label>
+                </div>
+                {% if login_form.password.errors %}
+                    <div class="error-message">{{ login_form.password.errors.0 }}</div>
+                {% endif %}
+            </div>
             <button type="submit" class="submit-btn">Login</button>
+            <div id="login-error-message" class="error-message">
+                {% if login_form.non_field_errors %}
+                    <ul>
+                        {% for error in login_form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <p class="switch-form">Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
         </form>
-        <div id="login-error-message" class="error-message">
-            {% if login_form.errors %}
-                <ul>
-                    {% for error in login_form.non_field_errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-        <p class="switch-form">Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
     </div>
     
     <!-- Sign-Up Form -->
@@ -31,19 +50,69 @@
         <h2 class="form-title">Sign Up</h2>
         <form id="signupForm" method="post" action="{% url 'users:signup' %}" novalidate>
             {% csrf_token %}
-            {{ signup_form.as_p }}
+            <div class="form-field">
+                {{ signup_form.first_name.label_tag }}
+                {{ signup_form.first_name }}
+                {% if signup_form.first_name.errors %}
+                    <div class="error-message">{{ signup_form.first_name.errors.0 }}</div>
+                {% endif %}
+            </div>
+            <div class="form-field">
+                {{ signup_form.last_name.label_tag }}
+                {{ signup_form.last_name }}
+                {% if signup_form.last_name.errors %}
+                    <div class="error-message">{{ signup_form.last_name.errors.0 }}</div>
+                {% endif %}
+            </div>
+            <div class="form-field">
+                {{ signup_form.username.label_tag }}
+                {{ signup_form.username }}
+                <small class="help-text">No spaces allowed</small>
+                {% if signup_form.username.errors %}
+                    <div class="error-message">{{ signup_form.username.errors.0 }}</div>
+                {% endif %}
+            </div>
+            <div class="form-field">
+                {{ signup_form.email.label_tag }}
+                {{ signup_form.email }}
+                {% if signup_form.email.errors %}
+                    <div class="error-message">{{ signup_form.email.errors.0 }}</div>
+                {% endif %}
+            </div>
+            <div class="form-field">
+                {{ signup_form.password1.label_tag }}
+                <div class="password-wrapper">
+                    {{ signup_form.password1 }}
+                    <label class="show-password-label">
+                        <input type="checkbox" class="show-password-checkbox" onclick="toggleSignupPasswords()">
+                        Show
+                    </label>
+                </div>
+                {% if signup_form.password1.errors %}
+                    <div class="error-message">{{ signup_form.password1.errors.0 }}</div>
+                {% endif %}
+            </div>
+            <div class="form-field">
+                {{ signup_form.password2.label_tag }}
+                <div class="password-wrapper">
+                    {{ signup_form.password2 }}
+                </div>
+                {% if signup_form.password2.errors %}
+                    <div class="error-message">{{ signup_form.password2.errors.0 }}</div>
+                {% endif %}
+            </div>
             <button type="submit" class="submit-btn">Sign Up</button>
+            <div id="signup-error-message" class="error-message">
+                {% if signup_form.non_field_errors %}
+                    <ul>
+                        {% for error in signup_form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <p class="switch-form">Already have an account? <a href="#" id="show-login">Login</a></p>
         </form>
-        <div id="signup-error-message" class="error-message">
-            {% if signup_form.errors %}
-                <ul>
-                    {% for error in signup_form.non_field_errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-        <p class="switch-form">Already have an account? <a href="#" id="show-login">Login</a></p>
     </div>
 </div>
 

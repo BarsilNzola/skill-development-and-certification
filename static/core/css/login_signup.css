@@ -26,6 +26,16 @@
     font-weight: 600;
 }
 
+.form-field {
+    margin-bottom: 1.2rem;
+}
+
+.form-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
 .login-signup-container form {
     display: flex;
     flex-direction: column;
@@ -68,6 +78,34 @@
     outline: none;
 }
 
+.password-wrapper {
+    position: relative;
+}
+
+.show-password-label {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.show-password-checkbox {
+    margin: 0;
+    width: auto;
+}
+
+.help-text {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 0.3rem;
+}
+
 /* Submit Buttons */
 .submit-btn {
     padding: 14px;
@@ -101,6 +139,15 @@
 .error-message ul {
     margin: 0;
     padding-left: 20px;
+}
+
+/* Validation states */
+input:invalid {
+    border-color: #dc3545 !important;
+}
+
+input:valid:not(:placeholder-shown) {
+    border-color: #28a745 !important;
 }
 
 /* Switch Form Links */
@@ -173,4 +220,14 @@
     color: #666;
     margin-top: 5px;
     padding-left: 15px;
+}
+
+@media (max-width: 768px) {
+    .form-field {
+        margin-bottom: 1rem;
+    }
+    
+    .show-password-label {
+        font-size: 0.8rem;
+    }
 }
