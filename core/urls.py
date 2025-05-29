@@ -3,16 +3,15 @@ from django.contrib import admin
 from .views import home, login_signup, update_profile_picture, module_lessons_view, lesson_detail_view, submit_assignment, mark_lesson_complete, logout_view, CourseListCreate, CourseDetail, ModuleListCreate, ModuleDetail, LessonListCreate, LessonDetail, ProgressListCreate, ProgressDetail, QuizListCreate, QuizDetail, QuestionListCreate, QuestionDetail, generate_certificate, AssignmentListCreate, AssignmentDetail
 from users.views import login_view, signup_view, dashboard_view
 
-from core import views
-
 app_name = 'core'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls', namespace='users')),  # Include the namespace here
     path('', home, name='home'),
-    path('api/login/', views.login_signup, name='api_login'),
-    path('api/signup/', views.login_signup, name='api_signup'),
+    path('login_signup/', login_signup, name='login_signup'),
+    path('login/', login_view, name='login'),
+    path('signup/', signup_view, name='signup'),
     path('dashboard/', dashboard_view, name='dashboard'),
     path('profile/edit/', update_profile_picture, name='profile_edit'),
     path('module/<int:module_id>/lessons/', module_lessons_view, name='module_lessons'), 
