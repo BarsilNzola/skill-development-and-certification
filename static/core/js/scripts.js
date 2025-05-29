@@ -145,58 +145,62 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById('signup-form')?.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    // Updated signup form submission handler
+document.getElementById('signup-form')?.addEventListener('submit', async (event) => {
+    event.preventDefault();
     
-        // Get all form values
-        const firstName = document.querySelector('#id_first_name')?.value.trim() || '';
-        const lastName = document.querySelector('#id_last_name')?.value.trim() || '';
-        const username = document.querySelector('#id_username')?.value.trim() || '';
-        const email = document.querySelector('#id_email')?.value.trim() || '';
-        const password = document.querySelector('#id_password1')?.value.trim() || '';
-        const confirm_password = document.querySelector('#id_password2')?.value.trim() || '';
-    
-        // Validate required fields
-        if (!firstName || !lastName || !username || !email || !password) {
-            document.getElementById('signup-error-message').innerText = 'Please fill in all required fields.';
+    // Get all form values
+    const formData = {
+        first_name: document.querySelector('#id_first_name')?.value.trim(),
+        last_name: document.querySelector('#id_last_name')?.value.trim(),
+        username: document.querySelector('#id_username')?.value.trim(),
+        email: document.querySelector('#id_email')?.value.trim(),
+        password: document.querySelector('#id_password1')?.value.trim(),
+        confirm_password: document.querySelector('#id_password2')?.value.trim()
+    };
+
+    // Validate required fields
+    for (const [field, value] of Object.entries(formData)) {
+        if (!value) {
+            document.getElementById('signup-error-message').innerText = 
+                `Please fill in all fields. Missing: ${field.replace('_', ' ')}`;
             return;
         }
-    
-        if (password !== confirm_password) {
-            document.getElementById('signup-error-message').innerText = "Passwords do not match.";
-            return;
+    }
+
+    if (formData.password !== formData.confirm_password) {
+        document.getElementById('signup-error-message').innerText = "Passwords do not match.";
+        return;
+    }
+
+    try {
+        const response = await fetch(`${baseUrl}/api/signup/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            body: JSON.stringify(formData),
+        });
+
+        const data = await response.json();
+        
+        if (response.ok) {
+            alert('Registration successful! Redirecting to login...');
+            toggleForms();
+        } else {
+            // Show server-side validation errors
+            const errorMsg = data.message || 
+                           data.error || 
+                           Object.values(data.errors || {}).flat().join('\n');
+            document.getElementById('signup-error-message').innerText = errorMsg;
         }
-    
-        try {
-            const response = await fetch(`${baseUrl}/api/signup/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                },
-                body: JSON.stringify({ 
-                    first_name: firstName,
-                    last_name: lastName,
-                    username,
-                    email,
-                    password, 
-                    confirm_password 
-                }),
-            });
-    
-            if (response.ok) {
-                const data = await response.json();
-                alert('Registration successful! Redirecting to login...');
-                toggleForms(); // Switch to login form
-            } else {
-                const errorData = await response.json();
-                document.getElementById('signup-error-message').innerText = errorData.message;
-            }
-        } catch (error) {
-            console.error('Signup error:', error);
-            document.getElementById('signup-error-message').innerText = 'An error occurred. Please try again later.';
-        }
-    });
+    } catch (error) {
+        console.error('Signup error:', error);
+        document.getElementById('signup-error-message').innerText = 
+            'An error occurred. Please try again later.';
+    }
+});
 
     // Add focus styles for better accessibility
     const inputs = document.querySelectorAll('input, button, a');
