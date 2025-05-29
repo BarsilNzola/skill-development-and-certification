@@ -120,6 +120,9 @@ def login_signup(request):
         'signup_form': signup_form
     })
 
+def home(request): 
+    return render(request, 'index.html')
+
 @login_required
 def dashboard_view(request):
     modules = Module.objects.all()
