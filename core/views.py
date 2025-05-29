@@ -22,23 +22,68 @@ import os
 import json
 from django.conf import settings
 
+import json
+from django.contrib.auth import authenticate, login, get_user_model
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from .forms import SignUpForm, LoginForm
+
 def login_signup(request):
-    login_form = LoginForm()
     signup_form = SignUpForm()
-    
+    login_form = LoginForm()
+
     if request.method == 'POST':
-        if 'signup_form' in request.POST:
+        # Check if request is JSON (API call)
+        if request.content_type == 'application/json':
+            data = json.loads(request.body)
+            action = data.get('action')  # You can pass 'signup' or 'login' in body
+
+            if action == 'signup':
+                signup_form = SignUpForm(data)
+                if signup_form.is_valid():
+                    User = get_user_model()
+                    User.objects.create_user(
+                        username=signup_form.cleaned_data.get('username'),
+                        email=signup_form.cleaned_data.get('email'),
+                        password=signup_form.cleaned_data.get('password1'),
+                        first_name=signup_form.cleaned_data.get('first_name'),
+                        last_name=signup_form.cleaned_data.get('last_name')
+                    )
+                    return JsonResponse({'message': 'Registration successful!'}, status=201)
+                else:
+                    return JsonResponse({'errors': signup_form.errors}, status=400)
+
+            elif action == 'login':
+                login_form = LoginForm(data)
+                if login_form.is_valid():
+                    username = login_form.cleaned_data.get('username')
+                    password = login_form.cleaned_data.get('password')
+                    user = authenticate(request, username=username, password=password)
+                    if user is not None:
+                        login(request, user)
+                        return JsonResponse({'message': 'Login successful!'}, status=200)
+                    else:
+                        return JsonResponse({'error': 'Invalid username or password'}, status=400)
+                else:
+                    return JsonResponse({'errors': login_form.errors}, status=400)
+
+            else:
+                return JsonResponse({'error': 'Invalid action'}, status=400)
+
+        # Check if it's a normal form POST (non-AJAX)
+        elif 'signup_form' in request.POST:
             signup_form = SignUpForm(request.POST)
             if signup_form.is_valid():
                 User = get_user_model()
                 User.objects.create_user(
                     username=signup_form.cleaned_data.get('username'),
                     email=signup_form.cleaned_data.get('email'),
-                    password=signup_form.cleaned_data.get('password'),
-                    first_name=signup_form.cleaned_data.get('first_name'),  
-                    last_name=signup_form.cleaned_data.get('last_name')     
+                    password=signup_form.cleaned_data.get('password1'),
+                    first_name=signup_form.cleaned_data.get('first_name'),
+                    last_name=signup_form.cleaned_data.get('last_name')
                 )
                 return redirect('home')
+
         elif 'login_form' in request.POST:
             login_form = LoginForm(request.POST)
             if login_form.is_valid():
@@ -48,11 +93,9 @@ def login_signup(request):
                 if user is not None:
                     login(request, user)
                     return redirect('home')
-    else:
-        signup_form = SignUpForm()
-        login_form = LoginForm()
 
     return render(request, 'login_signup.html', {'signup_form': signup_form, 'login_form': login_form})
+
 
 
 def home(request): 
