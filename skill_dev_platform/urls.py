@@ -20,14 +20,13 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from core.views import home, dashboard_view, logout_view, mark_lesson_complete
+from core.views import dashboard_view, logout_view, mark_lesson_complete
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls', namespace='users')),
     path('accounts/', include('django.contrib.auth.urls')), # Add this line
     path('api/', include('core.urls', namespace='core')),
-    path('', home, name='home'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='login_signup.html'), name='login'),
     path('logout/', logout_view, name='logout'),
     path('dashboard/', dashboard_view, name='dashboard'),
