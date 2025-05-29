@@ -19,9 +19,9 @@
                 {% endif %}
             </div>
             <div class="form-field">
-                {{ login_form.password.label_tag }}
+                {{ login_form.password1.label_tag }}
                 <div class="password-wrapper">
-                    {{ login_form.password }}
+                    {{ login_form.password1 }}
                     <label class="show-password-label">
                         <input type="checkbox" class="show-password-checkbox" onclick="toggleLoginPassword()">
                         Show
@@ -82,7 +82,7 @@
             <div class="form-field">
                 {{ signup_form.password1.label_tag }}
                 <div class="password-wrapper">
-                    {{ signup_form.password1 }}
+                    {{ signup_form.password1|attr:"name:password1" }}
                     <label class="show-password-label">
                         <input type="checkbox" class="show-password-checkbox" onclick="toggleSignupPasswords()">
                         Show
@@ -95,7 +95,7 @@
             <div class="form-field">
                 {{ signup_form.password2.label_tag }}
                 <div class="password-wrapper">
-                    {{ signup_form.password2 }}
+                    {{ signup_form.password2|attr:"name:password2" }}
                 </div>
                 {% if signup_form.password2.errors %}
                     <div class="error-message">{{ signup_form.password2.errors.0 }}</div>

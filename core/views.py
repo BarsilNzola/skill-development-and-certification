@@ -19,52 +19,106 @@ from django.utils.html import mark_safe
 from django.utils import timezone
 from .forms import LoginForm, SignUpForm, ProfileEditForm  # Import forms
 import os
+import json
 from django.conf import settings
 
 def login_signup(request):
-    login_form = LoginForm()
-    signup_form = SignUpForm()
-    
-    if request.method == 'POST':
-        if 'signup_form' in request.POST:
-            signup_form = SignUpForm(request.POST)
-            if signup_form.is_valid():
-                User = get_user_model()
-                user = User.objects.create_user(
-                    username=signup_form.cleaned_data['username'],
-                    email=signup_form.cleaned_data['email'],
-                    password=signup_form.cleaned_data['password1'],  # Changed from 'password' to 'password1'
-                    first_name=signup_form.cleaned_data['first_name'],
-                    last_name=signup_form.cleaned_data['last_name']
-                )
-                # Authenticate and login the user after registration
-                auth_user = authenticate(
+    # Handle API requests (from your JavaScript)
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        try:
+            data = json.loads(request.body)
+            
+            # Handle login API
+            if request.path.endswith('/api/login/'):
+                user = authenticate(
                     request,
-                    username=signup_form.cleaned_data['username'],
-                    password=signup_form.cleaned_data['password1']
+                    username=data.get('username'),
+                    password=data.get('password')
                 )
-                if auth_user is not None:
-                    login(request, auth_user)
-                return redirect('home')
-                
-        elif 'login_form' in request.POST:
-            login_form = LoginForm(request.POST)
-            if login_form.is_valid():
-                username = login_form.cleaned_data['username']
-                password = login_form.cleaned_data['password']
-                user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
-                    return redirect('home')
+                    return JsonResponse({
+                        'success': True,
+                        'redirect': '/dashboard/'  # Update with your dashboard URL
+                    })
+                return JsonResponse({'error': 'Invalid username or password'}, status=400)
+            
+            # Handle signup API
+            elif request.path.endswith('/api/signup/'):
+                User = get_user_model()
+                
+                # Check if username or email exists
+                if User.objects.filter(username=data.get('username')).exists():
+                    return JsonResponse({'error': 'Username already exists'}, status=400)
+                if User.objects.filter(email=data.get('email')).exists():
+                    return JsonResponse({'error': 'Email already exists'}, status=400)
+                
+                # Create user
+                user = User.objects.create_user(
+                    username=data['username'],
+                    email=data['email'],
+                    password=data['password1'],
+                    first_name=data['first_name'],
+                    last_name=data['last_name']
+                )
+                
+                # Auto-login after registration
+                auth_user = authenticate(
+                    request,
+                    username=data['username'],
+                    password=data['password1']
+                )
+                if auth_user:
+                    login(request, auth_user)
+                
+                return JsonResponse({
+                    'success': True,
+                    'message': 'Registration successful!',
+                    'redirect': '/dashboard/'  # Update with your dashboard URL
+                })
+                
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
 
-    context = {
-        'signup_form': signup_form,
-        'login_form': login_form
-    }
-    return render(request, 'login_signup.html', context)
+    # Handle regular form submissions (fallback)
+    login_form = LoginForm(request.POST or None)
+    signup_form = SignUpForm(request.POST or None)
+    
+    # Regular form processing
+    if request.method == 'POST':
+        if 'login_form' in request.POST and login_form.is_valid():
+            user = authenticate(
+                request,
+                username=login_form.cleaned_data['username'],
+                password=login_form.cleaned_data['password']
+            )
+            if user:
+                login(request, user)
+                return redirect('home')
+        
+        elif 'signup_form' in request.POST and signup_form.is_valid():
+            User = get_user_model()
+            user = User.objects.create_user(
+                username=signup_form.cleaned_data['username'],
+                email=signup_form.cleaned_data['email'],
+                password=signup_form.cleaned_data['password1'],
+                first_name=signup_form.cleaned_data['first_name'],
+                last_name=signup_form.cleaned_data['last_name']
+            )
+            # Auto-login
+            auth_user = authenticate(
+                request,
+                username=signup_form.cleaned_data['username'],
+                password=signup_form.cleaned_data['password1']
+            )
+            if auth_user:
+                login(request, auth_user)
+            return redirect('home')
 
-def home(request): 
-    return render(request, 'index.html')
+    return render(request, 'login_signup.html', {
+        'login_form': login_form,
+        'signup_form': signup_form
+    })
 
 @login_required
 def dashboard_view(request):
