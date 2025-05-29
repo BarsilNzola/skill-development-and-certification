@@ -1,3 +1,22 @@
+// outside DOMContentLoaded so they're globally available
+function toggleLoginPassword() {
+    const passwordField = document.querySelector('#loginForm input[type="password"]');
+    if (passwordField) {
+        passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
+    }
+}
+
+function toggleSignupPasswords() {
+    const passwordFields = document.querySelectorAll('#signupForm input[type="password"]');
+    const checkbox = document.querySelector('#signupForm .show-password-checkbox');
+    if (!checkbox) return;
+    
+    const showPassword = checkbox.checked;
+    passwordFields.forEach(field => {
+        field.type = showPassword ? 'text' : 'password';
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
@@ -24,6 +43,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Toggle between forms
+    function toggleForms() {
+        loginForm.classList.toggle('active');
+        signupForm.classList.toggle('active');
+        window.scrollTo({
+            top: document.querySelector('.login-signup-container').offsetTop - 20,
+            behavior: 'smooth'
+        });
+    }
+
     if (showLogin) {
         showLogin.addEventListener('click', function(event) {
             event.preventDefault();
@@ -38,16 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function toggleForms() {
-        loginForm.classList.toggle('active');
-        signupForm.classList.toggle('active');
-        window.scrollTo({
-            top: document.querySelector('.login-signup-container').offsetTop - 20,
-            behavior: 'smooth'
-        });
-    }
-
-    // Initialize password fields
+    // Initialize password toggles
     const loginCheckbox = document.querySelector('#loginForm .show-password-checkbox');
     if (loginCheckbox) {
         loginCheckbox.addEventListener('change', toggleLoginPassword);
@@ -59,8 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Add real-time password validation
-    const passwordField = document.querySelector('#id_password');
-    const confirmPasswordField = document.querySelector('[name="confirm_password"]');
+    const passwordField = document.querySelector('#id_password1'); // Changed from #id_password
+    const confirmPasswordField = document.querySelector('#id_password2'); // Changed from [name="confirm_password"]
     
     if (passwordField && confirmPasswordField) {
         [passwordField, confirmPasswordField].forEach(field => {
@@ -71,32 +90,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function validatePasswords() {
-        const password = passwordField.value;
-        const confirmPassword = confirmPasswordField.value;
+        const password = passwordField?.value;
+        const confirmPassword = confirmPasswordField?.value;
         const errorElement = document.getElementById('signup-error-message');
+        
+        if (!errorElement) return;
         
         if (password && confirmPassword && password !== confirmPassword) {
             errorElement.textContent = "Passwords do not match";
         } else {
             errorElement.textContent = "";
         }
-    }
-
-    // Password visibility toggles
-    function toggleLoginPassword() {
-        const passwordField = document.querySelector('#loginForm input[type="password"]');
-        if (passwordField) {
-            passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
-        }
-    }
-
-    function toggleSignupPasswords() {
-        const passwordFields = document.querySelectorAll('#signupForm input[type="password"]');
-        const showPassword = document.querySelector('#signupForm .show-password-checkbox').checked;
-        
-        passwordFields.forEach(field => {
-            field.type = showPassword ? 'text' : 'password';
-        });
     }
 
     // Real-time username validation
@@ -112,11 +116,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // login form submission handler
-    document.getElementById('login-form').addEventListener('submit', async (event) => {
+    document.getElementById('login-form')?.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const username = document.getElementById('login_username').value;
-        const password = document.getElementById('login_password').value;
+        const username = document.getElementById('login_username')?.value;
+        const password = document.getElementById('login_password')?.value;
 
         try {
             const response = await fetch(`${baseUrl}/api/login/`, {
@@ -141,25 +145,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // signup form submission handler
-    document.getElementById('signup-form').addEventListener('submit', async (event) => {
+    document.getElementById('signup-form')?.addEventListener('submit', async (event) => {
         event.preventDefault();
-
+    
+        // Get all form values
+        const firstName = document.querySelector('#id_first_name')?.value.trim() || '';
+        const lastName = document.querySelector('#id_last_name')?.value.trim() || '';
         const username = document.querySelector('#id_username')?.value.trim() || '';
-        const email = document.querySelector('[name="email"]').value.trim();
-        const password = document.querySelector('#id_password')?.value.trim() || '';
-        const confirm_password = document.querySelector('[name="confirm_password"]').value.trim();
-
-        if (!username || !password) {
-            document.getElementById('signup-error-message').innerText = 'Please fill in all fields.';
+        const email = document.querySelector('#id_email')?.value.trim() || '';
+        const password = document.querySelector('#id_password1')?.value.trim() || '';
+        const confirm_password = document.querySelector('#id_password2')?.value.trim() || '';
+    
+        // Validate required fields
+        if (!firstName || !lastName || !username || !email || !password) {
+            document.getElementById('signup-error-message').innerText = 'Please fill in all required fields.';
             return;
         }
-
+    
         if (password !== confirm_password) {
             document.getElementById('signup-error-message').innerText = "Passwords do not match.";
             return;
         }
-
+    
         try {
             const response = await fetch(`${baseUrl}/api/signup/`, {
                 method: 'POST',
@@ -167,9 +174,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
                 },
-                body: JSON.stringify({ username, email, password, confirm_password }),
+                body: JSON.stringify({ 
+                    first_name: firstName,
+                    last_name: lastName,
+                    username,
+                    email,
+                    password, 
+                    confirm_password 
+                }),
             });
-
+    
             if (response.ok) {
                 const data = await response.json();
                 alert('Registration successful! Redirecting to login...');
@@ -179,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('signup-error-message').innerText = errorData.message;
             }
         } catch (error) {
+            console.error('Signup error:', error);
             document.getElementById('signup-error-message').innerText = 'An error occurred. Please try again later.';
         }
     });

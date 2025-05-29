@@ -30,26 +30,38 @@ def login_signup(request):
             signup_form = SignUpForm(request.POST)
             if signup_form.is_valid():
                 User = get_user_model()
-                User.objects.create_user(
-                    username=signup_form.cleaned_data.get('username'),
-                    email=signup_form.cleaned_data.get('email'),
-                    password=signup_form.cleaned_data.get('password')
+                user = User.objects.create_user(
+                    username=signup_form.cleaned_data['username'],
+                    email=signup_form.cleaned_data['email'],
+                    password=signup_form.cleaned_data['password1'],  # Changed from 'password' to 'password1'
+                    first_name=signup_form.cleaned_data['first_name'],
+                    last_name=signup_form.cleaned_data['last_name']
                 )
+                # Authenticate and login the user after registration
+                auth_user = authenticate(
+                    request,
+                    username=signup_form.cleaned_data['username'],
+                    password=signup_form.cleaned_data['password1']
+                )
+                if auth_user is not None:
+                    login(request, auth_user)
                 return redirect('home')
+                
         elif 'login_form' in request.POST:
             login_form = LoginForm(request.POST)
             if login_form.is_valid():
-                username = login_form.cleaned_data.get('username')
-                password = login_form.cleaned_data.get('password')
+                username = login_form.cleaned_data['username']
+                password = login_form.cleaned_data['password']
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
                     return redirect('home')
-    else:
-        signup_form = SignUpForm()
-        login_form = LoginForm()
 
-    return render(request, 'login_signup.html', {'signup_form': signup_form, 'login_form': login_form})
+    context = {
+        'signup_form': signup_form,
+        'login_form': login_form
+    }
+    return render(request, 'login_signup.html', context)
 
 def home(request): 
     return render(request, 'index.html')
