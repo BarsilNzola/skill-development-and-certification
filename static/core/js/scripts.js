@@ -138,61 +138,66 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Signup form submission
-    document.getElementById('signup-form')?.addEventListener('submit', async (event) => {
+    // Handle signup form submission
+    document.getElementById('signup-form').addEventListener('submit', async (event) => {
         event.preventDefault();
         
-        const formData = {
-            first_name: document.querySelector('#signupForm input[name="first_name"]')?.value.trim(),
-            last_name: document.querySelector('#signupForm input[name="last_name"]')?.value.trim(),
-            username: document.querySelector('#signupForm input[name="username"]')?.value.trim(),
-            email: document.querySelector('#signupForm input[name="email"]')?.value.trim(),
-            password: document.querySelector('#signupForm input[name="password1"]')?.value.trim(),
-            confirm_password: document.querySelector('#signupForm input[name="password2"]')?.value.trim()
-        };
+        const username = document.querySelector('#id_username')?.value.trim() || '';
+        const email = document.querySelector('[name="email"]').value.trim();
+        const password = document.querySelector('#id_password')?.value.trim() || '';
+        const confirm_password = document.querySelector('[name="confirm_password"]').value.trim();
+        const first_name = document.querySelector('[name="first_name"]').value.trim();
+        const last_name = document.querySelector('[name="last_name"]').value.trim();
 
-        const errorElement = document.getElementById('signup-error-message');
+        console.log(`Username: ${username}, Email: ${email}, Password: ${password}, Confirm Password: ${confirm_password}, First Name: ${first_name}, Last Name: ${last_name}`);
         
-        // Validate required fields
-        const missingFields = Object.entries(formData)
-            .filter(([_, value]) => !value)
-            .map(([field, _]) => field.replace('_', ' '));
-        
-        if (missingFields.length > 0) {
-            if (errorElement) errorElement.textContent = `Missing: ${missingFields.join(', ')}`;
+        // Handle missing data
+        if (!username || !password || !first_name || !last_name) {
+            console.error('One or more fields are missing.');
+            document.getElementById('signup-error-message').innerText = 'Please fill in all fields.';
             return;
         }
 
-        if (formData.password !== formData.confirm_password) {
-            if (errorElement) errorElement.textContent = "Passwords do not match";
+        if (password !== confirm_password) {
+            document.getElementById('signup-error-message').innerText = "Passwords do not match.";
             return;
         }
 
         try {
-            const response = await fetch(`${baseUrl}/api/signup/`, {
+            const response = await fetch('http://localhost:8000/api/signup/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    username,
+                    email,
+                    password1: password,  // NOTE: align with backend expected keys
+                    password2: confirm_password,  // if needed
+                    first_name,
+                    last_name
+                }),
             });
 
-            const data = await response.json();
-            
             if (response.ok) {
-                alert('Registration successful!');
-                toggleForms();
-            } else if (errorElement) {
-                errorElement.textContent = data.message || 
-                    Object.values(data.errors || {}).flat().join('\n') || 
-                    'Registration failed';
+                const data = await response.json();
+                alert('Registration successful! Redirecting to login...');
+
+                // Redirect to login form
+                signupForm.classList.add('inactive');
+                signupForm.classList.remove('active');
+                loginForm.classList.add('active');
+                loginForm.classList.remove('inactive');
+            } else {
+                const errorData = await response.json();
+                document.getElementById('signup-error-message').innerText = errorData.message || 'Signup failed.';
             }
         } catch (error) {
-            console.error('Signup error:', error);
-            if (errorElement) errorElement.textContent = 'An error occurred. Please try again.';
+            document.getElementById('signup-error-message').innerText = 'An error occurred. Please try again later.';
         }
     });
+
 
     // Accessibility focus styles
     const focusableElements = document.querySelectorAll('input, button, a, [tabindex]');
