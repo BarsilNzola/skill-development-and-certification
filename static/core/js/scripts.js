@@ -106,8 +106,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('login-form')?.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const username = document.querySelector('#loginForm input[name="username"]')?.value;
-        const password = document.querySelector('#loginForm input[name="password"]')?.value;
+        const username = document.getElementById('login_username').value;
+        const password = document.getElementById('login_password').value;
         const errorElement = document.getElementById('login-error-message');
 
         if (!username || !password) {
