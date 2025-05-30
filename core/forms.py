@@ -4,44 +4,46 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import UserProfile
 
+# Sign-up form
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(
         max_length=30,
         required=True,
-        widget=forms.TextInput(attrs={'placeholder': 'First Name'}))
+        widget=forms.TextInput(attrs={'placeholder': 'First Name'})
+    )
     last_name = forms.CharField(
         max_length=30,
         required=True,
-        widget=forms.TextInput(attrs={'placeholder': 'Last Name'}))
+        widget=forms.TextInput(attrs={'placeholder': 'Last Name'})
+    )
     email = forms.EmailField(
         required=True,
-        widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
+        widget=forms.EmailInput(attrs={'placeholder': 'Email'})
+    )
     username = forms.CharField(
         help_text="",
         widget=forms.TextInput(attrs={
             'placeholder': 'Username',
-            'pattern': '[A-Za-z0-9]+',  # No spaces allowed
+            'pattern': '[A-Za-z0-9]+',
             'title': 'Username should contain only letters and numbers (no spaces)'
-        }))
+        })
+    )
     password1 = forms.CharField(
         label="Password",
         widget=forms.PasswordInput(attrs={
             'placeholder': 'Password',
-            'class': 'password-toggle'
-        }))
+            'class': 'password-toggle',
+            'id': 'signup_password'
+        })
+    )
     password2 = forms.CharField(
         label="Confirm Password",
         widget=forms.PasswordInput(attrs={
             'placeholder': 'Confirm Password',
-            'class': 'password-toggle'
-        }))
-    show_password = forms.BooleanField(
-        required=False,
-        widget=forms.CheckboxInput(attrs={
-            'class': 'show-password-checkbox',
-            'onclick': "togglePasswordVisibility()"
-        }),
-        label="Show passwords")
+            'class': 'password-toggle',
+            'id': 'signup_confirm_password'
+        })
+    )
 
     class Meta:
         model = User
@@ -59,25 +61,21 @@ class SignUpForm(UserCreationForm):
             raise ValidationError("This email is already in use")
         return email
 
+# Login form
 class LoginForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(attrs={
             'placeholder': 'Username',
             'id': 'login_username'
-        }))
+        })
+    )
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'placeholder': 'Password',
             'id': 'login_password',
             'class': 'password-toggle'
-        }))
-    show_password = forms.BooleanField(
-        required=False,
-        widget=forms.CheckboxInput(attrs={
-            'class': 'show-password-checkbox',
-            'onclick': "toggleLoginPasswordVisibility()"
-        }),
-        label="Show password")
+        })
+    )
 
 class ProfileEditForm(forms.ModelForm):
     first_name = forms.CharField(max_length=30, required=True)
