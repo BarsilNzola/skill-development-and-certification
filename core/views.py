@@ -30,13 +30,23 @@ from .forms import SignUpForm, LoginForm
 import logging
 logger = logging.getLogger(__name__)
 
-def login_signup(request):
-    login_form = LoginForm()
-    signup_form = SignUpForm()
+import json
+from django.http import JsonResponse
+from django.contrib.auth import authenticate, login, get_user_model
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt  
+def login_signup(request):
     if request.method == 'POST':
-        if 'signup_form' in request.POST:
-            signup_form = SignUpForm(request.POST)
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'message': 'Invalid JSON.'}, status=400)
+
+        action = data.get('action')  # e.g., 'signup' or 'login'
+
+        if action == 'signup':
+            signup_form = SignUpForm(data)
             if signup_form.is_valid():
                 User = get_user_model()
                 User.objects.create_user(
@@ -46,25 +56,25 @@ def login_signup(request):
                     first_name=signup_form.cleaned_data['first_name'],
                     last_name=signup_form.cleaned_data['last_name']
                 )
-                return JsonResponse({'message': 'Registration successful! Please log in.'}, status=200)
+                return JsonResponse({'message': 'Registration successful! Please log in.'}, status=201)
             else:
-                return JsonResponse({'message': signup_form.errors}, status=400)
+                return JsonResponse({'message': 'Invalid data.', 'errors': signup_form.errors}, status=400)
 
-        elif 'login_form' in request.POST:
-            login_form = LoginForm(request.POST)
-            if login_form.is_valid():
-                username = login_form.cleaned_data.get('username')
-                password = login_form.cleaned_data.get('password')
-                user = authenticate(request, username=username, password=password)
-                if user is not None:
-                    login(request, user)
-                    return JsonResponse({'message': 'Login successful!'}, status=200)
-                else:
-                    return JsonResponse({'message': 'Invalid credentials.'}, status=401)
+        elif action == 'login':
+            username = data.get('username')
+            password = data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return JsonResponse({'message': 'Login successful!'}, status=200)
             else:
-                return JsonResponse({'message': login_form.errors}, status=400)
+                return JsonResponse({'message': 'Invalid credentials.'}, status=401)
 
-    return render(request, 'login_signup.html', {'signup_form': signup_form, 'login_form': login_form})
+        else:
+            return JsonResponse({'message': 'Invalid action.'}, status=400)
+
+    return JsonResponse({'message': 'Invalid request method.'}, status=405)
+
 
 def home(request): 
     return render(request, 'index.html')
