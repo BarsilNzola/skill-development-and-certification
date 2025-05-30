@@ -52,7 +52,7 @@ def login_signup(request):
                     return JsonResponse({
                         'success': True,
                         'message': 'Registration successful! Redirecting...',
-                        'redirect_url': '/login/'  # Frontend will handle redirect
+                        'redirect_url': '/api/login/'  # Frontend will handle redirect
                     })
                 else:
                     # Format errors for frontend display
