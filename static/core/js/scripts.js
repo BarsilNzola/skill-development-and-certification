@@ -145,7 +145,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const username = document.querySelector('#id_username')?.value.trim() || '';
         const email = document.querySelector('[name="email"]').value.trim();
         const password = document.querySelector('[name="password1"]').value.trim();
-        const confirm_password = document.querySelector('[name="password2"]').value.trim();        const first_name = document.querySelector('[name="first_name"]').value.trim();
+        const confirm_password = document.querySelector('[name="password2"]').value.trim();
+        const first_name = document.querySelector('[name="first_name"]').value.trim();
         const last_name = document.querySelector('[name="last_name"]').value.trim();
 
         console.log(`Username: ${username}, Email: ${email}, Password: ${password}, Confirm Password: ${confirm_password}, First Name: ${first_name}, Last Name: ${last_name}`);
@@ -162,21 +163,19 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        const formData = new FormData();
+        formData.append('signup_form', '1');  // important: flag for backend to recognize signup
+        formData.append('username', username);
+        formData.append('email', email);
+        formData.append('password1', password);
+        formData.append('password2', confirm_password);
+        formData.append('first_name', first_name);
+        formData.append('last_name', last_name);
+
         try {
             const response = await fetch(`${baseUrl}/api/signup/`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                },
-                body: JSON.stringify({
-                    username,
-                    email,
-                    password1: password,  // NOTE: align with backend expected keys
-                    password2: confirm_password,  // if needed
-                    first_name,
-                    last_name
-                }),
+                body: formData,
             });
 
             if (response.ok) {
@@ -184,18 +183,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('Registration successful! Redirecting to login...');
 
                 // Redirect to login form
+                const signupForm = document.getElementById('signup-form');
+                const loginForm = document.getElementById('login-form');
                 signupForm.classList.add('inactive');
                 signupForm.classList.remove('active');
                 loginForm.classList.add('active');
                 loginForm.classList.remove('inactive');
             } else {
                 const errorData = await response.json();
-                document.getElementById('signup-error-message').innerText = errorData.message || 'Signup failed.';
+                document.getElementById('signup-error-message').innerText =
+                    errorData.message || 'Signup failed. Please check the form and try again.';
             }
         } catch (error) {
+            console.error('Request error:', error);
             document.getElementById('signup-error-message').innerText = 'An error occurred. Please try again later.';
         }
     });
+
 
 
     // Accessibility focus styles
