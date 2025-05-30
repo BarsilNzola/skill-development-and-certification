@@ -34,11 +34,21 @@ for duplicate in module_duplicates:
         module.delete()
         
 # Remove duplicate lessons
-lesson_duplicates = Lesson.objects.values('title', 'module').annotate(count=Count('id')).filter(count__gt=1)
+lesson_duplicates = Lesson.objects.values('module', 'week', 'day').annotate(count=Count('id')).filter(count__gt=1)
+
 for duplicate in lesson_duplicates:
-    lessons_to_delete = Lesson.objects.filter(title=duplicate['title'], module=duplicate['module'])[1:]
+    # Get all lessons for this module/week/day
+    lessons = Lesson.objects.filter(
+        module=duplicate['module'],
+        week=duplicate['week'],
+        day=duplicate['day']
+    ).order_by('-id')  # Assuming the latest (highest id) is the one you just updated
+
+    # Keep the first one, delete the rest
+    lessons_to_delete = lessons[1:]
     for lesson in lessons_to_delete:
-        lesson.delete()        
+        print(f"Deleting duplicate lesson: {lesson.title} (Week {lesson.week} Day {lesson.day})")
+        lesson.delete()     
         
 # Create learning resources
 LearningResource.objects.bulk_create([
@@ -81,16 +91,15 @@ lesson_data = [
 ]
 
 # Step 3: Use get_or_create to add lessons
-for lesson in lesson_data:
-    Lesson.objects.get_or_create(
-        module=lesson["module"],
-        title=lesson["title"],
-        defaults={
-            "content": lesson["content"],
-            "week": lesson["week"],
-            "day": lesson["day"],
-        }
-    )
+Lesson.objects.update_or_create(
+    module=lesson["module"],
+    week=lesson["week"],
+    day=lesson["day"],
+    defaults={
+        "title": lesson["title"],
+        "content": lesson["content"],
+    }
+)
 
 # Update content for lessons
 # Week 1: Day 1
