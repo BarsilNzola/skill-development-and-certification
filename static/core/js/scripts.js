@@ -167,17 +167,20 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
 
             if (data.success) {
-                // Success: Redirect or show message
-                if (data.redirect_url) {
-                    window.location.href = data.redirect_url;  // Manual redirect
-                }
+                // 1. Show success message
+                alert(data.message);  // Or display in a nicer modal
+                
+                // 2. Switch to login form (no redirect)
+                document.getElementById('signup-form').classList.remove('active');
+                document.getElementById('login-form').classList.add('active');
+                
+                // 3. Clear form fields (optional)
+                e.target.reset();
             } else {
                 // Display errors
                 if (data.errors) {
                     const firstError = Object.values(data.errors)[0];
-                    errorElement.textContent = firstError;
-                } else if (data.error) {
-                    errorElement.textContent = data.error;
+                    document.getElementById('signup-error-message').textContent = firstError;
                 }
             }
         } catch (error) {

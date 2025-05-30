@@ -52,8 +52,7 @@ def login_signup(request):
                     # login(request, user)
                     return JsonResponse({
                         'success': True,
-                        'message': 'Registration successful! Redirecting...',
-                        'redirect_url': reverse('login')  # Get URL from name
+                        'message': 'Registration successful! Please login.'
                     })
                 else:
                     # Format errors for frontend display
