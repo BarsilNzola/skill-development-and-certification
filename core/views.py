@@ -33,20 +33,23 @@ logger = logging.getLogger(__name__)
 def login_signup(request):
     login_form = LoginForm()
     signup_form = SignUpForm()
-    
+
     if request.method == 'POST':
         if 'signup_form' in request.POST:
             signup_form = SignUpForm(request.POST)
             if signup_form.is_valid():
                 User = get_user_model()
                 User.objects.create_user(
-                    username=signup_form.cleaned_data.get('username'),
-                    email=signup_form.cleaned_data.get('email'),
-                    first_name=signup_form.cleaned_data.get('first_name'),
-                    last_name=signup_form.cleaned_data.get('last_name'),
-                    password=signup_form.cleaned_data.get('password')
+                    username=signup_form.cleaned_data['username'],
+                    email=signup_form.cleaned_data['email'],
+                    password=signup_form.cleaned_data['password1'],
+                    first_name=signup_form.cleaned_data['first_name'],
+                    last_name=signup_form.cleaned_data['last_name']
                 )
-                return redirect('home')
+                return JsonResponse({'message': 'Registration successful! Please log in.'}, status=200)
+            else:
+                return JsonResponse({'message': signup_form.errors}, status=400)
+
         elif 'login_form' in request.POST:
             login_form = LoginForm(request.POST)
             if login_form.is_valid():
@@ -55,10 +58,11 @@ def login_signup(request):
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
-                    return redirect('home')
-    else:
-        signup_form = SignUpForm()
-        login_form = LoginForm()
+                    return JsonResponse({'message': 'Login successful!'}, status=200)
+                else:
+                    return JsonResponse({'message': 'Invalid credentials.'}, status=401)
+            else:
+                return JsonResponse({'message': login_form.errors}, status=400)
 
     return render(request, 'login_signup.html', {'signup_form': signup_form, 'login_form': login_form})
 

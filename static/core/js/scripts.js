@@ -138,30 +138,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle signup form submission
     document.getElementById('signup-form').addEventListener('submit', async (event) => {
         event.preventDefault();
         
         const username = document.querySelector('#id_username')?.value.trim() || '';
         const email = document.querySelector('[name="email"]').value.trim();
-        const password = document.querySelector('[name="password1"]')?.value.trim() || '';
-        const confirm_password = document.querySelector('[name="password2"]').value.trim();
+        const password1 = document.querySelector('[name="password1"]')?.value.trim() || '';
+        const password2 = document.querySelector('[name="password2"]').value.trim();
         const first_name = document.querySelector('[name="first_name"]').value.trim();
         const last_name = document.querySelector('[name="last_name"]').value.trim();
-
-        console.log(`Username: ${username}, Email: ${email}, First Name: ${first_name}, Last Name: ${last_name}, Password: ${password}, Confirm Password: ${confirm_password}`);
+    
+        console.log(`Username: ${username}, Email: ${email}, First Name: ${first_name}, Last Name: ${last_name}, Password1: ${password1}, Password2: ${password2}`);
         
-        if (!username || !password || !first_name || !last_name) {
+        if (!username || !password1 || !first_name || !last_name || !email || !password2) {
             console.error('One or more fields are missing.');
             document.getElementById('signup-error-message').innerText = 'Please fill in all fields.';
             return;
         }
-
-        if (password !== confirm_password) {
+    
+        if (password1 !== password2) {
             document.getElementById('signup-error-message').innerText = "Passwords do not match.";
             return;
         }
-
+    
         try {
             const response = await fetch(`${baseUrl}/api/signup/`, {
                 method: 'POST',
@@ -169,26 +168,34 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
                 },
-                body: JSON.stringify({ username, email, first_name, last_name, password, confirm_password }),
+                body: JSON.stringify({ 
+                    username, 
+                    email, 
+                    first_name, 
+                    last_name, 
+                    password1, 
+                    password2 
+                }),
             });
-
+    
+            const data = await response.json();
+    
             if (response.ok) {
-                const data = await response.json();
                 alert('Registration successful! Redirecting to login...');
-
+    
                 // Switch to login form
                 signupForm.classList.add('inactive');
                 signupForm.classList.remove('active');
                 loginForm.classList.add('active');
                 loginForm.classList.remove('inactive');
             } else {
-                const errorData = await response.json();
-                document.getElementById('signup-error-message').innerText = errorData.message;
+                document.getElementById('signup-error-message').innerText = data.message || 'Registration failed.';
             }
         } catch (error) {
             document.getElementById('signup-error-message').innerText = 'An error occurred. Please try again later.';
         }
     });
+    
 
 
     // Accessibility focus styles
