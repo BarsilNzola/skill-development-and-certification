@@ -35,14 +35,50 @@ def login_signup(request):
     login_form = LoginForm()
 
     if request.method == 'POST':
-        if request.content_type == 'application/json':
-            # Handle JSON payload
-            data = json.loads(request.body)
-            # your existing JSON handling code here...
+        content_type = request.content_type or ''
 
-        elif 'multipart/form-data' in request.content_type:
-            # Handle form data from form submit or fetch with FormData
-            if 'signup_form' in request.POST or 'username' in request.POST:
+        if 'application/json' in content_type:
+            try:
+                data = json.loads(request.body)
+            except json.JSONDecodeError:
+                return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+            action = data.get('action')
+
+            if action == 'signup':
+                signup_form = SignUpForm(data)
+                if signup_form.is_valid():
+                    User = get_user_model()
+                    User.objects.create_user(
+                        username=signup_form.cleaned_data.get('username'),
+                        email=signup_form.cleaned_data.get('email'),
+                        password=signup_form.cleaned_data.get('password1'),
+                        first_name=signup_form.cleaned_data.get('first_name'),
+                        last_name=signup_form.cleaned_data.get('last_name')
+                    )
+                    return JsonResponse({'message': 'Registration successful!'}, status=201)
+                else:
+                    return JsonResponse({'errors': signup_form.errors}, status=400)
+
+            elif action == 'login':
+                login_form = LoginForm(data)
+                if login_form.is_valid():
+                    username = login_form.cleaned_data.get('username')
+                    password = login_form.cleaned_data.get('password')
+                    user = authenticate(request, username=username, password=password)
+                    if user is not None:
+                        login(request, user)
+                        return JsonResponse({'message': 'Login successful!'}, status=200)
+                    else:
+                        return JsonResponse({'error': 'Invalid username or password'}, status=400)
+                else:
+                    return JsonResponse({'errors': login_form.errors}, status=400)
+
+            else:
+                return JsonResponse({'error': 'Invalid action'}, status=400)
+
+        elif 'multipart/form-data' in content_type or 'application/x-www-form-urlencoded' in content_type:
+            if 'username' in request.POST:
                 signup_form = SignUpForm(request.POST)
                 if signup_form.is_valid():
                     User = get_user_model()
@@ -57,7 +93,7 @@ def login_signup(request):
                 else:
                     return JsonResponse({'errors': signup_form.errors}, status=400)
 
-            elif 'login_form' in request.POST or 'password' in request.POST:
+            elif 'password' in request.POST:
                 login_form = LoginForm(request.POST)
                 if login_form.is_valid():
                     username = login_form.cleaned_data.get('username')
