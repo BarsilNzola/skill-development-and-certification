@@ -76,7 +76,7 @@ def login_signup(request):
                         return JsonResponse({
                             'success': True,
                             'message': 'Login successful!',
-                            'redirect_url': '/'  # Redirect to home
+                            'redirect_url': '/dashboard/'  # Redirect to home
                         })
                     else:
                         return JsonResponse({
