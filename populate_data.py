@@ -59,7 +59,7 @@ LearningResource.objects.bulk_create([
 # Step 2: Create lessons for Web Development (HTML, CSS, and JavaScript)
 lesson_data = [
     # Week 1 - HTML
-    {"module": module, "title": "Introduction to HTML", "content": "HTML is the structure of the web...", "week": 1, "day": 1},
+    {"module": module, "title": "Introduction to Web Development and Tools Setup", "content": "Web development is the process...", "week": 1, "day": 1},
     {"module": module, "title": "HTML Elements", "content": "Learn about different HTML elements...", "week": 1, "day": 2},
     {"module": module, "title": "Forms and Inputs", "content": "Learn how to create forms in HTML...", "week": 1, "day": 3},
     {"module": module, "title": "HTML5 Semantic Elements", "content": "Understand the new semantic tags in HTML5...", "week": 1, "day": 4},
@@ -93,32 +93,132 @@ for lesson in lesson_data:
     )
 
 # Update content for lessons
-Lesson.objects.filter(title="Introduction to HTML").update(
+# Week 1: Day 1
+Lesson.objects.filter(title="Introduction to Web Development and Tools Setup").update(
     content="""
-    HTML (HyperText Markup Language) is the backbone of every webpage. It defines the structure using tags. 
-    Tags are enclosed in < >, like <html> or <body>.
+    ## 🌐 What is Web Development?
+
+    Web development is the process of creating websites and web applications that run on the internet.
+
+    It generally includes:
+    - **Frontend** (what the user sees and interacts with)
+    - **Backend** (server-side logic, databases, user management)
+    - **Full-stack** (both frontend and backend)
+
+    You will start this course focusing on **frontend**.
+
+    ---
+
+    ## 🛠️ Key Technologies
+
+    - **HTML** → the skeleton of the web (structure)
+    - **CSS** → the skin and clothes (styling)
+    - **JavaScript** → the muscles (interactivity)
+    - **Git** → tracks your code changes (version control)
+    - **GitHub** → online place to store and share your code
+
+    ---
+
+    ## 💻 Essential Tools
+
+    ### Code Editors
+
+    You’ll need a **code editor** to write your code.
+
+    We recommend:
+    - **Visual Studio Code (VS Code)** → https://code.visualstudio.com/
+    - Install and explore: built-in terminal, extensions, file explorer.
+    - Alternatives: Sublime Text, Atom (optional).
+
+    ### Web Browsers
+
+    You’ll test your web pages in a browser.
+    - Recommended: Google Chrome
+    - Alternatives: Firefox, Edge
+
+    ### Git & GitHub Setup
+
+    - Install **Git** → https://git-scm.com/
+    - Create a free **GitHub** account → https://github.com/
+
+    ---
+
+    ## 🗂️ Setting Up Your First Project
+
+    1️⃣ Create a folder on your computer, e.g., `my-first-website`.
+
+    2️⃣ Open this folder in VS Code.
+
+    3️⃣ Inside the folder, set up:
+
+        /my-first-website
+        ├── index.html
+        ├── /css
+        ├── /images
+        └── /js
+
     
-    **Basic Structure of an HTML Document**:
+    ---
+
+    ## ✍️ Writing Your First HTML Page
+
+    Create a file named `index.html` and add this code:
+
     ```
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
-        <title>My First Webpage</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My First Website</title>
     </head>
     <body>
-        <h1>Hello, World!</h1>
-        <p>This is a paragraph.</p>
+        <h1>Welcome to Web Development!</h1>
+        <p>This is your very first webpage. 🎉</p>
     </body>
     </html>
     ```
 
-    **Key Tags**:
-    - <html>: The root tag of an HTML document.
-    - <head>: Contains metadata, like the page title.
-    - <body>: Contains visible content like headings, paragraphs, and images.
+    ---
 
-    **Further Reading**:
-    - [Introduction to HTML (MDN)](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML)
+    ## 🔧 Intro to Git
+
+    Inside your project folder, open the terminal and run:
+
+    ```
+    git init
+    git add .
+    git commit -m "Initial commit: set up project and index.html"
+    ```
+
+    This sets up Git to track your code.
+
+    ---
+
+    ## 🚀 Upload to GitHub (Optional)
+
+    1️⃣ Go to GitHub, create a new repository (no README).  
+    2️⃣ Copy the remote link.
+
+    In your terminal, connect and push:
+
+    ```
+    git remote add origin https://github.com/yourusername/your-repo.git
+    git branch -M main
+    git push -u origin main
+    ```
+
+    ---
+
+    ## 🏆 Day 1 Task
+
+    ✅ Install VS Code and Git.  
+    ✅ Set up your first project folder.  
+    ✅ Create an `index.html` page with a welcome message.  
+    ✅ Initialize Git and make your first commit.  
+    ✅ (Optional) Push your code to GitHub.
+
+    Great job — you are now officially a web developer in training! 🚀
     """
 )
 

@@ -48,8 +48,7 @@ def login_signup(request):
                         first_name=form.cleaned_data['first_name'],
                         last_name=form.cleaned_data['last_name']
                     )
-                    # Optional: Auto-login after signup
-                    # login(request, user)
+                    
                     return JsonResponse({
                         'success': True,
                         'message': 'Registration successful! Please login.'
