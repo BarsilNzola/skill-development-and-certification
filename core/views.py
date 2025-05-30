@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.http import JsonResponse
+from django.urls import reverse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from rest_framework import generics
@@ -52,7 +53,7 @@ def login_signup(request):
                     return JsonResponse({
                         'success': True,
                         'message': 'Registration successful! Redirecting...',
-                        'redirect_url': '/api/login/'  # Frontend will handle redirect
+                        'redirect_url': reverse('login')  # Frontend will handle redirect
                     })
                 else:
                     # Format errors for frontend display
