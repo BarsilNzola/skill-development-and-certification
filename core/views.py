@@ -27,8 +27,15 @@ from django.contrib.auth import authenticate, login, get_user_model
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, LoginForm
+import logging
+logger = logging.getLogger(__name__)
 
 def login_signup(request):
+    logger.info(f"Request method: {request.method}")
+    logger.info(f"Content-Type: {request.content_type}")
+    logger.info(f"POST keys: {list(request.POST.keys())}")
+    logger.info(f"Body: {request.body[:100]}")  # First 100 bytes
+
     signup_form = SignUpForm()
     login_form = LoginForm()
 
