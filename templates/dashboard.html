@@ -29,12 +29,14 @@
         <h3>Your Modules</h3>
         <div class="module-cards">
             {% for module in modules %}
-                <div class="module-card">
-                    <img src="{{ module.image.url }}" alt="{{ module.title }}" class="module-img">
+            <div class="module-card">
+                <img src="{{ module.image.url }}" alt="{{ module.title }}" class="module-img">
+                <div class="module-card-content">
                     <h4>{{ module.title }}</h4>
                     <p>{{ module.course.description }}</p>
                     <a href="{% url 'core:module_lessons' module.id %}" class="btn">View Lessons</a>
                 </div>
+            </div>            
             {% endfor %}
         </div>
     </section>
