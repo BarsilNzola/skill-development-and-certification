@@ -70,9 +70,9 @@ LearningResource.objects.bulk_create([
 lesson_data = [
     # Week 1 - HTML
     {"module": module, "title": "Introduction to Web Development and Tools Setup", "content": "Web development is the process...", "week": 1, "day": 1},
-    {"module": module, "title": "HTML Elements", "content": "Learn about different HTML elements...", "week": 1, "day": 2},
-    {"module": module, "title": "Forms and Inputs", "content": "Learn how to create forms in HTML...", "week": 1, "day": 3},
-    {"module": module, "title": "HTML5 Semantic Elements", "content": "Understand the new semantic tags in HTML5...", "week": 1, "day": 4},
+    {"module": module, "title": "HTML Structure and Semantic Elements", "content": "Learn about different HTML elements...", "week": 1, "day": 2},
+    {"module": module, "title": "Links, Images, and Project Organization", "content": "Links connect pages or external sites...", "week": 1, "day": 3},
+    {"module": module, "title": "Introduction to CSS and Styling Your Page", "content": "What is CSS?...", "week": 1, "day": 4},
     {"module": module, "title": "Project: Basic Webpage", "content": "Create a basic webpage using HTML...", "week": 1, "day": 5},
 
     # Week 2 - CSS
@@ -80,7 +80,7 @@ lesson_data = [
     {"module": module, "title": "Selectors and Properties", "content": "Learn how to select HTML elements and style them...", "week": 2, "day": 2},
     {"module": module, "title": "Box Model and Flexbox", "content": "Understanding the box model and using Flexbox...", "week": 2, "day": 3},
     {"module": module, "title": "CSS Grid", "content": "Learn how to create layouts with CSS Grid...", "week": 2, "day": 4},
-    {"module": module, "title": "Project: Styling a Webpage", "content": "Create a styled webpage using CSS...", "week": 2, "day": 5},
+    {"module": module, "title": "Project - Personal Webpage Assignmente", "content": "Create a styled webpage using CSS...", "week": 2, "day": 5},
 
     # Week 3 - JavaScript
     {"module": module, "title": "Introduction to JavaScript", "content": "JavaScript is used to make webpages interactive...", "week": 3, "day": 1},
@@ -233,126 +233,306 @@ Lesson.objects.filter(title="Introduction to Web Development and Tools Setup").u
 )
 
 # Week 1: Day 2
-Lesson.objects.filter(title="HTML Elements").update(
+Lesson.objects.filter(title="HTML Structure and Semantic Elements").update(
     content="""
-    HTML elements represent parts of a webpage. Elements have a start tag, optional content, and an end tag:
-    ```
-    <tagname>Content</tagname>
-    ```
+    ## 📦 Understanding HTML Structure
 
-    **Common Elements**:
-    - Headings: <h1> to <h6> (e.g., <h1>Main Heading</h1>)
-    - Paragraphs: <p> (e.g., <p>This is a paragraph.</p>)
-    - Links: <a href="https://example.com">Visit Example</a>
-    - Images: <img src="image.jpg" alt="Description">
+    HTML is made up of **elements**:
+    - Tags (`<h1>`, `<p>`, `<a>`)  
+    - Attributes (`href`, `src`, `alt`)  
+    - Content (what’s inside the tags)
 
-    **Example**:
-    ```
-    <h1>This is a Heading</h1>
-    <p>This is a paragraph with a <a href="https://example.com">link</a>.</p>
-    <img src="path/to/image.jpg" alt="Example Image">
-    ```
-
-    **Further Reading**:
-    - [HTML Elements (W3Schools)](https://www.w3schools.com/html/html_elements.asp)
-    """
-)
-
-# Week 1: Day 3
-Lesson.objects.filter(title="Forms and Inputs").update(
-    content="""
-    HTML forms allow users to input data, which can then be sent to a server. 
-
-    **Basic Form Example**:
-    ```
-    <form action="/submit" method="POST">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name">
-        <button type="submit">Submit</button>
-    </form>
-    ```
-
-    **Common Input Types**:
-    - Text: <input type="text">
-    - Email: <input type="email">
-    - Password: <input type="password">
-    - Submit Button: <button type="submit">
-
-    **Further Reading**:
-    - [HTML Forms (MDN)](https://developer.mozilla.org/en-US/docs/Learn/Forms)
-    """
-)
-
-# Week 1: Day 4
-Lesson.objects.filter(title="HTML5 Semantic Elements").update(
-    content="""
-    Semantic elements in HTML5 clearly define their purpose, improving readability for developers and browsers.
-
-    **Examples**:
-    - <header>: Defines a page header.
-    - <nav>: Represents navigation links.
-    - <main>: Represents the main content.
-    - <article>: Represents an independent piece of content.
-    - <footer>: Defines a page footer.
-
-    **Example**:
-    ```
-    <header>
-        <h1>Website Title</h1>
-    </header>
-    <main>
-        <article>
-            <h2>Article Title</h2>
-            <p>This is the main content of the article.</p>
-        </article>
-    </main>
-    <footer>
-        <p>Copyright 2024</p>
-    </footer>
-    ```
-
-    **Further Reading**:
-    - [HTML5 Semantic Elements (MDN)](https://developer.mozilla.org/en-US/docs/Web/HTML/Element)
-    """
-)
-
-# Week 1: Day 5
-Lesson.objects.filter(title="Project: Basic Webpage").update(
-    content="""
-    **Project Description**:
-    Create a simple webpage using everything learned in Week 1. Your webpage should:
-    1. Include a header, main content, and footer.
-    2. Use semantic elements like <header>, <main>, and <footer>.
-    3. Add a form with at least one input field.
-
-    **Example Structure**:
+    Basic structure:
     ```
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
-        <title>My Basic Webpage</title>
+        <meta charset="UTF-8">
+        <title>Page Title</title>
     </head>
     <body>
-        <header>
-            <h1>Welcome to My Webpage</h1>
-        </header>
-        <main>
-            <p>This is my first webpage project.</p>
-            <form action="/submit" method="POST">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email">
-                <button type="submit">Submit</button>
-            </form>
-        </main>
-        <footer>
-            <p>Created by [Your Name]</p>
-        </footer>
+        <!-- Visible content goes here -->
     </body>
     </html>
     ```
 
-    **Further Reading**:
-    - [HTML Basics (MDN)](https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML)
+    ---
+
+    ## 🏛 Semantic HTML
+
+    Semantic tags describe **meaning** (not just appearance).  
+    Examples:
+    - `<header>` → top section  
+    - `<nav>` → navigation links  
+    - `<main>` → main page content  
+    - `<section>` → grouped content  
+    - `<article>` → standalone pieces  
+    - `<footer>` → bottom section
+
+    Non-semantic tags (don’t carry meaning):
+    - `<div>` → general block
+    - `<span>` → inline block
+
+    ---
+
+    ## ✨ Formatting Text
+
+    - Headings: `<h1>` to `<h6>`
+    - Paragraphs: `<p>`
+    - Bold/strong: `<strong>` or `<b>`
+    - Italics/emphasis: `<em>` or `<i>`
+    - Line breaks: `<br>`
+
+    Example:
+    ```
+    <h1>About Me</h1>
+    <p>I am learning web development. <strong>It’s fun!</strong></p>
+    ```
+
+    ---
+
+    ## 🧩 Lists
+
+    - **Unordered list**:
+    ```
+    <ul>
+        <li>Item 1</li>
+        <li>Item 2</li>
+    </ul>
+    ```
+
+    - **Ordered list**:
+    ```
+    <ol>
+        <li>First</li>
+        <li>Second</li>
+    </ol>
+    ```
+
+    ---
+
+    ## 🚀 Practice
+
+    ✅ Add a header and footer to your `index.html`.  
+    ✅ Create a list (ordered or unordered) about your hobbies.  
+    ✅ Use at least one `<strong>` or `<em>` tag.
+
+    Commit and push your changes to GitHub:
+    ```
+    git add .
+    git commit -m "Added semantic HTML elements and a list"
+    git push
+    ```
+
+    Submit your updated GitHub link when done!
+    """
+)
+
+# Week 1: Day 3
+Lesson.objects.filter(title="Links, Images, and Project Organization").update(
+    content="""
+    ## 🔗 Adding Links
+
+    Links connect pages or external sites.
+
+    ```
+    <a href="https://example.com">Visit Example</a>
+    ```
+
+    - `href` → the URL or file you’re linking to  
+    - Internal link: `<a href="about.html">About</a>`  
+    - Open in new tab: `<a href="https://example.com" target="_blank">Visit</a>`
+
+    ---
+
+    ## 🖼 Adding Images
+
+    ```
+    <img src="images/photo.jpg" alt="My Photo">
+    ```
+
+    - `src` → path to the image  
+    - `alt` → alternative text for screen readers / when image fails to load
+
+    Use **relative paths** (`images/photo.jpg`) or **absolute URLs** (`https://...`).
+
+    ---
+
+    ## 📁 Organizing Your Project
+
+    Good folder structure keeps your project clean:
+    - `/index.html` → main page
+    - `/about.html` → about page
+    - `/images/` → image files
+    - `/css/` → CSS stylesheets
+    - `/js/` → JavaScript files (later)
+
+    Example:
+    ```
+    /my-website
+        index.html
+        about.html
+        /images
+        /css
+        /js
+    ```
+
+    ---
+
+    ## 🧪 Practice Task
+
+    ✅ Add a profile picture on your `about.html`.  
+    ✅ Link from `index.html` to `about.html` and vice versa.  
+    ✅ Organize your files into `/images/`, `/css/`, `/js/`.
+
+    Push your updates to GitHub:
+    ```bash
+    git add .
+    git commit -m "Added links, images, and reorganized project folders"
+    git push
+    ```
+
+    """
+)
+
+# Week 1: Day 4
+Lesson.objects.filter(title="Introduction to CSS and Styling Your Page").update(
+    content="""
+    ## 🎨 What is CSS?
+
+    CSS (Cascading Style Sheets) controls how your HTML looks.
+
+    You can:
+    - Change colors, fonts, and layout.
+    - Add padding, margins, and borders.
+    - Make your site responsive for different devices.
+
+    ---
+
+    ## ✏️ Writing CSS
+
+    1️⃣ Inline (inside HTML element):
+    ```
+    <p style="color: blue;">Hello</p>
+    ```
+
+    2️⃣ Internal (inside `<style>` tag in `<head>`):
+    ```
+    <style>
+        p {
+            color: blue;
+        }
+    </style>
+    ```
+
+    3️⃣ External (best practice, using a `.css` file):
+    - Create `style.css` in `/css/` folder.
+    - Link in your HTML:
+    ```
+    <link rel="stylesheet" href="css/style.css">
+    ```
+
+    ---
+
+    ## 🖌 Basic Styling
+
+    - Change background:
+    ```
+    body {
+        background-color: #f0f0f0;
+    }
+    ```
+
+    - Style headings:
+    ```
+    h1 {
+        color: darkblue;
+        font-family: Arial, sans-serif;
+    }
+    ```
+
+    - Add borders and padding:
+    ```css
+    img {
+        border: 2px solid #333;
+        padding: 10px;
+    }
+    ```
+
+    ---
+
+    ## 🚀 Practice Task
+
+    ✅ Create a `style.css` file.  
+    ✅ Link it to both `index.html` and `about.html`.  
+    ✅ Add:
+    - A background color.
+    - A custom font for headings.
+    - A border around your profile image.
+
+    Push changes to GitHub:
+    ```
+    git add .
+    git commit -m "Added CSS styling"
+    git push
+    ```
+    """
+)
+
+# Week 1: Day 5
+Lesson.objects.filter(title="Project - Personal Webpage Assignment").update(
+    content="""
+    ## 🎯 Task Overview
+
+    You’ll build a simple **personal webpage** that includes:
+    ✅ Homepage (`index.html`)  
+    ✅ About page (`about.html`)  
+    ✅ Profile image  
+    ✅ Links between pages  
+    ✅ CSS styling from `style.css`
+
+    ---
+
+    ## 🏗 Requirements
+
+    - Organized folders: `/images/`, `/css/`, etc.
+    - Use semantic HTML elements.
+    - Include:
+        - Headings (`<h1>`–`<h3>`)
+        - Paragraphs (`<p>`)
+        - Lists (`<ul>` or `<ol>`)
+        - Links (`<a>`)
+        - Images (`<img>`)
+
+    ---
+
+    ## 💡 Bonus
+
+    - Try adding an additional page (like `contact.html`).
+    - Experiment with colors and fonts in CSS.
+    - Add hover effects to links.
+
+    ---
+
+    ## 🚀 Submission Instructions
+
+    ✅ Upload your project to GitHub:
+    ```bash
+    git add .
+    git commit -m "Final personal webpage project"
+    git push
+    ```
+
+    ✅ Submit your GitHub link via the course portal form.
+
+    ---
+
+    **Well done completing Week 1!** 🌟 You now have:
+    - A working multi-page website.
+    - Basic HTML & CSS skills.
+    - Familiarity with Git and GitHub.
+
+    Next week, we dive into deeper CSS techniques!
     """
 )
 
