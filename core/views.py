@@ -108,7 +108,17 @@ def home(request):
 def dashboard_view(request):
     modules = Module.objects.all()
     learning_resources = LearningResource.objects.all()
-    return render(request, 'dashboard.html', {'username': request.user.username, 'modules': modules, 'learning_resources': learning_resources})
+    # Pull the user profile object
+    user_profile = None
+    if hasattr(request.user, 'user_profile'):
+        user_profile = request.user.user_profile
+        
+    return render(request, 'dashboard.html', {
+        'username': request.user.username, 
+        'modules': modules, 
+        'learning_resources': learning_resources,
+        'user_profile': user_profile,
+    })
 
 @login_required
 def update_profile_picture(request):
