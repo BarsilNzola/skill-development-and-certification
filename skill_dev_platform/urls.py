@@ -24,9 +24,9 @@ from core.views import home, dashboard_view, logout_view, mark_lesson_complete
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('core.urls', namespace='core')),
     path('users/', include('users.urls', namespace='users')),
     path('accounts/', include('django.contrib.auth.urls')), # Add this line
-    path('api/', include('core.urls', namespace='core')),
     path('', home, name='home'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='login_signup.html'), name='login'),
     path('logout/', logout_view, name='logout'),
