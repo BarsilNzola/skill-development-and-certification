@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.success) {
                 // Success: Redirect or show message
                 if (data.redirect_url) {
-                    window.location.href = window.location.origin + '/' + data.redirect_url;
+                    window.location.href = data.redirect_url;  // Manual redirect
                 }
             } else {
                 // Display errors
