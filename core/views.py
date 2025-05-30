@@ -31,40 +31,76 @@ import logging
 logger = logging.getLogger(__name__)
 
 def login_signup(request):
-    login_form = LoginForm()
-    signup_form = SignUpForm()
-
-    if request.method == 'POST':
-        if 'signup_form' in request.POST:
-            signup_form = SignUpForm(request.POST)
-            if signup_form.is_valid():
-                User = get_user_model()
-                User.objects.create_user(
-                    username=signup_form.cleaned_data['username'],
-                    email=signup_form.cleaned_data['email'],
-                    password=signup_form.cleaned_data['password1'],
-                    first_name=signup_form.cleaned_data['first_name'],
-                    last_name=signup_form.cleaned_data['last_name']
-                )
-                return JsonResponse({'message': 'Registration successful! Please log in.'}, status=200)
-            else:
-                return JsonResponse({'message': signup_form.errors}, status=400)
-
-        elif 'login_form' in request.POST:
-            login_form = LoginForm(request.POST)
-            if login_form.is_valid():
-                username = login_form.cleaned_data.get('username')
-                password = login_form.cleaned_data.get('password')
-                user = authenticate(request, username=username, password=password)
-                if user is not None:
-                    login(request, user)
-                    return JsonResponse({'message': 'Login successful!'}, status=200)
+    if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        try:
+            data = json.loads(request.body)  # Parse JSON data
+            
+            # ===== SIGNUP HANDLER =====
+            if 'password1' in data:  # Detect signup request
+                form = SignUpForm(data)
+                if form.is_valid():
+                    User = get_user_model()
+                    user = User.objects.create_user(
+                        username=form.cleaned_data['username'],
+                        email=form.cleaned_data['email'],
+                        password=form.cleaned_data['password1'],
+                        first_name=form.cleaned_data['first_name'],
+                        last_name=form.cleaned_data['last_name']
+                    )
+                    # Optional: Auto-login after signup
+                    # login(request, user)
+                    return JsonResponse({
+                        'success': True,
+                        'message': 'Registration successful! Redirecting...',
+                        'redirect_url': '/login/'  # Frontend will handle redirect
+                    })
                 else:
-                    return JsonResponse({'message': 'Invalid credentials.'}, status=401)
-            else:
-                return JsonResponse({'message': login_form.errors}, status=400)
+                    # Format errors for frontend display
+                    errors = {field: error[0] for field, error in form.errors.items()}
+                    return JsonResponse({
+                        'success': False,
+                        'errors': errors
+                    }, status=400)
 
-    return render(request, 'login_signup.html', {'signup_form': signup_form, 'login_form': login_form})
+            # ===== LOGIN HANDLER =====
+            elif 'password' in data:  # Detect login request
+                form = LoginForm(data)
+                if form.is_valid():
+                    user = authenticate(
+                        request,
+                        username=form.cleaned_data['username'],
+                        password=form.cleaned_data['password']
+                    )
+                    if user is not None:
+                        login(request, user)
+                        return JsonResponse({
+                            'success': True,
+                            'message': 'Login successful!',
+                            'redirect_url': '/'  # Redirect to home
+                        })
+                    else:
+                        return JsonResponse({
+                            'success': False,
+                            'error': 'Invalid username or password'
+                        }, status=401)
+                else:
+                    return JsonResponse({
+                        'success': False,
+                        'error': 'Please correct the errors below',
+                        'errors': form.errors
+                    }, status=400)
+
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'success': False,
+                'error': 'Invalid JSON data'
+            }, status=400)
+
+    # GET request: Render empty forms
+    return render(request, 'login_signup.html', {
+        'signup_form': SignUpForm(),
+        'login_form': LoginForm()
+    })
 
 def home(request): 
     return render(request, 'index.html')
