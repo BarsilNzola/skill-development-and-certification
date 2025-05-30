@@ -91,7 +91,8 @@ lesson_data = [
 ]
 
 # Step 3: Use get_or_create to add lessons
-Lesson.objects.update_or_create(
+for lesson in lesson_data:
+    Lesson.objects.update_or_create(
     module=lesson["module"],
     week=lesson["week"],
     day=lesson["day"],
