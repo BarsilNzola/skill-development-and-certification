@@ -34,8 +34,7 @@ import json
 from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, get_user_model
 from django.views.decorators.csrf import csrf_exempt
-
-@csrf_exempt  
+ 
 def login_signup(request):
     if request.method == 'POST':
         try:
