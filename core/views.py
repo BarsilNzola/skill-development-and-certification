@@ -31,22 +31,19 @@ import logging
 logger = logging.getLogger(__name__)
 
 def login_signup(request):
-    logger.info(f"Request method: {request.method}")
-    logger.info(f"Content-Type: {request.content_type}")
-    logger.info(f"POST keys: {list(request.POST.keys())}")
-    logger.info(f"Body: {request.body[:100]}")  # First 100 bytes
-
     signup_form = SignUpForm()
     login_form = LoginForm()
 
     if request.method == 'POST':
-        # Check if request is JSON (API call)
         if request.content_type == 'application/json':
+            # Handle JSON payload
             data = json.loads(request.body)
-            action = data.get('action')  # You can pass 'signup' or 'login' in body
+            # your existing JSON handling code here...
 
-            if action == 'signup':
-                signup_form = SignUpForm(data)
+        elif 'multipart/form-data' in request.content_type:
+            # Handle form data from form submit or fetch with FormData
+            if 'signup_form' in request.POST or 'username' in request.POST:
+                signup_form = SignUpForm(request.POST)
                 if signup_form.is_valid():
                     User = get_user_model()
                     User.objects.create_user(
@@ -60,8 +57,8 @@ def login_signup(request):
                 else:
                     return JsonResponse({'errors': signup_form.errors}, status=400)
 
-            elif action == 'login':
-                login_form = LoginForm(data)
+            elif 'login_form' in request.POST or 'password' in request.POST:
+                login_form = LoginForm(request.POST)
                 if login_form.is_valid():
                     username = login_form.cleaned_data.get('username')
                     password = login_form.cleaned_data.get('password')
@@ -74,35 +71,10 @@ def login_signup(request):
                 else:
                     return JsonResponse({'errors': login_form.errors}, status=400)
 
-            else:
-                return JsonResponse({'error': 'Invalid action'}, status=400)
-
-        # Check if it's a normal form POST (non-AJAX)
-        elif 'signup_form' in request.POST:
-            signup_form = SignUpForm(request.POST)
-            if signup_form.is_valid():
-                User = get_user_model()
-                User.objects.create_user(
-                    username=signup_form.cleaned_data.get('username'),
-                    email=signup_form.cleaned_data.get('email'),
-                    password=signup_form.cleaned_data.get('password1'),
-                    first_name=signup_form.cleaned_data.get('first_name'),
-                    last_name=signup_form.cleaned_data.get('last_name')
-                )
-                return redirect('home')
-
-        elif 'login_form' in request.POST:
-            login_form = LoginForm(request.POST)
-            if login_form.is_valid():
-                username = login_form.cleaned_data.get('username')
-                password = login_form.cleaned_data.get('password')
-                user = authenticate(request, username=username, password=password)
-                if user is not None:
-                    login(request, user)
-                    return redirect('home')
+        else:
+            return JsonResponse({'error': 'Unsupported content type'}, status=400)
 
     return render(request, 'login_signup.html', {'signup_form': signup_form, 'login_form': login_form})
-
 
 
 def home(request): 
