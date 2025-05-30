@@ -76,18 +76,18 @@ lesson_data = [
     {"module": module, "title": "Project: Basic Webpage", "content": "Create a basic webpage using HTML...", "week": 1, "day": 5},
 
     # Week 2 - CSS
-    {"module": module, "title": "Introduction to CSS", "content": "CSS is used for styling the web pages...", "week": 2, "day": 1},
-    {"module": module, "title": "Selectors and Properties", "content": "Learn how to select HTML elements and style them...", "week": 2, "day": 2},
-    {"module": module, "title": "Box Model and Flexbox", "content": "Understanding the box model and using Flexbox...", "week": 2, "day": 3},
-    {"module": module, "title": "CSS Grid", "content": "Learn how to create layouts with CSS Grid...", "week": 2, "day": 4},
-    {"module": module, "title": "Project - Personal Webpage Assignmente", "content": "Create a styled webpage using CSS...", "week": 2, "day": 5},
+    {"module": module, "title": "Advanced HTML Elements", "content": "Explore more powerful HTML tools...", "week": 2, "day": 1},
+    {"module": module, "title": "Advanced CSS: Pseudo-classes and Pseudo-elements", "content": "Bring life and style to your...", "week": 2, "day": 2},
+    {"module": module, "title": "Responsive Design with Media Queries", "content": "Make sure your website looks...", "week": 2, "day": 3},
+    {"module": module, "title": "Git Workflows, Branching, and Collaboration", "content": "Go beyond the basics...", "week": 2, "day": 4},
+    {"module": module, "title": "Project: Responsive Portfolio", "content": "Create a styled webpage using CSS...", "week": 2, "day": 5},
 
     # Week 3 - JavaScript
-    {"module": module, "title": "Introduction to JavaScript", "content": "JavaScript is used to make webpages interactive...", "week": 3, "day": 1},
-    {"module": module, "title": "Variables and Data Types", "content": "Learn about variables, and different data types in JS...", "week": 3, "day": 2},
-    {"module": module, "title": "Functions and Control Flow", "content": "Learn how to define functions and use control flow...", "week": 3, "day": 3},
-    {"module": module, "title": "DOM Manipulation", "content": "Learn how to manipulate the DOM using JavaScript...", "week": 3, "day": 4},
-    {"module": module, "title": "Project: Interactive Webpage", "content": "Create an interactive webpage with JavaScript...", "week": 3, "day": 5},
+    {"module": module, "title": "JavaScript Basics: Variables, Data Types, and Operators", "content": "JavaScript Basics...", "week": 3, "day": 1},
+    {"module": module, "title": "JavaScript Functions, Conditionals, and Events", "content": "JavaScript Functions...", "week": 3, "day": 2},
+    {"module": module, "title": "JavaScript DOM Manipulation", "content": "JavaScript + The DOM...", "week": 3, "day": 3},
+    {"module": module, "title": "JavaScript Loops and Arrays","content": "JavaScript Loops + Arrays...", "week": 3, "day": 4},
+    {"module": module, "title": "Project: JavaScript Interactive Feature", "content": "Build Your First Interactive Feature...", "week": 3, "day": 5},
 ]
 
 # Step 3: Use get_or_create to add lessons
@@ -324,7 +324,6 @@ Lesson.objects.filter(title="HTML Structure and Semantic Elements").update(
     git push
     ```
 
-    Submit your updated GitHub link when done!
     """
 )
 
@@ -339,7 +338,7 @@ Lesson.objects.filter(title="Links, Images, and Project Organization").update(
     <a href="https://example.com">Visit Example</a>
     ```
 
-    - `href` → the URL or file you’re linking to  
+    - href → the URL or file you’re linking to  
     - Internal link: `<a href="about.html">About</a>`  
     - Open in new tab: `<a href="https://example.com" target="_blank">Visit</a>`
 
@@ -351,8 +350,8 @@ Lesson.objects.filter(title="Links, Images, and Project Organization").update(
     <img src="images/photo.jpg" alt="My Photo">
     ```
 
-    - `src` → path to the image  
-    - `alt` → alternative text for screen readers / when image fails to load
+    - src → path to the image  
+    - alt → alternative text for screen readers / when image fails to load
 
     Use **relative paths** (`images/photo.jpg`) or **absolute URLs** (`https://...`).
 
@@ -361,11 +360,11 @@ Lesson.objects.filter(title="Links, Images, and Project Organization").update(
     ## 📁 Organizing Your Project
 
     Good folder structure keeps your project clean:
-    - `/index.html` → main page
-    - `/about.html` → about page
-    - `/images/` → image files
-    - `/css/` → CSS stylesheets
-    - `/js/` → JavaScript files (later)
+    - /index.html → main page
+    - /about.html → about page
+    - /images/ → image files
+    - /css/ → CSS stylesheets
+    - /js/ → JavaScript files (later)
 
     Example:
     ```
@@ -381,12 +380,12 @@ Lesson.objects.filter(title="Links, Images, and Project Organization").update(
 
     ## 🧪 Practice Task
 
-    ✅ Add a profile picture on your `about.html`.  
-    ✅ Link from `index.html` to `about.html` and vice versa.  
-    ✅ Organize your files into `/images/`, `/css/`, `/js/`.
+    ✅ Add a profile picture on your about.html.  
+    ✅ Link from `index.html` to about.html and vice versa.  
+    ✅ Organize your files into /images/, /css/, /js/.
 
     Push your updates to GitHub:
-    ```bash
+    ```
     git add .
     git commit -m "Added links, images, and reorganized project folders"
     git push
@@ -452,7 +451,7 @@ Lesson.objects.filter(title="Introduction to CSS and Styling Your Page").update(
     ```
 
     - Add borders and padding:
-    ```css
+    ```
     img {
         border: 2px solid #333;
         padding: 10px;
@@ -538,341 +537,535 @@ Lesson.objects.filter(title="Project - Personal Webpage Assignment").update(
 
 
 # Week 2: Day 1
-Lesson.objects.filter(title="Introduction to CSS").update(
+Lesson.objects.filter(title="Advanced HTML Elements").update(
     content="""
-    CSS (Cascading Style Sheets) is used to control the layout and appearance of a webpage.
+    **Advanced HTML Elements**
 
-    **Basic Structure of CSS**:
-    ```
-    h1 {
-        color: blue;
-    }
-    ```
+    Today we explore more powerful HTML tools to build richer webpages.
 
-    **Common CSS Properties**:
-    - color: Sets the text color.
-    - background-color: Sets the background color.
-    - font-family: Specifies the font.
-    - margin: Controls the space around elements.
-    - padding: Controls the space inside elements.
-
-    **Example**:
+    **1️⃣ Forms**
+    Forms collect user input like names, emails, or messages.
+    - `<input>`: fields like text, password, email.
+    - `<label>`: connects to inputs for better accessibility.
+    - `<button>`: submit or reset forms.
+    Example:
     ```
-    body {
-        background-color: lightblue;
-    }
-    h1 {
-        color: red;
-    }
+    <form>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name">
+        <button type="submit">Submit</button>
+    </form>
     ```
 
-    **Further Reading**:
-    - [Introduction to CSS (MDN)](https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS)
+    **2️⃣ Tables**
+    Organize data into rows + columns.
+    - `<table>`: wraps all data.
+    - `<tr>`: defines a row.
+    - `<th>`: table header.
+    - `<td>`: table cell.
+    Example:
+    ```
+    <table>
+        <tr>
+            <th>Item</th>
+            <th>Price</th>
+        </tr>
+        <tr>
+            <td>Book</td>
+            <td>$10</td>
+        </tr>
+    </table>
+    ```
+
+    **3️⃣ Semantic Elements**
+    Give your page *meaning* (important for accessibility + SEO).
+    - `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<aside>`, `<footer>`
+
+    **4️⃣ Multimedia**
+    Embed videos or audio.
+    ```
+    <video controls>
+        <source src="video.mp4" type="video/mp4">
+    </video>
+    <audio controls>
+        <source src="sound.mp3" type="audio/mpeg">
+    </audio>
+    ```
+
+    **Tasks:**
+    - ✅ Build a form with **name, email, message** + submit button.
+    - ✅ Create a table listing **3 favorite movies** with their genre and year.
+    - ✅ Add a short **YouTube video** or audio clip to your page.
+
+    **Key Takeaways:**
+    - Master form and table structures.
+    - Use semantic elements for clean, meaningful layouts.
+    - Embed multimedia responsibly.
     """
 )
+
 
 # Week 2: Day 2
-Lesson.objects.filter(title="Selectors and Properties").update(
+Lesson.objects.filter(title="Advanced CSS: Pseudo-classes and Pseudo-elements").update(
     content="""
-    CSS selectors allow you to select HTML elements to apply styles to them.
+    **Advanced CSS: Pseudo-classes & Pseudo-elements**
 
-    **Common Selectors**:
-    - Element Selector: `h1 { color: red; }`
-    - ID Selector: `#header { font-size: 20px; }`
-    - Class Selector: `.intro { font-style: italic; }`
-    - Universal Selector: `* { margin: 0; padding: 0; }`
+    Bring life and style to your site with advanced selectors.
 
-    **Example**:
+    **1️⃣ Pseudo-classes**
+    React to element states.
+    - `:hover`: when the mouse is over.
+    - `:focus`: when element is active.
+    - `:nth-child(n)`: target specific items.
+    Example:
     ```
-    #header {
-        color: green;
-    }
-    .intro {
-        font-size: 18px;
+    li:nth-child(odd) {
+        background: #f0f0f0;
     }
     ```
 
-    **Further Reading**:
-    - [CSS Selectors (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors)
+    **2️⃣ Pseudo-elements**
+    Style specific parts of an element.
+    - `::before`: insert content before.
+    - `::after`: insert after.
+    - `::first-letter`: style first letter.
+    Example:
+    ```
+    p::before {
+        content: "🔥 ";
+    }
+    ```
+
+    **3️⃣ Transitions + Animations**
+    Smoothly animate changes.
+    ```
+    button {
+        transition: background-color 0.3s ease;
+    }
+    ```
+
+    **Tasks:**
+    - ✅ Make buttons **change color on hover**.
+    - ✅ Style a paragraph so its **first letter** is large and bold.
+    - ✅ Create a list where every **even item** has a different background.
+
+    **Key Takeaways:**
+    - Add interactive flair with pseudo-classes.
+    - Control element visuals with pseudo-elements.
+    - Apply smooth transitions for a polished UI.
     """
 )
+
 
 # Week 2: Day 3
-Lesson.objects.filter(title="Box Model and Flexbox").update(
+Lesson.objects.filter(title="Responsive Design with Media Queries").update(
     content="""
-    The CSS box model describes the rectangular boxes generated for elements, including margins, borders, padding, and content.
+    **Responsive Design**
 
-    **Box Model Structure**:
-    - Content: The actual content of the box (e.g., text or image).
-    - Padding: Space between the content and the border.
-    - Border: A line surrounding the padding and content.
-    - Margin: Space outside the border.
+    Make sure your website looks great on all screens.
 
-    **Example**:
+    **1️⃣ Viewport Meta Tag**
+    Helps browsers adjust layout on mobile.
     ```
-    div {
-        margin: 20px;
-        border: 1px solid black;
-        padding: 10px;
-    }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     ```
-    
-    Flexbox is a one-dimensional layout method for distributing space along a row or column.
 
-    **Basic Flexbox Example**:
+    **2️⃣ Media Queries**
+    Apply styles based on screen size.
+    Example:
     ```
-    .container {
-        display: flex;
-    }
-    .item {
-        flex: 1;
+    @media (max-width: 600px) {
+        body {
+            background: lightblue;
+        }
     }
     ```
 
-    **Key Flexbox Properties**:
-    - display: flex; Makes an element a flex container.
-    - justify-content: Aligns items horizontally (e.g., center, space-between).
-    - align-items: Aligns items vertically (e.g., flex-start, center).
+    **3️⃣ Flexible Layouts**
+    - Use percentages or `flex` instead of fixed widths.
+    - Make images scale:
+    ```
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    ```
 
-    **Further Reading**:
-	- [CSS Box Model (MDN)](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/The_box_model)
-    - [CSS Flexbox (MDN)](https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox)
+    **4️⃣ Mobile-first Design**
+    Start with mobile styles, then add breakpoints for larger screens.
+
+    **Tasks:**
+    - ✅ Create a page that **changes background color** on small screens.
+    - ✅ Make sure your **images scale properly** on mobile.
+    - ✅ Build a **two-column layout** that stacks on narrow screens.
+
+    **Key Takeaways:**
+    - Build adaptive designs.
+    - Use media queries to fine-tune appearance.
+    - Always test on different devices.
     """
 )
+
 
 # Week 2: Day 4 - CSS Grid
-Lesson.objects.filter(title="CSS Grid").update(
+Lesson.objects.filter(title="Git Workflows, Branching, and Collaboration").update(
     content="""
-    CSS Grid is a two-dimensional layout system for the web. It lets you design web pages with complex layouts.
+    **Git Workflows, Branching, and Collaboration**
 
-    **Basic CSS Grid Example**:
-    ```
-    <div class="grid-container">
-        <div class="item1">Item 1</div>
-        <div class="item2">Item 2</div>
-        <div class="item3">Item 3</div>
-    </div>
+    Go beyond the basics — work like a pro!
 
-    <style>
-        .grid-container {
-            display: grid;
-            grid-template-columns: auto auto auto;
-        }
-        .item1, .item2, .item3 {
-            padding: 20px;
-            border: 1px solid #ddd;
-        }
-    </style>
+    **1️⃣ Branching**
+    Work on features without breaking the main code.
     ```
-    
-    **CSS Grid Properties**:
-    - `grid-template-columns`: Defines the number and size of columns.
-    - `grid-template-rows`: Defines the size of rows.
-    - `grid-gap`: Defines the space between rows and columns.
-    
-    **Further Reading**:
-    - [CSS Grid Layout (MDN)](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout)
+    git branch feature-login
+    git checkout feature-login
+    git merge feature-login
+    ```
+
+    **2️⃣ Handling Merge Conflicts**
+    When two branches change the same line:
+    - Git marks the conflict.
+    - You edit + resolve manually.
+    - Then commit the resolved file.
+
+    **3️⃣ Remote Collaboration**
+    Push + pull changes:
+    ```
+    git push origin feature-login
+    git pull origin main
+    ```
+
+    **4️⃣ Pull Requests (PRs)**
+    On GitHub:
+    - Submit PRs to propose changes.
+    - Review + discuss before merging.
+
+    **5️⃣ Popular Workflows**
+    - **Feature Branch Workflow**: isolate new features.
+    - **Fork + PR**: fork main repo, contribute via PR.
+    - **Gitflow**: structured with main, develop, release branches.
+
+    **Tasks:**
+    - ✅ Create a **new branch**, make a small change, and merge it.
+    - ✅ Practice resolving a **merge conflict**.
+    - ✅ Push a branch to **GitHub** and open a pull request.
+
+    **Key Takeaways:**
+    - Understand branching + merging.
+    - Manage collaboration with GitHub PRs.
+    - Work confidently in team environments.
     """
 )
 
+
 # Week 2: Day 5
-Lesson.objects.filter(title="Project: Styling a Webpage").update(
+Lesson.objects.filter(title="Project: Responsive Portfolio").update(
     content="""
-    **Project Description**:
-    Create a webpage with the following elements:
-    1. A header section with a navigation bar.
-    2. A main content section with text and images.
-    3. A footer with contact information.
+    **Project: Responsive Portfolio**
 
-    **Requirements**:
-    - Use CSS to style your webpage.
-    - Use the box model and flexbox to layout elements.
-    - Ensure the webpage is responsive.
+    Time to combine everything you’ve learned!
 
-    **Example Structure**:
-    ```
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>My Styled Webpage</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
-        <main>
-            <section id="home">
-                <h1>Welcome to My Webpage</h1>
-                <img src="image.jpg" alt="Image">
-            </section>
-        </main>
-        <footer>
-            <p>Contact info: email@example.com</p>
-        </footer>
-    </body>
-    </html>
-    ```
+    **Goal:**
+    Create a personal portfolio site that:
+    - Introduces you.
+    - Showcases your projects.
+    - Works on all devices.
 
-    **Further Reading**:
-    - [CSS Basics (MDN)](https://developer.mozilla.org/en-US/docs/Learn/CSS/First_steps)
+    **Suggested Sections:**
+    - Header with name/logo + navigation.
+    - About section with short bio.
+    - Projects grid with images, titles, links.
+    - Contact form with name/email/message.
+
+    **Key Features:**
+    - Responsive layout using media queries.
+    - Smooth hover effects + transitions.
+    - Semantic HTML for structure.
+    - Mobile-first design.
+
+    **Tasks:**
+    - ✅ Build the full site and **test responsiveness**.
+    - ✅ Upload it to **GitHub**.
+    - ✅ Share your project link for review.
+
+    **Stretch Goals:**
+    - Add **smooth scrolling** between sections.
+    - Animate elements on scroll.
+    - Use **GitHub Pages** to deploy your site live.
+
+    **Final Tip:**
+    Focus on clean, clear design. Small details (like hover effects or good spacing) make a big difference!
     """
 )
 
 
 # Week 3: Day 1
-Lesson.objects.filter(title="Introduction to JavaScript").update(
+Lesson.objects.filter(title="JavaScript Basics: Variables, Data Types, and Operators").update(
     content="""
-    JavaScript is a programming language used to create interactive effects within web browsers.
+    # JavaScript Basics: Variables, Data Types, and Operators
 
-    **Basic Structure of JavaScript**:
-    ```
-    <script>
-        alert('Hello, World!');
-    </script>
-    ```
+    Welcome to JavaScript! Today, we start building the foundation.
 
-    **Common JavaScript Concepts**:
-    - Variables: Store data (e.g., let x = 10;)
-    - Functions: Reusable blocks of code.
-    - Events: Handle user actions (e.g., click, mouseover).
+    **1️⃣ Variables**
+    Variables store data. In JavaScript, we use:
+    - `var`: old way, function-scoped.
+    - `let`: modern, block-scoped.
+    - `const`: block-scoped, value can’t be reassigned.
 
-    **Example**:
-    ```
-    <button onclick="alert('Hello!')">Click Me</button>
+    Example:
+    ```js
+    var city = "Nairobi";
+    let temperature = 28;
+    const country = "Kenya";
     ```
 
-    **Further Reading**:
-    - [JavaScript Basics (MDN)](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps)
+    **⚠ Best Practice:** Use `let` and `const`. Avoid `var` unless you understand its quirks.
+
+    **2️⃣ Data Types**
+    JavaScript has:
+    - **String** → text, e.g., `"hello"`, `'world'`
+    - **Number** → integers, decimals, e.g., `42`, `3.14`
+    - **Boolean** → `true` or `false`
+    - **Undefined** → declared but not assigned
+    - **Null** → intentional “no value”
+    - **Object** → collection of key–value pairs
+    - **Array** → ordered list of values
+    - **Symbol** → unique identifier (advanced)
+
+    Example:
+    ```js
+    let name = "Sam";
+    let age = 30;
+    let isStudent = false;
+    let hobbies = ["reading", "coding", "hiking"];
+    let person = { name: "Sam", age: 30 };
+    ```
+
+    **3️⃣ Operators**
+    - **Arithmetic:** `+`, `-`, `*`, `/`, `%`
+    - **Assignment:** `=`, `+=`, `-=`
+    - **Comparison:** `==`, `===`, `!=`, `<`, `>`, `<=`, `>=`
+    - **Logical:** `&&`, `||`, `!`
+
+    Example:
+    ```js
+    let sum = 5 + 3;         // 8
+    let isEqual = (5 === '5'); // false
+    let result = (age > 18) && isStudent; // false
+    ```
+
+    **Tasks:**
+    ✅ Declare a `const` for your favorite food.  
+    ✅ Create an array with 5 items you like.  
+    ✅ Make an object with keys `name`, `age`, `hobby`.
+
+    **Deep Dive Resources:**
+    - MDN JavaScript: [Variables](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types)
     """
 )
+
 
 # Week 3: Day 2 - Variables, Data Types, and Functions
-Lesson.objects.filter(title="Variables and Data Types").update(
+Lesson.objects.filter(title="JavaScript Functions, Conditionals, and Events").update(
     content="""
-    JavaScript Variables, Data Types, and Functions are the building blocks of programming in JavaScript.
+    # JavaScript Functions, Conditionals, and Events
 
-    **Variables**:
-    Variables store values. In JavaScript, you can declare variables using `var`, `let`, or `const`.
+    Now we move into **logic** and **interactivity**.
 
-    **Basic Variable Example**:
-    ```
-    let name = "John";
-    const age = 30;
-    ```
-
-    **Data Types**:
-    JavaScript has various data types such as:
-    - `String`: Represents text.
-    - `Number`: Represents numeric values.
-    - `Boolean`: Represents true or false.
-
-    **Basic Data Type Example**:
-    ```
-    let isActive = true;  // Boolean
-    let price = 29.99;    // Number
-    let message = "Hello!";  // String
-    ```
-
-    **Functions**:
-    Functions are blocks of reusable code. You can define functions in JavaScript as follows:
-
-    **Basic Function Example**:
-    ```
+    **1️⃣ Functions**
+    A function is reusable code that performs a task.
+    ```js
     function greet(name) {
-        return "Hello, " + name + "!";
+        return `Hello, ${name}!`;
     }
-
-    console.log(greet("John"));
+    console.log(greet("Alice")); // Hello, Alice!
     ```
 
-    **Further Reading**:
-    - [JavaScript Variables (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types)
-    - [JavaScript Functions (MDN)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions)
+    You can also use:
+    - **Function expressions**
+    ```js
+    const add = function(a, b) {
+        return a + b;
+    };
+    ```
+
+    - **Arrow functions**
+    ```js
+    const multiply = (a, b) => a * b;
+    ```
+
+    **2️⃣ Conditionals**
+    Run code only if certain conditions are met.
+    ```js
+    let score = 85;
+    if (score >= 90) {
+        console.log("A grade");
+    } else if (score >= 80) {
+        console.log("B grade");
+    } else {
+        console.log("Try again");
+    }
+    ```
+
+    **3️⃣ Events**
+    Add interactivity to the webpage.
+    ```js
+    document.getElementById("myButton").addEventListener("click", function() {
+        alert("Button clicked!");
+    });
+    ```
+
+    **Common events:** `click`, `mouseover`, `keydown`, `submit`.
+
+    **Tasks:**
+    ✅ Write a function that returns the square of a number.  
+    ✅ Add an event listener to a button that changes text on click.  
+    ✅ Use an if–else to check if a number is even or odd.
+
+    **Deep Dive Resources:**
+    - MDN JavaScript: [Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions)
+    - MDN: [Event Reference](https://developer.mozilla.org/en-US/docs/Web/Events)
     """
 )
+
 
 # Week 3: Day 3
-Lesson.objects.filter(title="DOM Manipulation").update(
+Lesson.objects.filter(title="JavaScript DOM Manipulation").update(
     content="""
-    DOM (Document Object Model) manipulation allows JavaScript to interact with HTML elements.
+    # JavaScript + The DOM (Document Object Model)
 
-    **Basic DOM Example**:
+    **DOM = how JS interacts with HTML.**
+
+    **1️⃣ Selecting Elements**
+    ```js
+    document.getElementById("title");
+    document.querySelector(".item");
+    document.querySelectorAll("li");
     ```
-    <button id="btn">Click Me</button>
-    <script>
-        document.getElementById('btn').onclick = function() {
-            alert('Button clicked!');
-        }
-    </script>
+
+    **2️⃣ Changing Content**
+    ```js
+    let title = document.getElementById("title");
+    title.textContent = "New Title";
+    title.style.color = "blue";
     ```
 
-    **Common DOM Methods**:
-    - getElementById(): Selects an element by its ID.
-    - getElementsByClassName(): Selects elements by class.
-    - querySelector(): Selects elements using CSS selectors.
+    **3️⃣ Creating/Removing Elements**
+    ```js
+    let newItem = document.createElement("li");
+    newItem.textContent = "New List Item";
+    document.querySelector("ul").appendChild(newItem);
+    document.querySelector("ul").removeChild(newItem);
+    ```
 
-    **Further Reading**:
-    - [DOM Manipulation (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Document_object_model)
+    **4️⃣ Changing Attributes**
+    ```js
+    let link = document.querySelector("a");
+    link.setAttribute("href", "https://example.com");
+    ```
+
+    **Tasks:**
+    ✅ Change the text of an existing HTML element.  
+    ✅ Add a new `<li>` to an unordered list.  
+    ✅ Remove a paragraph from the page.  
+    ✅ Change an image’s `src` attribute.
+
+    **Deep Dive Resources:**
+    - MDN: [DOM Manipulation](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction)
     """
 )
+
 
 # Week 3: Day 4
-Lesson.objects.filter(title="JavaScript Events").update(
+Lesson.objects.filter(title="JavaScript Loops and Arrays").update(
     content="""
-    Events allow JavaScript to respond to user interactions like clicks and keyboard input.
+    # JavaScript Loops + Arrays
 
-    **Event Types**:
-    - click: Triggered when an element is clicked.
-    - mouseover: Triggered when the mouse moves over an element.
-    - keydown: Triggered when a key is pressed.
+    **Loops = run code repeatedly.**
 
-    **Example**:
+    **1️⃣ For Loops**
+    ```js
+    for (let i = 0; i < 5; i++) {
+        console.log(i);
+    }
     ```
-    <button onclick="alert('Button clicked!')">Click Me</button>
+
+    **2️⃣ While Loops**
+    ```js
+    let count = 0;
+    while (count < 5) {
+        console.log(count);
+        count++;
+    }
     ```
 
-    **Further Reading**:
-    - [JavaScript Events (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Event)
+    **3️⃣ Arrays + Iteration**
+    ```js
+    let fruits = ["apple", "banana", "cherry"];
+    fruits.forEach(fruit => console.log(fruit));
+
+    for (let fruit of fruits) {
+        console.log(fruit);
+    }
+    ```
+
+    **4️⃣ Common Array Methods**
+    ```js
+    fruits.push("orange");
+    fruits.pop();
+    fruits.shift();
+    fruits.unshift("kiwi");
+    fruits.includes("banana");
+    fruits.indexOf("apple");
+    ```
+
+    **Tasks:**
+    ✅ Loop over an array and print each item.  
+    ✅ Add/remove elements using array methods.  
+    ✅ Write a loop that sums numbers in an array.  
+    ✅ Filter an array for items longer than 5 characters.
+
+    **Deep Dive Resources:**
+    - MDN: [Loops](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Loops_and_iteration)
+    - MDN: [Array Methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array)
     """
 )
+
 
 # Week 3: Day 5
-Lesson.objects.filter(title="Project: Interactive Webpage").update(
+Lesson.objects.filter(title="Project: JavaScript Interactive Feature").update(
     content="""
-    **Project Description**:
-    Create an interactive webpage with the following:
-    1. A button that triggers a JavaScript event (e.g., displays an alert or changes content).
-    2. An input field that reacts to user input (e.g., a button that shows entered text).
-    3. An image or text element that updates when clicked.
+    # Project: Build Your First Interactive Feature
 
-    **Example Structure**:
-    ```
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Interactive Webpage</title>
-        <script>
-            function updateContent() {
-                document.getElementById('content').innerHTML = 'You clicked the button!';
-            }
-        </script>
-    </head>
-    <body>
-        <button onclick="updateContent()">Click Me</button>
-        <div id="content">Original Content</div>
-    </body>
-    </html>
-    ```
+    **Objective:** Apply what you’ve learned to create a small but complete project.
 
-    **Further Reading**:
-    - [DOM Events (MDN)](https://developer.mozilla.org/en-US/docs/Web/API/Event_target)
+    **Project Ideas:**
+    - A **click counter** (button increases a displayed number).
+    - A **to-do list** (add/remove tasks).
+    - A **quiz app** (select answers, show results).
+    - A **light/dark theme switcher**.
+
+    **Project Requirements:**
+    ✅ Use **functions** to organize logic.  
+    ✅ Use **DOM manipulation** to update the page.  
+    ✅ Attach at least **two event listeners** (e.g., click, submit).  
+    ✅ Use at least one **array** to manage data.
+
+    **Bonus Challenges:**
+    🌟 Add CSS animations or transitions.  
+    🌟 Make your design responsive (looks good on mobile).  
+    🌟 Validate user input (e.g., don’t allow empty to-do items).
+
+    **Final Tips:**
+    - Start simple → expand gradually.
+    - Test as you build.
+    - Focus on **clear code** and **good user experience**.
+
+    **Inspiration:**  
+    Check CodePen, GitHub, or JSFiddle for mini-project inspiration!
+
+    **Submission:** Upload your code to GitHub or share a live demo link.
     """
 )
+
 
