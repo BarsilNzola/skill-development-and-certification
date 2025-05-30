@@ -1,4 +1,5 @@
 import re
+import markdown
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django import template
@@ -32,3 +33,14 @@ def render_codeblocks(value):
 
     # Mark the final string as safe to render HTML in the template
     return mark_safe(formatted_value)
+
+@register.filter
+def render_markdown(value):
+    """
+    Render full Markdown content, including code blocks, headings, bold, etc.
+    """
+    html = markdown.markdown(
+        value,
+        extensions=['fenced_code', 'codehilite']  # fenced_code = ``` blocks, codehilite = syntax highlighting (optional)
+    )
+    return mark_safe(html)
