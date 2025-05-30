@@ -175,6 +175,9 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const response = await fetch(`${baseUrl}/api/signup/`, {
                 method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
                 body: formData,
             });
 
