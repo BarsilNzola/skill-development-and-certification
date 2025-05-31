@@ -30,11 +30,18 @@ def render_codeblocks(value):
         flags=re.DOTALL  # Match across multiple lines
     )
 
-    # Handle ## headings → <h2>
+    # Headings
     value = re.sub(
-        r'^## (.+)$',
-        r'<h2>\1</h2>',
-        value,
+        r'^\#\#\# (.+)$', 
+        r'<h3>\1</h3>', 
+        value, 
+        flags=re.MULTILINE
+    )
+
+    value = re.sub(
+        r'^\#\# (.+)$', 
+        r'<h2>\1</h2>', 
+        value, 
         flags=re.MULTILINE
     )
 
@@ -52,15 +59,14 @@ def render_codeblocks(value):
         value
     )
 
-    # Handle horizontal rule --- → <hr>
+    # Horizontal rule
     value = re.sub(
-        r'^---$',
-        r'<hr>',
-        value,
+        r'^---$', 
+        r'<hr>', 
+        value, 
         flags=re.MULTILINE
     )
     
-
     # Mark the final string as safe to render HTML in the template
     return mark_safe(value)
 
