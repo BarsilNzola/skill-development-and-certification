@@ -23,7 +23,7 @@ def render_codeblocks(value):
     value = escape(value)
 
     # Use regex to find and replace triple backticks with <pre><code> blocks
-    formatted_value = re.sub(
+    value = re.sub(
         r'```(.*?)```',  # Match content between triple backticks
         replace_codeblock,  # Apply the escaping and formatting function
         value,
@@ -31,7 +31,7 @@ def render_codeblocks(value):
     )
 
     # Handle ## headings → <h2>
-    formatted_value = re.sub(
+    value = re.sub(
         r'^## (.+)$',
         r'<h2>\1</h2>',
         value,
@@ -39,21 +39,21 @@ def render_codeblocks(value):
     )
 
     # Handle bold **text** → <strong>
-    formatted_value = re.sub(
+    value = re.sub(
         r'\*\*(.+?)\*\*',
         r'<strong>\1</strong>',
         value
     )
 
     # Handle italic *text* → <em>
-    formatted_value = re.sub(
+    value = re.sub(
         r'\*(.+?)\*',
         r'<em>\1</em>',
         value
     )
 
     # Handle horizontal rule --- → <hr>
-    formatted_value = re.sub(
+    value = re.sub(
         r'^---$',
         r'<hr>',
         value,
@@ -62,7 +62,7 @@ def render_codeblocks(value):
     
 
     # Mark the final string as safe to render HTML in the template
-    return mark_safe(formatted_value)
+    return mark_safe(value)
 
 @register.filter
 def render_markdown(value):
