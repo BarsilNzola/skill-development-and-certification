@@ -73,7 +73,7 @@ lesson_data = [
     {"module": module, "title": "HTML Structure and Semantic Elements", "content": "Learn about different HTML elements...", "week": 1, "day": 2},
     {"module": module, "title": "Links, Images, and Project Organization", "content": "Links connect pages or external sites...", "week": 1, "day": 3},
     {"module": module, "title": "Introduction to CSS and Styling Your Page", "content": "What is CSS?...", "week": 1, "day": 4},
-    {"module": module, "title": "Project: Basic Webpage", "content": "Create a basic webpage using HTML...", "week": 1, "day": 5},
+    {"module": module, "title": "Project - Personal Webpage Assignment", "content": "Create a basic webpage using HTML...", "week": 1, "day": 5},
 
     # Week 2 - CSS
     {"module": module, "title": "Advanced HTML Elements", "content": "Explore more powerful HTML tools...", "week": 2, "day": 1},

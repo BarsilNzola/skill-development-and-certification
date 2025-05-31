@@ -63,17 +63,43 @@ def render_codeblocks(value):
         r'<hr>', 
         value
     )
+
+    # Handle bullet lists (- item)
+    def replace_bullets(text):
+        lines = text.split('\n')
+        in_list = False
+        result = []
+        for line in lines:
+            if re.match(r'^- (.+)', line):
+                if not in_list:
+                    result.append('<ul>')
+                    in_list = True
+                item = re.sub(r'^- (.+)', r'<li>\1</li>', line)
+                result.append(item)
+            else:
+                if in_list:
+                    result.append('</ul>')
+                    in_list = False
+                result.append(line)
+        if in_list:
+            result.append('</ul>')
+        return '\n'.join(result)
+    value = replace_bullets(value)
+
+    # Handle inline links [text](url)
+    value = re.sub(
+        r'\[(.*?)\]\((.*?)\)', 
+        r'<a href="\2" target="_blank">\1</a>', 
+        value
+    )
+
+    # Handle inline code spans `code`
+    value = re.sub(
+        r'`([^`]+)`', 
+        r'<code>\1</code>', 
+        value
+    )
     
     # Mark the final string as safe to render HTML in the template
     return mark_safe(value)
 
-@register.filter
-def render_markdown(value):
-    """
-    Render full Markdown content, including code blocks, headings, bold, etc.
-    """
-    html = markdown.markdown(
-        value,
-        extensions=['fenced_code', 'codehilite']  # fenced_code = ``` blocks, codehilite = syntax highlighting (optional)
-    )
-    return mark_safe(html)
