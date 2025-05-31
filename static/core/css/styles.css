@@ -1,4 +1,8 @@
 /* Base Styles (Mobile First) */
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -61,7 +65,7 @@ main {
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
-    width: 100%;
+    width: calc(100% - 20px); /* Adds 10px margin on each side */
 }
 
 footer {
@@ -126,6 +130,11 @@ footer code {
 
 /* Tablet View (768px and up) */
 @media screen and (max-width: 768px) {
+    main {
+        padding: 15px;
+        width: calc(100% - 30px); /* More breathing room on mobile */
+    }
+    
     header {
         padding: 10px 15px;
     }
@@ -171,6 +180,11 @@ footer code {
 
 /* Small Mobile View (480px and below) */
 @media screen and (max-width: 480px) {
+    main {
+        padding: 12px;
+        width: calc(100% - 24px); /* Even more space on very small screens */
+    }
+    
     header {
         padding: 8px 10px;
     }
