@@ -177,7 +177,7 @@ def module_lessons_view(request, module_id):
     
 def lesson_detail_view(request, lesson_id):
     lesson = get_object_or_404(Lesson, id=lesson_id)
-    # lesson.content = mark_safe(lesson.content)  # Mark content as safe in the view
+    lesson.content = mark_safe(lesson.content)  # Mark content as safe in the view
     
     # Calculate the total number of lessons in the same module
     total_lessons = Lesson.objects.filter(module=lesson.module).count()
