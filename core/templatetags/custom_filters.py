@@ -32,17 +32,15 @@ def render_codeblocks(value):
 
     # Headings
     value = re.sub(
-        r'^\#\#\# (.+)$', 
+        r'\s*### (.+)', 
         r'<h3>\1</h3>', 
-        value, 
-        flags=re.MULTILINE
+        value
     )
 
     value = re.sub(
-        r'^\#\# (.+)$', 
+        r'\s*## (.+)', 
         r'<h2>\1</h2>', 
-        value, 
-        flags=re.MULTILINE
+        value
     )
 
     # Handle bold **text** → <strong>
@@ -61,10 +59,9 @@ def render_codeblocks(value):
 
     # Horizontal rule
     value = re.sub(
-        r'^---$', 
+        r'\n?---\n?', 
         r'<hr>', 
-        value, 
-        flags=re.MULTILINE
+        value
     )
     
     # Mark the final string as safe to render HTML in the template
