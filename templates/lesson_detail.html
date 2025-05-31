@@ -18,7 +18,7 @@
 
     {% load custom_filters %}
     <div class="lesson-content">
-        {{ lesson.content|render_codeblocks|linebreaks }}
+        {{ lesson.content|render_markdown }}
     </div>
 
     <!-- Assignment Section (Only Show on Day 5) -->
