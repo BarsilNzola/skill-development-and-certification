@@ -802,7 +802,7 @@ Lesson.objects.filter(title="Project: Responsive Portfolio").update(
 # Week 3: Day 1
 Lesson.objects.filter(title="JavaScript Basics: Variables, Data Types, and Operators").update(
     content="""
-    # JavaScript Basics: Variables, Data Types, and Operators
+    ## JavaScript Basics: Variables, Data Types, and Operators
 
     Welcome to JavaScript! Today, we start building the foundation.
 
@@ -868,7 +868,7 @@ Lesson.objects.filter(title="JavaScript Basics: Variables, Data Types, and Opera
 # Week 3: Day 2 - Variables, Data Types, and Functions
 Lesson.objects.filter(title="JavaScript Functions, Conditionals, and Events").update(
     content="""
-    # JavaScript Functions, Conditionals, and Events
+    ## JavaScript Functions, Conditionals, and Events
 
     Now we move into **logic** and **interactivity**.
 
@@ -932,7 +932,7 @@ Lesson.objects.filter(title="JavaScript Functions, Conditionals, and Events").up
 # Week 3: Day 3
 Lesson.objects.filter(title="JavaScript DOM Manipulation").update(
     content="""
-    # JavaScript + The DOM (Document Object Model)
+    ## JavaScript + The DOM (Document Object Model)
 
     **DOM = how JS interacts with HTML.**
 
@@ -979,7 +979,7 @@ Lesson.objects.filter(title="JavaScript DOM Manipulation").update(
 # Week 3: Day 4
 Lesson.objects.filter(title="JavaScript Loops and Arrays").update(
     content="""
-    # JavaScript Loops + Arrays
+    ## JavaScript Loops + Arrays
 
     **Loops = run code repeatedly.**
 
@@ -1035,7 +1035,7 @@ Lesson.objects.filter(title="JavaScript Loops and Arrays").update(
 # Week 3: Day 5
 Lesson.objects.filter(title="Project: JavaScript Interactive Feature").update(
     content="""
-    # Project: Build Your First Interactive Feature
+    ## Project: Build Your First Interactive Feature
 
     **Objective:** Apply what you’ve learned to create a small but complete project.
 

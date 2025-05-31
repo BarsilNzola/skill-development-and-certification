@@ -67,8 +67,9 @@ def render_codeblocks(value):
     # Handle bullet lists (- item)
     def replace_bullets(text):
         lines = text.split('\n')
-        in_list = False
         result = []
+        in_list = False
+
         for line in lines:
             if re.match(r'^- (.+)', line):
                 if not in_list:
@@ -81,8 +82,10 @@ def render_codeblocks(value):
                     result.append('</ul>')
                     in_list = False
                 result.append(line)
+        
         if in_list:
             result.append('</ul>')
+
         return '\n'.join(result)
     value = replace_bullets(value)
 
