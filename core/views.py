@@ -136,6 +136,10 @@ def update_profile_picture(request):
             form = ProfileEditForm(request.POST, request.FILES, instance=user_profile)
 
             if form.is_valid():
+                # Delete old picture if it exists and a new one is being uploaded
+                if 'profile_picture' in request.FILES:
+                    if user_profile.profile_picture:
+                        user_profile.profile_picture.delete(save=False)
                 form.save()  # Save the form (i.e., update the profile picture)
                 messages.success(request, "Profile picture updated successfully!")
                 return redirect('dashboard')  # Redirect to the profile page (adjust URL as needed)
