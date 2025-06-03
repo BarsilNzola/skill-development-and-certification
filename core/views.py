@@ -281,6 +281,9 @@ def submit_assignment(request, lesson_id):
 
             # Create the new assignment submission
             assignment = Assignment.objects.create(
+                title=f"Assignment for {lesson.title}",
+                course=lesson.module.course,  # Set course from lesson's module
+                module=lesson.module,
                 lesson=lesson,  # Properly set the lesson field
                 submitted_by=request.user,
                 github_link=github_link,
