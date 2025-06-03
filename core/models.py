@@ -133,7 +133,7 @@ class LearningResource(models.Model):
 class Assignment(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    due_date = models.DateTimeField()
+    due_date = models.DateTimeField(null=True, blank=True)
     course = models.ForeignKey('Course', on_delete=models.CASCADE)
     module = models.ForeignKey('Module', on_delete=models.CASCADE)
     lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE, null=True)
