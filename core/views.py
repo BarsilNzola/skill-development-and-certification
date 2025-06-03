@@ -18,6 +18,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.html import mark_safe
 from django.utils import timezone
+from datetime import timedelta
 from .forms import LoginForm, SignUpForm, ProfileEditForm  # Import forms
 import os
 import json
@@ -284,6 +285,7 @@ def submit_assignment(request, lesson_id):
                 submitted_by=request.user,
                 github_link=github_link,
                 submitted_at=timezone.now(),  # Automatically set the submission time
+                due_date=timezone.now() + timedelta(days=7)
             )
             return redirect('core:lesson_detail', lesson_id=lesson.id)  # Redirect after submission
 
