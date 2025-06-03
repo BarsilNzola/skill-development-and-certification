@@ -292,8 +292,9 @@ def submit_assignment(request, lesson_id):
 
 
 @login_required
-def logout_view(request):
-    return render(request, 'index.html')  # Redirect to home page
+def custom_logout(request):
+    logout(request)
+    return redirect('home')  # Redirect to home page
 
 
 def mark_lesson_complete(request, lesson_id):

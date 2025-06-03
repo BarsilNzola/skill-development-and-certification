@@ -1,6 +1,6 @@
 from django.urls import path, include
 from django.contrib import admin
-from .views import home, login_signup, update_profile_picture, module_lessons_view, lesson_detail_view, submit_assignment, submissions_view, feedback_popup, mentors_view, mark_lesson_complete, logout_view, CourseListCreate, CourseDetail, ModuleListCreate, ModuleDetail, LessonListCreate, LessonDetail, ProgressListCreate, ProgressDetail, QuizListCreate, QuizDetail, QuestionListCreate, QuestionDetail, generate_certificate, AssignmentListCreate, AssignmentDetail
+from .views import home, login_signup, update_profile_picture, module_lessons_view, lesson_detail_view, submit_assignment, submissions_view, feedback_popup, mentors_view, mark_lesson_complete, custom_logout, CourseListCreate, CourseDetail, ModuleListCreate, ModuleDetail, LessonListCreate, LessonDetail, ProgressListCreate, ProgressDetail, QuizListCreate, QuizDetail, QuestionListCreate, QuestionDetail, generate_certificate, AssignmentListCreate, AssignmentDetail
 from users.views import login_view, signup_view, dashboard_view
 
 app_name = 'core'
@@ -22,7 +22,7 @@ urlpatterns = [
     path('lesson/<int:lesson_id>/submit_assignment/', submit_assignment, name='submit_assignment'),
     path('lesson/<int:lesson_id>/complete/', mark_lesson_complete, name='mark_lesson_complete'),
     path('generate_certificate/<int:course_id>/<int:user_id>/', generate_certificate, name='generate_certificate'),
-    path('logout/', logout_view, name='logout'),  # New logout route
+    path('logout/', custom_logout, name='logout'),  # New logout route
   
     
     # Courses
