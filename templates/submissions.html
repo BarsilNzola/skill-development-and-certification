@@ -23,7 +23,8 @@
                 
                 {% if assignment.feedbacks.exists %}
                 <button class="btn feedback-btn" 
-                        onclick='openFeedbackModal("{% url \"core:feedback_popup\" assignment.id %}")'>
+                        data-feedback-url="{% url 'core:feedback_popup' assignment.id %}"
+                        onclick="openFeedbackModal(this.dataset.feedbackUrl)">
                     View Feedback
                 </button>
                 {% else %}
