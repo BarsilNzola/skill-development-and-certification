@@ -102,7 +102,9 @@ def login_signup(request):
     })
 
 def home(request): 
-    return render(request, 'index.html')
+    return render(request, 'index.html', {
+        'user': request.user
+    })
 
 @login_required
 def dashboard_view(request):
