@@ -21,7 +21,7 @@
                     <i class="fab fa-github"></i> View on GitHub
                 </a>
                 
-                {% if assignment.feedbacks.exists %}
+                {% if assignment.feedbacks.all %}
                 <button class="btn feedback-btn" 
                         data-feedback-url="{% url 'core:feedback_popup' assignment.id %}"
                         onclick="openFeedbackModal(this.dataset.feedbackUrl)">

@@ -2,7 +2,7 @@ function openFeedbackModal(url) {
     fetch(url)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('Feedback not available');
             }
             return response.text();
         })
@@ -11,10 +11,10 @@ function openFeedbackModal(url) {
             document.getElementById('feedbackModal').style.display = 'block';
         })
         .catch(error => {
-            console.error('Error loading feedback:', error);
             document.getElementById('feedbackContent').innerHTML = `
                 <div class="error-message">
-                    <p>Error loading feedback. Please try again later.</p>
+                    <p>No feedback available yet</p>
+                    <p><small>${error.message}</small></p>
                 </div>
             `;
             document.getElementById('feedbackModal').style.display = 'block';

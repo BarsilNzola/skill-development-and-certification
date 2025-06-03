@@ -158,7 +158,7 @@ def submissions_view(request):
     user_assignments = Assignment.objects.filter(
         submitted_by=request.user,
         github_link__isnull=False
-    ).order_by('-submitted_at')
+    ).order_by('-submitted_at').prefetch_related('feedbacks')
     
     return render(request, 'submissions.html', {
         'assignments': user_assignments
