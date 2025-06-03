@@ -1,0 +1,32 @@
+<div class="feedback-content">
+    <h3>Feedback for {{ assignment.title }}</h3>
+    
+    {% if feedback %}
+    <div class="feedback-details">
+        <p><strong>Mentor:</strong> {{ feedback.mentor.username }}</p>
+        <p><strong>Date:</strong> {{ feedback.created_at|date:"F j, Y" }}</p>
+        
+        <div class="feedback-comments">
+            <h4>Comments:</h4>
+            <p>{{ feedback.comments }}</p>
+        </div>
+        
+        {% if feedback.rating %}
+        <div class="feedback-rating">
+            <h4>Rating:</h4>
+            <div class="stars">
+                {% for i in "12345" %}
+                    {% if forloop.counter <= feedback.rating %}
+                        <span class="star filled">★</span>
+                    {% else %}
+                        <span class="star">☆</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <p>No feedback has been provided yet.</p>
+    {% endif %}
+</div>

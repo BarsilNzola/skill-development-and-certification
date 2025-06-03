@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mentors{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'core/css/mentors.css' %}">
+<div class="mentors-container">
+    <h2>Our Mentors</h2>
+    
+    <div class="mentors-grid">
+        {% for mentor in mentors %}
+        <div class="mentor-card">
+            <div class="mentor-header">
+                <img src="{{ mentor.user.user_profile.profile_picture.url|default:'/static/core/images/default-avatar.jpg' }}" 
+                     alt="{{ mentor.user.username }}" class="mentor-avatar">
+                <h3>{{ mentor.user.username }}</h3>
+            </div>
+            
+            <div class="mentor-bio">
+                <p>{{ mentor.bio|default:"No bio provided" }}</p>
+            </div>
+            
+            <div class="mentor-social">
+                {% if mentor.github_url %}
+                <a href="{{ mentor.github_url }}" target="_blank" class="social-link">
+                    <i class="fab fa-github"></i>
+                </a>
+                {% endif %}
+                
+                {% if mentor.twitter_url %}
+                <a href="{{ mentor.twitter_url }}" target="_blank" class="social-link">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                {% endif %}
+            </div>
+            
+            {% if mentor.whatsapp_number %}
+            <a href="https://wa.me/{{ mentor.whatsapp_number }}?text=Hi%20{{ mentor.user.username|urlencode }}%2C%20I%20need%20help%20with..." 
+               class="whatsapp-btn" target="_blank">
+                <i class="fab fa-whatsapp"></i> Message on WhatsApp
+            </a>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p class="no-mentors">No mentors available at the moment.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

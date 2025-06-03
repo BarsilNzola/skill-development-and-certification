@@ -1,6 +1,6 @@
 from django.urls import path, include
 from django.contrib import admin
-from .views import home, login_signup, update_profile_picture, module_lessons_view, lesson_detail_view, submit_assignment, mark_lesson_complete, logout_view, CourseListCreate, CourseDetail, ModuleListCreate, ModuleDetail, LessonListCreate, LessonDetail, ProgressListCreate, ProgressDetail, QuizListCreate, QuizDetail, QuestionListCreate, QuestionDetail, generate_certificate, AssignmentListCreate, AssignmentDetail
+from .views import home, login_signup, update_profile_picture, module_lessons_view, lesson_detail_view, submit_assignment, submissions_view, feedback_popup, mentors_view, mark_lesson_complete, logout_view, CourseListCreate, CourseDetail, ModuleListCreate, ModuleDetail, LessonListCreate, LessonDetail, ProgressListCreate, ProgressDetail, QuizListCreate, QuizDetail, QuestionListCreate, QuestionDetail, generate_certificate, AssignmentListCreate, AssignmentDetail
 from users.views import login_view, signup_view, dashboard_view
 
 app_name = 'core'
@@ -13,6 +13,9 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('signup/', signup_view, name='signup'),
     path('dashboard/', dashboard_view, name='dashboard'),
+    path('submissions/', submissions_view, name='submissions'),
+    path('feedback/<int:assignment_id>/', feedback_popup, name='feedback_popup'),
+    path('mentors/', mentors_view, name='mentors'),
     path('profile/edit/', update_profile_picture, name='profile_edit'),
     path('module/<int:module_id>/lessons/', module_lessons_view, name='module_lessons'), 
     path('lesson/<int:lesson_id>/', lesson_detail_view, name='lesson_detail'), 

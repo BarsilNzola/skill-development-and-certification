@@ -6,7 +6,7 @@ from django.urls import reverse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from rest_framework import generics
-from .models import UserProfile, Course, Module, Lesson, Progress, ModuleProgress, Certificate, Quiz, Question, Assignment, LearningResource
+from .models import Course, Module, Lesson, Progress, ModuleProgress, Certificate, Quiz, Question, Assignment, Feedback, Mentor, LearningResource
 from .serializers import (
     CourseSerializer, ModuleSerializer, LessonSerializer, ProgressSerializer,
     QuizSerializer, QuestionSerializer, AssignmentSerializer
@@ -148,6 +148,36 @@ def update_profile_picture(request):
             messages.error(request, "User Profile does not exist.")
         
     return render(request, 'profile_edit.html', {'form': form})
+
+@login_required
+def submissions_view(request):
+    # Get all assignments submitted by the current user
+    user_assignments = Assignment.objects.filter(
+        submitted_by=request.user,
+        github_link__isnull=False
+    ).order_by('-submitted_at')
+    
+    return render(request, 'submissions.html', {
+        'assignments': user_assignments
+    })
+
+@login_required
+def feedback_popup(request, assignment_id):
+    assignment = get_object_or_404(Assignment, id=assignment_id, submitted_by=request.user)
+    feedback = Feedback.objects.filter(assignment=assignment).first()
+    
+    return render(request, 'feedback_popup.html', {
+        'assignment': assignment,
+        'feedback': feedback
+    })
+
+@login_required
+def mentors_view(request):
+    mentors = Mentor.objects.filter(is_available=True)
+    
+    return render(request, 'mentors.html', {
+        'mentors': mentors
+    })
 
 @login_required
 def module_lessons_view(request, module_id):

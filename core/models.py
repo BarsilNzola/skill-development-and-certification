@@ -145,7 +145,27 @@ class Assignment(models.Model):
     
     def __str__(self):
         return self.title
-    
+
+class Feedback(models.Model):
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name='feedbacks')
+    mentor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    comments = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    rating = models.PositiveSmallIntegerField(null=True, blank=True)  # Optional rating system
+
+    def __str__(self):
+        return f"Feedback for {self.assignment.title} by {self.mentor.username}"
+
+class Mentor(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True)
+    github_url = models.URLField(blank=True)
+    twitter_url = models.URLField(blank=True)
+    whatsapp_number = models.CharField(max_length=20, blank=True)  # format: +1234567890
+    is_available = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"Mentor: {self.user.username}"  
 
 class Certificate(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

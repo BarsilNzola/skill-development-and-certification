@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Submissions{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'core/css/submissions.css' %}">
+<div class="submissions-container">
+    <h2>My Submissions</h2>
+    
+    {% if assignments %}
+    <div class="submissions-list">
+        {% for assignment in assignments %}
+        <div class="submission-card">
+            <h3>{{ assignment.title }}</h3>
+            <p>Module: {{ assignment.module.title }}</p>
+            <p>Submitted on: {{ assignment.submitted_at|date:"F j, Y" }}</p>
+            
+            <div class="submission-links">
+                <a href="{{ assignment.github_link }}" target="_blank" class="btn github-btn">
+                    <i class="fab fa-github"></i> View on GitHub
+                </a>
+                
+                {% if assignment.feedbacks.exists %}
+                <button class="btn feedback-btn" 
+                        onclick='openFeedbackModal("{% url \"core:feedback_popup\" assignment.id %}")'>
+                    View Feedback
+                </button>
+                {% else %}
+                <span class="no-feedback">Feedback pending</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="no-submissions">You haven't submitted any assignments yet.</p>
+    {% endif %}
+</div>
+
+<!-- Feedback Modal -->
+<div id="feedbackModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeFeedbackModal()">&times;</span>
+        <div id="feedbackContent"></div>
+    </div>
+</div>
+
+<script src="{% static 'core/js/feedback_modal.js' %}"></script>
+{% endblock %}
