@@ -155,7 +155,7 @@ class Assignment(models.Model):
 
     # Assignment Core Fields
     title = models.CharField(max_length=255)
-    due_date = models.DateTimeField()
+    due_date = models.DateTimeField(null=True, blank=True)
     course = models.ForeignKey('Course', on_delete=models.CASCADE, related_name='assignments')
     module = models.ForeignKey('Module', on_delete=models.CASCADE, related_name='assignments')
     lesson = models.ForeignKey('Lesson', on_delete=models.SET_NULL, null=True, blank=True, related_name='assignments')
