@@ -219,7 +219,6 @@ class Feedback(models.Model):
     is_published = models.BooleanField(default=False)
     
     class Meta:
-        ordering = ['-created_at']
         verbose_name = 'Mentor Feedback'
         verbose_name_plural = 'Mentor Feedbacks'
         unique_together = ('assignment', 'mentor')  # One feedback per mentor per assignment
