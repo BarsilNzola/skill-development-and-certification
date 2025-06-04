@@ -213,9 +213,21 @@ class Feedback(models.Model):
         limit_choices_to={'groups__name': 'Mentors'}
     )
     comments = models.TextField()
-    technical_score = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
-    creativity_score = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
-    completeness_score = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
+    technical_score = models.PositiveSmallIntegerField(
+    choices=RATING_CHOICES,
+    default=3
+    )
+
+    creativity_score = models.PositiveSmallIntegerField(
+        choices=RATING_CHOICES,
+        default=3
+    )
+
+    completeness_score = models.PositiveSmallIntegerField(
+        choices=RATING_CHOICES,
+        default=3
+    )
+
     is_published = models.BooleanField(default=False)
     
     class Meta:
