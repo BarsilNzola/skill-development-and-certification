@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 from django.contrib import admin
 from .views import home, login_signup, update_profile_picture, module_lessons_view, lesson_detail_view, submit_assignment, submissions_view, feedback_popup, mentors_view, mark_lesson_complete, custom_logout, CourseListCreate, CourseDetail, ModuleListCreate, ModuleDetail, LessonListCreate, LessonDetail, ProgressListCreate, ProgressDetail, QuizListCreate, QuizDetail, QuestionListCreate, QuestionDetail, generate_certificate, AssignmentListCreate, AssignmentDetail
@@ -53,4 +55,4 @@ urlpatterns = [
     # Future Modules (Example for "Assignments")
     path('assignments/', AssignmentListCreate.as_view(), name='assignment-list-create'),  # New assignments view
     path('assignments/<int:pk>/', AssignmentDetail.as_view(), name='assignment-detail'),  # New assignment detail view
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
