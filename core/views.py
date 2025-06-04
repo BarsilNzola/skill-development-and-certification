@@ -23,8 +23,6 @@ from .forms import LoginForm, SignUpForm, ProfileEditForm  # Import forms
 import os
 import json
 from django.conf import settings
-import uuid
-from .supabase_client import supabase
 import json
 from django.contrib.auth import authenticate, login, get_user_model
 from django.http import JsonResponse
