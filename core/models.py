@@ -178,10 +178,6 @@ class Assignment(models.Model):
         default=STATUS_DRAFT
     )
     
-    # Metadata
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    
     class Meta:
         ordering = ['-submitted_at']
         verbose_name = 'Student Assignment'
@@ -221,10 +217,6 @@ class Feedback(models.Model):
     creativity_score = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
     completeness_score = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
     is_published = models.BooleanField(default=False)
-    
-    # Metadata
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         ordering = ['-created_at']
