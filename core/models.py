@@ -103,7 +103,7 @@ class Question(models.Model):
 # User Profile Model
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_profile')
-    profile_picture_url = models.URLField(blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
     mentor = models.ForeignKey(  # Add this field
         'Mentor', 

@@ -126,45 +126,35 @@ def dashboard_view(request):
 
 @login_required
 def update_profile_picture(request):
+    form = None
+    
     if request.method == 'POST':
-        form = ProfileEditForm(request.POST, request.FILES)
+        # Check if user has a related UserProfile
+        if hasattr(request.user, 'user_profile'):  
+            user_profile = request.user.user_profile  # Access the related UserProfile
 
-        if form.is_valid():
-            picture = request.FILES['profile_picture']
-            user_profile = request.user.user_profile
+            # Use the form to handle profile picture update
+            form = ProfileEditForm(request.POST, request.FILES, instance=user_profile)
 
-            # Optional: delete old picture if it's from Supabase
-            if user_profile.profile_picture:
-                try:
-                    old_path = user_profile.profile_picture.split('/storage/v1/object/public/')[1]
-                    supabase.storage.from_('media').remove([old_path])
-                except:
-                    pass  # fail silently for now
-
-            # Upload to Supabase
-            unique_filename = f"{uuid.uuid4().hex}{os.path.splitext(picture.name)[-1]}"
-            file_path = f"profile_pictures/{unique_filename}"
-
-            supabase.storage.from_('media').upload(file_path, picture.read(), file_options={"content-type": picture.content_type})
-
-            # Get public URL
-            public_url = supabase.storage.from_('media').get_public_url(file_path)
-
-            # Save to model (assumes it's a URLField)
-            user_profile.profile_picture = public_url
-            user_profile.save()
-
-            messages.success(request, "Profile picture updated successfully!")
-            return redirect('dashboard')
+            if form.is_valid():
+                # Delete old picture if it exists and a new one is being uploaded
+                if 'profile_picture' in request.FILES:
+                    if user_profile.profile_picture:
+                        user_profile.profile_picture.delete(save=False)
+                form.save()  # Save the form (i.e., update the profile picture)
+                messages.success(request, "Profile picture updated successfully!")
+                return redirect('dashboard')  # Redirect to the profile page (adjust URL as needed)
+            else:
+                messages.error(request, "Please upload a valid profile picture.")
         else:
-            messages.error(request, "Please upload a valid image.")
+            messages.error(request, "User profile does not exist.")
     else:
+        # If it's a GET request, instantiate the form with the user's current profile
         if hasattr(request.user, 'user_profile'):
             form = ProfileEditForm(instance=request.user.user_profile)
         else:
-            messages.error(request, "User profile does not exist.")
-            form = None
-
+            messages.error(request, "User Profile does not exist.")
+        
     return render(request, 'profile_edit.html', {'form': form})
 
 @login_required
