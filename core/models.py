@@ -103,9 +103,16 @@ class Question(models.Model):
 # User Profile Model
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='user_profile')
-    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+    profile_picture_url = models.URLField(blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
-
+    mentor = models.ForeignKey(  # Add this field
+        'Mentor', 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        related_name='mentees'
+    )
+    
     def __str__(self):
         return self.user.username
 
@@ -131,31 +138,116 @@ class LearningResource(models.Model):
         return self.title
 
 class Assignment(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    due_date = models.DateTimeField(null=True, blank=True)
-    course = models.ForeignKey('Course', on_delete=models.CASCADE)
-    module = models.ForeignKey('Module', on_delete=models.CASCADE)
-    lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE, null=True)
+    # Assignment Status Choices
+    STATUS_DRAFT = 'draft'
+    STATUS_SUBMITTED = 'submitted'
+    STATUS_UNDER_REVIEW = 'under_review'
+    STATUS_NEEDS_REVISION = 'needs_revision'
+    STATUS_COMPLETED = 'completed'
     
-    # Add fields for submission tracking
-    submitted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)  # Track the user who submitted
-    github_link = models.URLField(null=True, blank=True)  # URL for the GitHub repository link
-    submitted_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)  # Track the submission date
+    STATUS_CHOICES = [
+        (STATUS_DRAFT, 'Draft (Not Submitted)'),
+        (STATUS_SUBMITTED, 'Submitted for Review'),
+        (STATUS_UNDER_REVIEW, 'Under Review'),
+        (STATUS_NEEDS_REVISION, 'Needs Revision'),
+        (STATUS_COMPLETED, 'Completed'),
+    ]
+
+    # Assignment Core Fields
+    title = models.CharField(max_length=255)
+    due_date = models.DateTimeField()
+    course = models.ForeignKey('Course', on_delete=models.CASCADE, related_name='assignments')
+    module = models.ForeignKey('Module', on_delete=models.CASCADE, related_name='assignments')
+    lesson = models.ForeignKey('Lesson', on_delete=models.SET_NULL, null=True, blank=True, related_name='assignments')
+    
+    # Submission Tracking
+    submitted_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name='submit_assignment'
+    )
+    submitted_at = models.DateTimeField(null=True, blank=True)
+    github_repo = models.URLField(null=True, blank=True)
+    live_demo = models.URLField(null=True, blank=True)
+    attachment = models.FileField(upload_to='assignments/%Y/%m/%d/', null=True, blank=True)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default=STATUS_DRAFT
+    )
+    
+    # Metadata
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-submitted_at']
+        verbose_name = 'Student Assignment'
+        verbose_name_plural = 'Student Assignments'
     
     def __str__(self):
-        return self.title
+        return f"{self.title} - {self.course.title}"
+    
+    @property
+    def is_submitted(self):
+        return self.status != self.STATUS_DRAFT
 
 class Feedback(models.Model):
-    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name='feedbacks')
-    mentor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    # Feedback Rating Choices
+    RATING_CHOICES = [
+        (1, 'Needs Significant Improvement'),
+        (2, 'Needs Some Improvement'),
+        (3, 'Meets Expectations'),
+        (4, 'Exceeds Expectations'),
+        (5, 'Outstanding Work'),
+    ]
+    
+    # Core Feedback Fields
+    assignment = models.ForeignKey(
+        Assignment,
+        on_delete=models.CASCADE,
+        related_name='feedbacks'
+    )
+    mentor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='given_feedbacks',
+        limit_choices_to={'groups__name': 'Mentors'}
+    )
     comments = models.TextField()
+    technical_score = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
+    creativity_score = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
+    completeness_score = models.PositiveSmallIntegerField(choices=RATING_CHOICES)
+    is_published = models.BooleanField(default=False)
+    
+    # Metadata
     created_at = models.DateTimeField(auto_now_add=True)
-    rating = models.PositiveSmallIntegerField(null=True, blank=True)  # Optional rating system
-
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Mentor Feedback'
+        verbose_name_plural = 'Mentor Feedbacks'
+        unique_together = ('assignment', 'mentor')  # One feedback per mentor per assignment
+    
     def __str__(self):
         return f"Feedback for {self.assignment.title} by {self.mentor.username}"
-
+    
+    @property
+    def average_score(self):
+        return round((self.technical_score + self.creativity_score + self.completeness_score) / 3, 1)
+    
+    @property
+    def score_breakdown(self):
+        return {
+            'technical': self.get_technical_score_display(),
+            'creativity': self.get_creativity_score_display(),
+            'completeness': self.get_completeness_score_display(),
+            'average': self.average_score
+        }
+    
 class Mentor(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)

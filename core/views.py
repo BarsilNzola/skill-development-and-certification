@@ -23,7 +23,8 @@ from .forms import LoginForm, SignUpForm, ProfileEditForm  # Import forms
 import os
 import json
 from django.conf import settings
-
+import uuid
+from .supabase_client import supabase
 import json
 from django.contrib.auth import authenticate, login, get_user_model
 from django.http import JsonResponse
@@ -125,35 +126,45 @@ def dashboard_view(request):
 
 @login_required
 def update_profile_picture(request):
-    form = None
-    
     if request.method == 'POST':
-        # Check if user has a related UserProfile
-        if hasattr(request.user, 'user_profile'):  
-            user_profile = request.user.user_profile  # Access the related UserProfile
+        form = ProfileEditForm(request.POST, request.FILES)
 
-            # Use the form to handle profile picture update
-            form = ProfileEditForm(request.POST, request.FILES, instance=user_profile)
+        if form.is_valid():
+            picture = request.FILES['profile_picture']
+            user_profile = request.user.user_profile
 
-            if form.is_valid():
-                # Delete old picture if it exists and a new one is being uploaded
-                if 'profile_picture' in request.FILES:
-                    if user_profile.profile_picture:
-                        user_profile.profile_picture.delete(save=False)
-                form.save()  # Save the form (i.e., update the profile picture)
-                messages.success(request, "Profile picture updated successfully!")
-                return redirect('dashboard')  # Redirect to the profile page (adjust URL as needed)
-            else:
-                messages.error(request, "Please upload a valid profile picture.")
+            # Optional: delete old picture if it's from Supabase
+            if user_profile.profile_picture:
+                try:
+                    old_path = user_profile.profile_picture.split('/storage/v1/object/public/')[1]
+                    supabase.storage.from_('media').remove([old_path])
+                except:
+                    pass  # fail silently for now
+
+            # Upload to Supabase
+            unique_filename = f"{uuid.uuid4().hex}{os.path.splitext(picture.name)[-1]}"
+            file_path = f"profile_pictures/{unique_filename}"
+
+            supabase.storage.from_('media').upload(file_path, picture.read(), file_options={"content-type": picture.content_type})
+
+            # Get public URL
+            public_url = supabase.storage.from_('media').get_public_url(file_path)
+
+            # Save to model (assumes it's a URLField)
+            user_profile.profile_picture = public_url
+            user_profile.save()
+
+            messages.success(request, "Profile picture updated successfully!")
+            return redirect('dashboard')
         else:
-            messages.error(request, "User profile does not exist.")
+            messages.error(request, "Please upload a valid image.")
     else:
-        # If it's a GET request, instantiate the form with the user's current profile
         if hasattr(request.user, 'user_profile'):
             form = ProfileEditForm(instance=request.user.user_profile)
         else:
-            messages.error(request, "User Profile does not exist.")
-        
+            messages.error(request, "User profile does not exist.")
+            form = None
+
     return render(request, 'profile_edit.html', {'form': form})
 
 @login_required
@@ -424,7 +435,7 @@ def generate_certificate(request, course_id, user_id):
 
     # Recipient info
     p.setFont("Helvetica", 16)
-    p.drawCentredString(width / 2, 600, f"This certifies that {user.username}")
+    p.drawCentredString(width / 2, 600, f"This certifies that {user.first_name} {user.last_name}")
     p.drawCentredString(width / 2, 575, f"has successfully completed the course:")
     p.setFont("Helvetica-Bold", 18)
     p.drawCentredString(width / 2, 550, f"'{course.title}'")
