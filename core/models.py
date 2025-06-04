@@ -169,7 +169,7 @@ class Assignment(models.Model):
         related_name='submit_assignment'
     )
     submitted_at = models.DateTimeField(null=True, blank=True)
-    github_repo = models.URLField(null=True, blank=True)
+    github_link = models.URLField(null=True, blank=True)
     live_demo = models.URLField(null=True, blank=True)
     attachment = models.FileField(upload_to='assignments/%Y/%m/%d/', null=True, blank=True)
     status = models.CharField(
