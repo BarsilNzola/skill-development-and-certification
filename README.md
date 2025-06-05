@@ -57,8 +57,8 @@ Learners can progress at their own pace, receive mentorship support, and earn ce
 ## 🛠️ Tech Stack
 
 - **Frontend:** HTML, CSS, JavaScript
-- **Backend:** Node.js / Python (future modules)
-- **Database:** MySQL
+- **Backend:** Python
+- **Database:** Supabase
 - **Hosting:** Render
 - **Version Control:** GitHub
 
