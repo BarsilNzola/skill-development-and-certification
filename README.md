@@ -69,8 +69,8 @@ Learners can progress at their own pace, receive mentorship support, and earn ce
 ```bash
 git clone https://github.com/BarsilNzola/skill-development-and-certification.git
 cd skill-development-and-certification
-npm install
-npm start
+pip install requirements.txt
+python manage.py runserver
 ```
 
 ## 🪪 License
@@ -81,6 +81,6 @@ This project is open for educational use. Contact the maintainer for commercial 
 ## 📩 Contact
 
 Author: Barsil Ochola
-📧 barsiljohn@gmail.com
-📞 +254 781 958 872
-🌍 Code Gears Pitch Deck
+- 📧 barsiljohn@gmail.com
+- 📞 +254 781 958 872
+- 🌍 Code Gears Pitch Deck
